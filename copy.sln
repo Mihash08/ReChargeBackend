@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "copy", "copy\copy.csproj", "{3BC04257-BDBC-40F6-8679-9C5F8094515D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReChargeBackend", "copy\ReChargeBackend.csproj", "{3BC04257-BDBC-40F6-8679-9C5F8094515D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
