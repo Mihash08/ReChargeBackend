@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BackendReCharge.Data.Entities
+{
+    [Table("verification_code")]
+    public class VerificationCode : BaseEntity
+    {
+        [Column("phone_number")]
+        public string PhoneNumber { get; set; }
+        [Column("code")]
+        public string Code { get; set; }
+
+    }
+}
