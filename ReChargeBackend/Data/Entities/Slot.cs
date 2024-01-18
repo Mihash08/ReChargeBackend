@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendReCharge.Data.Entities
+namespace Data.Entities
 {
     [Table("slot")]
     public class Slot : BaseEntity

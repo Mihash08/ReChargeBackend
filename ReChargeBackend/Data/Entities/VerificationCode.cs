@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackendReCharge.Data.Entities
+namespace Data.Entities
 {
     [Table("verification_code")]
     public class VerificationCode : BaseEntity
@@ -15,6 +15,8 @@ namespace BackendReCharge.Data.Entities
         public string PhoneNumber { get; set; }
         [Column("code")]
         public string Code { get; set; }
+        [Column("session_id")]
+        public string SessionId { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using Microsoft.Extensions.Configuration;
-using BackendReCharge.Data.Entities;
+using Data.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;

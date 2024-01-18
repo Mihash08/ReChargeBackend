@@ -1,4 +1,4 @@
-﻿using BackendReCharge.Data.Entities;
+﻿using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendReCharge.Controllers
