@@ -41,18 +41,20 @@ namespace BackendReCharge.Controllers
             //TODO: IMPLEMENT PROPER NUMBER CHECKING
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
             {
+                //TODO: this genId is temporary
+                var sessionId = Temp.GenerateSessionId();
                 verificationCodeRepository.Add(new VerificationCode()
                 {
                     //TODO: this gencode is temporary
                     Code = Temp.GenerateCode(),
                     PhoneNumber = info.phoneNumber,
-                    SessionId = info.sessionId,
+                    SessionId = sessionId,
                 });
                 return new PhoneAuthResponse()
                 {
                     isSuccess = true,
                     //TODO: idk how session ids work...
-                    sessionId = info.sessionId,
+                    sessionId = sessionId,
                     titleText = "Введите код, полученный на " + info.phoneNumber,
                     codeSize = 4,
                     conditionalInfo = new ConditionalInfoResponse()

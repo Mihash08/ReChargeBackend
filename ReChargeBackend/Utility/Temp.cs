@@ -16,5 +16,10 @@
         {
             return "12345";
         }
+        //TODO: this is temporary, remove it later
+        public static string GenerateSessionId()
+        {
+            return "12345";
+        }
     }
 }
