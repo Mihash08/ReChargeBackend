@@ -58,7 +58,8 @@ namespace ReChargeBackend.Migrations
                     surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -73,7 +74,8 @@ namespace ReChargeBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    session_id = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    session_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    creation_datetime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

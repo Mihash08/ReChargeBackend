@@ -6,6 +6,8 @@ using Data.Interfaces;
 using SportsStore.Data.Interfaces;
 using ReChargeBackend.Utility;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authorization;
+using Utility;
 
 namespace BackendReCharge.Controllers
 {
@@ -23,104 +25,72 @@ namespace BackendReCharge.Controllers
 
         private readonly ILogger<UserController> _logger;
 
-        [HttpGet(Name = "GetUsers")]
-        public IEnumerable<User> GetUsers()
-        {
-            return userRepository.GetAll();
-        }
-
         [HttpGet(Name = "GetUser")]
-        public User GetUser(int id)
+        public GetUserInfoResponse GetUser(int id, string accessToken)
         {
-            return userRepository.GetById(id);
-        }
-
-        [HttpPost(Name = "AuthPhone")]
-        public PhoneAuthResponse AuthPhone([FromBody] PhoneAuthRequest info)
-        {
-            //TODO: IMPLEMENT PROPER NUMBER CHECKING
-            if (Temp.IsPhoneNumberValid(info.phoneNumber))
+            var user = userRepository.GetById(id);
+            if (user is null || user.AccessHash is null)
             {
-                //TODO: this genId is temporary
-                var sessionId = Temp.GenerateSessionId();
-                verificationCodeRepository.Add(new VerificationCode()
+                return new GetUserInfoResponse()
                 {
-                    //TODO: this gencode is temporary
-                    Code = Temp.GenerateCode(),
-                    PhoneNumber = info.phoneNumber,
-                    SessionId = sessionId,
-                });
-                return new PhoneAuthResponse()
-                {
-                    isSuccess = true,
-                    //TODO: idk how session ids work...
-                    sessionId = sessionId,
-                    titleText = "Введите код, полученный на " + info.phoneNumber,
-                    codeSize = 4,
-                    conditionalInfo = new ConditionalInfoResponse()
-                    {
-                        //TODO: Part of the text is supposed to be a link. How is this going to be implemented?
-                        message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
-                        url = "google.com"
-                    }
-
+                    UserId = -1,
                 };
             }
-
-            return new PhoneAuthResponse()
+            if (Hasher.Verify(accessToken, user.AccessHash))
             {
-                isSuccess = false,
-            };
-        }
-        [HttpGet(Name = "GetConditionalInfo")]
-        public ConditionalInfoResponse GetConditionalInfo()
-        {
-            return new ConditionalInfoResponse()
-            {
-                message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
-                url = "google.com"
-            };
-        }
-        [HttpPost(Name = "Auth")]
-        public AuthResponse Auth([FromBody] AuthRequest info)
-        {
-            try
-            {
-                var session = verificationCodeRepository.GetBySession(info.sessionId);
-                if (session.Code == info.code)
+                return new GetUserInfoResponse()
                 {
-                    userRepository.Add(new User()
-                    {
-                        PhoneNumber = info.phoneNumber
-                    });
-                    return new AuthResponse()
-                    {
-                        isSuccess = true,
-                        //TODO: this is a placeholder, replace with actual accessToken
-                        accessToken = "",
-                    };
-                }
-                return new AuthResponse()
-                {
-                    isSuccess = false,
-                    message = "Wrong code"
+                    UserId = user.Id,
+                    FirstName = user.Name,
+                    LastName = user.Surname,
+                    Phone = user.PhoneNumber,
+                    Email = user.Email,
+                    BirthDay = user.BirthDate,
+                    Gender = user.Gender,
                 };
-            } catch (ArgumentException e)
-            {
-                Console.WriteLine(e);
-                Console.WriteLine(e.Message);
             }
-            return new AuthResponse()
+            return new GetUserInfoResponse()
             {
-                isSuccess = false,
-                message = "Session error"
+                UserId = -1,
             };
-
         }
+
         [HttpGet(Name = "GetUserByNumber")]
         public User GetUserByNumber(string number)
         {
             return userRepository.GetByNumber(number);
+        }
+
+        [HttpPost(Name = "UpdateUser")]
+        public bool UpdateUser(UpdateUserInfoRequest request)
+        {
+            var user = userRepository.GetById(request.UserId);
+            if (user == null)
+            {
+                return false;
+            }
+            if (!Hasher.Verify(request.accessToken, user.AccessHash))
+            {
+                return false;
+            }
+            try
+            {
+                userRepository.Update(new User()
+                {
+                    BirthDate = request.BirthDay,
+                    Email = request.Email,
+                    Id = request.UserId,
+                    Name = request.FirstName,
+                    PhoneNumber = request.Phone,
+                    Surname = request.LastName,
+                    ImageUrl = request.ImageURL
+                });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
 

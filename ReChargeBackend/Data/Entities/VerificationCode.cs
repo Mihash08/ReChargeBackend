@@ -17,6 +17,8 @@ namespace Data.Entities
         public string Code { get; set; }
         [Column("session_id")]
         public string SessionId { get; set; }
+        [Column("creation_datetime")]
+        public DateTime CreationDateTime { get; set; }
 
     }
 }

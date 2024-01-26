@@ -60,22 +60,21 @@ namespace Data.Repositories
             return dbSet.ToList();
         }
 
-        public User GetById(int id)
+        public User? GetById(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
-            if (entity == null)
+            try
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                var entity = dbSet.First(x => x.Id == id);
+                return entity;
             }
-            return entity;
+            catch (Exception e)
+            {
+                return null;
+            }
         }
-        public User GetByNumber(string number)
+        public User? GetByNumber(string number)
         {
             var entity = dbSet.FirstOrDefault(x => x.PhoneNumber == number);
-            if (entity == null)
-            {
-                throw new ArgumentException("Number not found", nameof(number));
-            }
             return entity;
         }
         public User Update(User entity)
@@ -93,8 +92,8 @@ namespace Data.Repositories
             existingEntity.Email = entity.Email;
             existingEntity.Name = entity.Name;
             existingEntity.PhoneNumber = entity.PhoneNumber;
-            existingEntity.Reservations = entity.Reservations;
             existingEntity.Surname = entity.Surname;
+            existingEntity.Gender = entity.Gender;
             return existingEntity;
         }
     }

@@ -21,15 +21,23 @@ namespace Data.Entities
         public DateTime? BirthDate { get; set; }
         [Column("phone_number")]
         public string PhoneNumber { get; set; }
-
+        [Column("image_url")]
+        public string? ImageUrl { get; set; }
+        [Column("access_hash")]
+        public string? AccessHash {  get; set; }
+        [Column("gender")]
+        public string? Gender {  get; set; }
         public virtual IList<Reservation>? Reservations { get; set; }
-        public User(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber) : base()
+        public User(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber, string? imageUrl, string? accessHash, string? gender) : base()
         {
             Name = name;
             Surname = surname;
             Email = email;
             BirthDate = birthDate;
             PhoneNumber = phoneNumber;
+            ImageUrl = imageUrl;
+            AccessHash = accessHash;
+            Gender = gender;
         }
         public User() : base()
         {

@@ -5,6 +5,6 @@ namespace SportsStore.Data.Interfaces
 {
     public interface IUserRepository :IRepository<User>
     {
-        User GetByNumber(string number);
+        User? GetByNumber(string number);
     }
 }

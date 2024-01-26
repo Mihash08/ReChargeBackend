@@ -1,4 +1,6 @@
-﻿namespace ReChargeBackend.Utility
+﻿using System.Security.Cryptography;
+
+namespace ReChargeBackend.Utility
 {
     public static class Temp
     {
@@ -20,6 +22,17 @@
         public static string GenerateSessionId()
         {
             return "12345";
+        }
+
+
+        private static Random random = new Random();
+
+        public static string GenerateAccessToken()
+        {
+            int length = 7;
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[RandomNumberGenerator.GetInt32(s.Length)]).ToArray());
         }
     }
 }

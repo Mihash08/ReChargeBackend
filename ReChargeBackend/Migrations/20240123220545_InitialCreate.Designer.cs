@@ -12,7 +12,7 @@ using SportsStore.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240118005547_InitialCreate")]
+    [Migration("20240123220545_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -245,6 +245,10 @@ namespace ReChargeBackend.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("email");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -277,6 +281,10 @@ namespace ReChargeBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("code");
+
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("creation_datetime");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

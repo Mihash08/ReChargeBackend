@@ -3,12 +3,18 @@ using SportsStore.Data;
 using Data.Interfaces;
 using Data.Repositories;
 using SportsStore.Data.Interfaces;
+using ReChargeBackend.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppIdentityDbContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Identity")));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -29,6 +35,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 
