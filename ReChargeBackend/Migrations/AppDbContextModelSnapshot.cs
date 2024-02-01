@@ -53,6 +53,11 @@ namespace ReChargeBackend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("category_id");
 
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
+
                     b.Property<int>("LocationId")
                         .HasColumnType("int")
                         .HasColumnName("location_id");
@@ -209,6 +214,10 @@ namespace ReChargeBackend.Migrations
                     b.Property<int>("FreePlaces")
                         .HasColumnType("int")
                         .HasColumnName("free_places");
+
+                    b.Property<int>("LengthMinutes")
+                        .HasColumnType("int")
+                        .HasColumnName("length_minutes");
 
                     b.Property<int>("Price")
                         .HasColumnType("int")

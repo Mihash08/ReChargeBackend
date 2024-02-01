@@ -35,11 +35,9 @@ namespace BackendReCharge.Controllers
             //TODO: IMPLEMENT PROPER NUMBER CHECKING
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
             {
-                //TODO: this genId is temporary
                 var sessionId = Temp.GenerateSessionId();
                 verificationCodeRepository.Add(new VerificationCode()
                 {
-                    //TODO: this gencode is temporary
                     Code = Temp.GenerateCode(),
                     PhoneNumber = info.phoneNumber,
                     SessionId = sessionId,
@@ -53,7 +51,6 @@ namespace BackendReCharge.Controllers
                     codeSize = 4,
                     conditionalInfo = new ConditionalInfoResponse()
                     {
-                        //TODO: Part of the text is supposed to be a link. How is this going to be implemented?
                         message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
                         url = "google.com"
                     }
@@ -82,7 +79,6 @@ namespace BackendReCharge.Controllers
         {
             try
             {
-                //TODO: Check creation time
                 var session = verificationCodeRepository.GetBySession(info.sessionId);
                 if (session.Code == info.code)
                 {
@@ -90,6 +86,14 @@ namespace BackendReCharge.Controllers
                     string accessToken = Temp.GenerateAccessToken();
                     if (user is null)
                     {
+                        if (DateTime.Now - session.CreationDateTime < new TimeSpan(0, 5, 0))
+                        {
+                            return new AuthResponse()
+                            {
+                                statusCode = StatusCodes.Status419AuthenticationTimeout,
+                                statusMessage = "Code expired"
+                            };
+                        }
                         userRepository.Add(new User()
                         {
                             PhoneNumber = info.phoneNumber,
@@ -117,15 +121,15 @@ namespace BackendReCharge.Controllers
 
                     return new AuthResponse()
                     {
-                        isSuccess = true,
+                        statusCode = StatusCodes.Status200OK,
 
                         accessToken = accessToken,
                     };
                 }
                 return new AuthResponse()
                 {
-                    isSuccess = false,
-                    message = "Wrong code"
+                    statusCode = StatusCodes.Status406NotAcceptable,
+                    statusMessage = "Wrong code"
                 };
             } catch (ArgumentException e)
             {
@@ -134,8 +138,8 @@ namespace BackendReCharge.Controllers
             }
             return new AuthResponse()
             {
-                isSuccess = false,
-                message = "Session error"
+                statusCode = StatusCodes.Status404NotFound,
+                statusMessage = "Session not found"
             };
 
         }

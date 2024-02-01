@@ -2,8 +2,8 @@
 {
     public class AuthResponse
     {
-        public bool isSuccess {  get; set; }
+        public int statusCode {  get; set; }
+        public string? statusMessage { get; set; }
         public string? accessToken { get; set; }
-        public string? message { get; set; }
     }
 }

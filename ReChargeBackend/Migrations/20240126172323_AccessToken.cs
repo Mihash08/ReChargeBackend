@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AccessToken : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,7 +59,9 @@ namespace ReChargeBackend.Migrations
                     email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    access_hash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -95,7 +97,8 @@ namespace ReChargeBackend.Migrations
                     activity_admin_tg = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     activity_admin_wa = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     warning_text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    should_display_warning = table.Column<bool>(type: "bit", nullable: false)
+                    should_display_warning = table.Column<bool>(type: "bit", nullable: false),
+                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

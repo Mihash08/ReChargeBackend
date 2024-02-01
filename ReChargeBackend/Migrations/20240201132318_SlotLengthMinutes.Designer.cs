@@ -12,8 +12,8 @@ using SportsStore.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240123220545_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240201132318_SlotLengthMinutes")]
+    partial class SlotLengthMinutes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,11 @@ namespace ReChargeBackend.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasColumnName("category_id");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int")
@@ -213,6 +218,10 @@ namespace ReChargeBackend.Migrations
                         .HasColumnType("int")
                         .HasColumnName("free_places");
 
+                    b.Property<int>("LengthMinutes")
+                        .HasColumnType("int")
+                        .HasColumnName("length_minutes");
+
                     b.Property<int>("Price")
                         .HasColumnType("int")
                         .HasColumnName("print");
@@ -237,6 +246,10 @@ namespace ReChargeBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AccessHash")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("access_hash");
+
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("birthdate");
@@ -244,6 +257,10 @@ namespace ReChargeBackend.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("email");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("gender");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)")

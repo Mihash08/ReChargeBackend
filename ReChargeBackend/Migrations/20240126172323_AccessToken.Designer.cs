@@ -12,7 +12,7 @@ using SportsStore.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240124230650_AccessToken")]
+    [Migration("20240126172323_AccessToken")]
     partial class AccessToken
     {
         /// <inheritdoc />
@@ -55,6 +55,11 @@ namespace ReChargeBackend.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int")
                         .HasColumnName("category_id");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int")

@@ -22,7 +22,8 @@ namespace Data.Entities
 
         [Column("free_places")]
         public int FreePlaces { get; set; }
-
+        [Column("length_minutes")]
+        public int LengthMinutes { get; set; }
         public Activity Activity { get; set; }
 
     }

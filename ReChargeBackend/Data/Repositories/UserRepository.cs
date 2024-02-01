@@ -69,9 +69,12 @@ namespace Data.Repositories
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
                 return null;
             }
         }
+
         public User? GetByNumber(string number)
         {
             var entity = dbSet.FirstOrDefault(x => x.PhoneNumber == number);
@@ -92,7 +95,7 @@ namespace Data.Repositories
             existingEntity.Email = entity.Email;
             existingEntity.Name = entity.Name;
             existingEntity.PhoneNumber = entity.PhoneNumber;
-            existingEntity.Surname = entity.Surname;
+            existingEntity.Surname = entity.Surname;    
             existingEntity.Gender = entity.Gender;
             return existingEntity;
         }

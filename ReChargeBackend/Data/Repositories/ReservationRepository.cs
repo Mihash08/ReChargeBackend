@@ -87,5 +87,16 @@ namespace Data.Repositories
             existingEntity.UserId = entity.UserId;
             return existingEntity;
         }
+
+
+        public Reservation? GetNextReservation(int userId)
+        {
+            var reservations = dbSet.Where(x => x.UserId == userId && !x.IsOver);
+            if (reservations == null || reservations.Count() < 1)
+            {
+                return null;
+            }
+            return reservations.OrderBy(x => x.Slot.SlotDateTime).ToList()[0];
+        }
     }
 }

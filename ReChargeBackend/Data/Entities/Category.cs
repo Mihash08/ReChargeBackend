@@ -15,8 +15,6 @@ namespace Data.Entities
         public string Name { get; set; }
         [Column("image")]
         public string? Image { get; set; }
-
-        //TODO: Add products list
         public Category(string name) : base()
         {
             Name = name;

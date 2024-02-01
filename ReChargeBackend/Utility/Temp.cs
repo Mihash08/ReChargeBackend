@@ -13,15 +13,19 @@ namespace ReChargeBackend.Utility
             }
             return true;
         }
-        //TODO: this is temporary, remove it later
         public static string GenerateCode()
         {
-            return "12345";
+            int length = 5;
+            const string chars = "0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[RandomNumberGenerator.GetInt32(s.Length)]).ToArray());
         }
-        //TODO: this is temporary, remove it later
         public static string GenerateSessionId()
         {
-            return "12345";
+            int length = 8;
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[RandomNumberGenerator.GetInt32(s.Length)]).ToArray());
         }
 
 

@@ -29,15 +29,12 @@ namespace Data.Entities
         public string? WarningText { get; set; }
         [Column("should_display_warning")]
         public bool ShouldDisplayWarning { get; set; }
-        [Column("date_time")]
-
+        [Column("image_url")]
+        public string ImageUrl { get; set; }
         public Location Location { get; set; }
         public Category Category { get; set; }
 
-
-
-        //TODO: add slots list
-        //public virtual IList<OrderDetail>? OrderDetails { get; set; }
+        public IList<Slot>? Slots { get; set; }
 
     }
 }
