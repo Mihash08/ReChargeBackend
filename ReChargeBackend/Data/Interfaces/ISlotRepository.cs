@@ -6,5 +6,6 @@ namespace Data.Interfaces
 {
     public interface ISlotRepository : IRepository<Slot>
     {
+        IEnumerable<Slot> GetAllByActivityId(int activityId);
     }
 }

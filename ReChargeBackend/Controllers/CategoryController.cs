@@ -7,6 +7,7 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
+        //TODO: добавь категории вместо мока
         List<Category> categories = new List<Category>()
             {
                 new Category("Бокс") {Id = 1},

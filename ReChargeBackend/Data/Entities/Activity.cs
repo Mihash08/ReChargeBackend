@@ -31,6 +31,8 @@ namespace Data.Entities
         public bool ShouldDisplayWarning { get; set; }
         [Column("image_url")]
         public string ImageUrl { get; set; }
+        [Column("cancelation_message")]
+        public string? CancelationMessage {  get; set; }
         public Location Location { get; set; }
         public Category Category { get; set; }
 

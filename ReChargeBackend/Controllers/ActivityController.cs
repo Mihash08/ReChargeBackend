@@ -1,5 +1,7 @@
 ﻿using Data.Entities;
+using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ReChargeBackend.Responses;
 
 namespace BackendReCharge.Controllers
 {
@@ -7,6 +9,7 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class ActivityController : ControllerBase
     {
+        private readonly IActivityRepository activityRepository;
         List<Activity> acts = new List<Activity>()
             {
                 new Activity() {
@@ -85,9 +88,10 @@ namespace BackendReCharge.Controllers
             };
         private readonly ILogger<ActivityController> _logger;
 
-        public ActivityController(ILogger<ActivityController> logger)
+        public ActivityController(ILogger<ActivityController> logger, IActivityRepository activityRepository)
         {
             _logger = logger;
+            this.activityRepository = activityRepository;
         }
 
         [HttpGet(Name = "GetActivities")]
@@ -100,6 +104,36 @@ namespace BackendReCharge.Controllers
         {
 
             return acts.Where(x => x.Id == id).First();
+        }
+        [HttpGet(Name = "GetActivityView")]
+        public GetActivityViewResponse GetActivityView(int id)
+        {
+            var act = activityRepository.GetById(id);
+            if (act is null)
+            {
+                return new GetActivityViewResponse
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    StatusMessage = "Activity not found"
+                };
+            }
+            return new GetActivityViewResponse
+            {
+                StatusCode = StatusCodes.Status200OK,
+                ActivityId = act.Id,
+                ActivityName = act.ActivityName,
+                AdminPhoneWA = act.ActivityAdminWa,
+                AdminTgUsername = act.ActivityAdminTg,
+                CancellationMessage = act.CancelationMessage,
+                Coordinates = new Coordinates
+                {
+                    Latitude = act.Location.AddressLatitude,
+                    Longitude = act.Location.AddressLongitude
+                },
+                ImageURL = act.ImageUrl,
+                LocationAddress = act.Location.AddressCity + ", " + act.Location.AddressStreet + ", " + act.Location.AddressBuildingNumber,
+                ActivityDescription = act.ActivityDescription
+            };
         }
         [HttpGet(Name = "GetActivitiesByCategory")]
         public Activity GetActivityByCategory(int categoryId)

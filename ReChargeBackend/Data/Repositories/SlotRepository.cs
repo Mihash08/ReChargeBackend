@@ -59,12 +59,17 @@ namespace Data.Repositories
             return dbSet.ToList();
         }
 
-        public Slot GetById(int id)
+        public IEnumerable<Slot> GetAllByActivityId(int activityId)
+        {
+            return dbSet.Where(x => x.ActivityId == activityId).ToList();
+        }
+
+        public Slot? GetById(int id)
         {
             var entity = dbSet.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return null;
             }
             return entity;
         }

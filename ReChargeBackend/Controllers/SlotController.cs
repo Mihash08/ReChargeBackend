@@ -1,5 +1,8 @@
 ﻿using Data.Entities;
+using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using ReChargeBackend.Requests;
+using ReChargeBackend.Responses;
 
 namespace BackendReCharge.Controllers
 {
@@ -7,6 +10,9 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class SlotController : ControllerBase
     {
+        //TODO: убери мок данных
+        //TODO: сделай полный подсос данных
+        private readonly ISlotRepository slotRepository;
         List<Slot> slots = new List<Slot>()
             {
                 new Slot()
@@ -102,9 +108,10 @@ namespace BackendReCharge.Controllers
             };
         private readonly ILogger<SlotController> _logger;
 
-        public SlotController(ILogger<SlotController> logger)
+        public SlotController(ILogger<SlotController> logger, ISlotRepository slotRepository)
         {
             _logger = logger;
+            this.slotRepository = slotRepository;
         }
 
         [HttpGet(Name = "GetSlots")]
@@ -116,6 +123,34 @@ namespace BackendReCharge.Controllers
         public Slot GetSlot(int id)
         {
             return slots.Where(x => x.Id == id).First();
+        }
+        [HttpGet(Name = "GetActivityViewSlots")]
+        public GetActivityViewSlotsResponse GetActivityViewSlots(int activityId, DateTime Date)
+        {
+            var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date == Date.Date);
+            return new GetActivityViewSlotsResponse
+            {
+                Slots = slots.Select(x => new SlotView { DurationMinutes = x.LengthMinutes, Price = x.Price, SlotId = x.Id, StartTime = x.SlotDateTime}).ToArray(),
+                StatusCode = StatusCodes.Status200OK,
+            };
+        }
+        [HttpGet(Name = "GetSlotFreeSpots")]
+        public GetSlotFreeSpotsResponse GetSlotFreeSpots(int id)
+        {
+            var slot = slotRepository.GetById(id);
+            if (slot == null)
+            {
+                return new GetSlotFreeSpotsResponse
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    StatusMessage = "Slot not found"
+                };
+            }
+            return new GetSlotFreeSpotsResponse
+            {
+                StatusCode = StatusCodes.Status200OK,
+                FreeSpots = slot.FreePlaces
+            };
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Data.Interfaces
     {
         IEnumerable<TEntity> GetAll();
 
-        TEntity GetById(int id);
+        TEntity? GetById(int id);
 
         TEntity Add(TEntity entity);
 

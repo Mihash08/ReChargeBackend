@@ -59,12 +59,12 @@ namespace Data.Repositories
             return dbSet.ToList();
         }
 
-        public Activity GetById(int id)
+        public Activity? GetById(int id)
         {
             var entity = dbSet.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return null;
             }
             return entity;
         }

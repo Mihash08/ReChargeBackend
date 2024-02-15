@@ -59,7 +59,7 @@ namespace Data.Repositories
             return dbSet.ToList();
         }
 
-        public Category GetById(int id)
+        public Category? GetById(int id)
         {
             var entity = dbSet.FirstOrDefault(x => x.Id == id);
             if (entity == null)
