@@ -56,12 +56,12 @@ namespace Data.Repositories
 
         public IEnumerable<Activity> GetAll()
         {
-            return dbSet.ToList();
+            return dbSet.Include(x => x.Slots).ToList();
         }
 
         public Activity? GetById(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = dbSet.Include(x => x.Slots).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -75,7 +75,7 @@ namespace Data.Repositories
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = dbSet.Include(x => x.Slots).FirstOrDefault(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");

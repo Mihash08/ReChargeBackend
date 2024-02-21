@@ -57,14 +57,14 @@ namespace Data.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            return dbSet.ToList();
+            return dbSet.Include(x => x.Reservations).ToList();
         }
 
         public User? GetById(int id)
         {
             try
             {
-                var entity = dbSet.First(x => x.Id == id);
+                var entity = dbSet.Include(x => x.Reservations).First(x => x.Id == id);
                 return entity;
             }
             catch (Exception e)
@@ -77,7 +77,7 @@ namespace Data.Repositories
 
         public User? GetByNumber(string number)
         {
-            var entity = dbSet.FirstOrDefault(x => x.PhoneNumber == number);
+            var entity = dbSet.Include(x => x.Reservations).FirstOrDefault(x => x.PhoneNumber == number);
             return entity;
         }
         public User Update(User entity)

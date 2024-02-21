@@ -10,6 +10,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Data.Repositories
 {
@@ -56,22 +57,27 @@ namespace Data.Repositories
 
         public IEnumerable<Slot> GetAll()
         {
-            return dbSet.ToList();
+            return dbSet.Include(x => x.Activity).ToList();
         }
 
         public IEnumerable<Slot> GetAllByActivityId(int activityId)
         {
-            return dbSet.Where(x => x.ActivityId == activityId).ToList();
+            return dbSet.Include(x => x.Activity).Where(x => x.ActivityId == activityId).ToList();
         }
 
         public Slot? GetById(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = dbSet.Include(x => x.Activity).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return null;
             }
             return entity;
+        }
+
+        public IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime)
+        {
+            return dbSet.Where(x => x.ActivityId == activityId && x.SlotDateTime > dateTime && x.SlotDateTime.Date == dateTime.Date);
         }
 
         public Slot Update(Slot entity)

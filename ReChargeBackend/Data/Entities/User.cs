@@ -27,7 +27,7 @@ namespace Data.Entities
         public string? AccessHash {  get; set; }
         [Column("gender")]
         public string? Gender {  get; set; }
-        public virtual IList<Reservation>? Reservations { get; set; }
+        public IList<Reservation>? Reservations { get; set; }
         public User(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber, string? imageUrl, string? accessHash, string? gender) : base()
         {
             Name = name;

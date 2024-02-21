@@ -1,5 +1,7 @@
 ﻿using Data.Entities;
+using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace BackendReCharge.Controllers
 {
@@ -7,31 +9,26 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class CategoryController : ControllerBase
     {
+        private readonly ICategoryRepository categoryRepository;
         //TODO: добавь категории вместо мока
-        List<Category> categories = new List<Category>()
-            {
-                new Category("Бокс") {Id = 1},
-                new Category("Теннис") {Id = 2},
-                new Category("Фитнесс Зал") {Id = 3},
-                new Category("Бассейн") {Id = 4},
-            };
         private readonly ILogger<CategoryController> _logger;
 
-        public CategoryController(ILogger<CategoryController> logger)
+        public CategoryController(ILogger<CategoryController> logger, ICategoryRepository categoryRepository)
         {
             _logger = logger;
+            this.categoryRepository = categoryRepository;
         }
 
         [HttpGet(Name = "GetCategories")]
         public IEnumerable<Category> GetCategories()
         {
-            return categories;
+            return categoryRepository.GetAll();
         }
 
         [HttpGet(Name = "GetCategory")]
         public Category GetCategory(int id)
         {
-            return categories.Where(x => x.Id == id).First();
+            return categoryRepository.GetById(id);
         }
     }
 }

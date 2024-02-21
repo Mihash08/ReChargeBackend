@@ -45,7 +45,7 @@ namespace Data.Repositories
 
         public void DeleteById(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
@@ -56,12 +56,12 @@ namespace Data.Repositories
 
         public IEnumerable<Reservation> GetAll()
         {
-            return dbSet.ToList();
+            return dbSet.Include(x => x.User).Include(x => x.Slot).ToList();
         }
 
         public Reservation GetById(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
@@ -75,7 +75,7 @@ namespace Data.Repositories
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
@@ -91,7 +91,7 @@ namespace Data.Repositories
 
         public Reservation? GetNextReservation(int userId)
         {
-            var reservations = dbSet.Where(x => x.UserId == userId && !x.IsOver);
+            var reservations = dbSet.Include(x => x.User).Include(x => x.Slot).Where(x => x.UserId == userId && !x.IsOver);
             if (reservations == null || reservations.Count() < 1)
             {
                 return null;
