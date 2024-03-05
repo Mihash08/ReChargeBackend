@@ -59,6 +59,11 @@ namespace Data.Repositories
             return dbSet.Include(x => x.Slots).ToList();
         }
 
+        public IEnumerable<Activity> GetByCategory(int categoryId)
+        {
+            return dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Slots).ToList();
+        }
+
         public Activity? GetById(int id)
         {
             var entity = dbSet.Include(x => x.Slots).FirstOrDefault(x => x.Id == id);

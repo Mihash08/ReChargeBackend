@@ -10,5 +10,7 @@ namespace Data.Interfaces
         //Task<IEnumerable<Activity>> GetAllWithDetailsAsync();
 
         //Task<Activity> GetByIdWithDetailsAsync(int id);
+
+        public IEnumerable<Activity> GetByCategory(int categoryId);
     }
 }
