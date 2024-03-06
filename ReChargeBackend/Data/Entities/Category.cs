@@ -15,9 +15,5 @@ namespace Data.Entities
         public string Name { get; set; }
         [Column("image")]
         public string? Image { get; set; }
-        public Category(string name) : base()
-        {
-            Name = name;
-        }
     }
 }

@@ -5,6 +5,7 @@ using Data.Repositories;
 using SportsStore.Data.Interfaces;
 using ReChargeBackend.Data;
 using Microsoft.AspNetCore.Identity;
+using Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
+builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 
 var app = builder.Build();
 
@@ -38,5 +40,7 @@ app.UseAuthorization();
 app.UseAuthentication();
 
 app.MapControllers();
+
+TestSeedData.EnsurePopulated(app);
 
 app.Run();

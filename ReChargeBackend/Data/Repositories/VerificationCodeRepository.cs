@@ -94,6 +94,8 @@ namespace Data.Repositories
             existingEntity.Code = entity.Code;
             existingEntity.PhoneNumber = entity.PhoneNumber;
             existingEntity.SessionId = entity.SessionId;
+            //todo: add saveChanges everywhere
+            context.SaveChanges();
             return existingEntity;
         }
     }

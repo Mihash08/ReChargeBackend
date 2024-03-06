@@ -10,6 +10,7 @@ namespace BackendReCharge.Controllers
     public class ActivityController : ControllerBase
     {
         private readonly IActivityRepository activityRepository;
+        private readonly ISlotRepository slotRepository;
         //List<Activity> acts = new List<Activity>()
         //    {
         //        new Activity() {
@@ -94,10 +95,20 @@ namespace BackendReCharge.Controllers
             this.activityRepository = activityRepository;
         }
 
-        [HttpGet(Name = "GetActivities")]
-        public IEnumerable<Activity> GetActivities()
+        [HttpGet]
+        public IActionResult GetActivitiesRecommendations(int category_id = -1)
         {
-            return activityRepository.GetAll();
+            try
+            {
+                //todo: test this slots might be empty
+                var acts = activityRepository.GetByCategory(category_id);
+
+                return Ok(acts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet(Name = "GetActivity")]
         public GetActivityIdResponse GetActivity(int id)

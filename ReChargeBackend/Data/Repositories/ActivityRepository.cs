@@ -61,6 +61,10 @@ namespace Data.Repositories
 
         public IEnumerable<Activity> GetByCategory(int categoryId)
         {
+            if (categoryId == -1)
+            {
+                return dbSet.Include(x => x.Slots).ToList();
+            }
             return dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Slots).ToList();
         }
 
