@@ -98,6 +98,7 @@ namespace BackendReCharge.Controllers
         [HttpGet]
         public IActionResult GetActivitiesRecommendations(int category_id = -1)
         {
+            //todo: нужны name, imageUrl, startPrice, locationName, addressString, coordinates
             try
             {
                 //todo: test this slots might be empty
@@ -110,7 +111,7 @@ namespace BackendReCharge.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet(Name = "GetActivity")]
+        [HttpGet(Name = "GetActivityTest")]
         public GetActivityIdResponse GetActivity(int id)
         {
             var act = activityRepository.GetById(id);
@@ -129,9 +130,15 @@ namespace BackendReCharge.Controllers
 
             };
         }
+        [HttpGet(Name = "GetNextActivity")]
+        public IActionResult GetNextActivity()
+        {
+            return null;
+        }
         [HttpGet(Name = "GetActivityView")]
         public GetActivityViewResponse GetActivityView(int id)
         {
+            //todo: смотри фигму экран 
             var act = activityRepository.GetById(id);
             if (act is null)
             {
