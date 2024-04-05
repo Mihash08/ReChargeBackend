@@ -26,6 +26,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
 var host = builder.Build();
