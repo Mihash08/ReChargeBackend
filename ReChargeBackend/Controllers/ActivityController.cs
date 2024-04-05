@@ -98,13 +98,25 @@ namespace BackendReCharge.Controllers
         [HttpGet]
         public IActionResult GetActivitiesRecommendations(int category_id = -1)
         {
-            //todo: нужны name, imageUrl, startPrice, locationName, addressString, coordinates
             try
             {
-                //todo: test this slots might be empty
                 var acts = activityRepository.GetByCategory(category_id);
+                if (acts == null || !acts.Any())
+                {
+                    // Handle case when no activities are found
+                    return NotFound();
+                }
 
-                return Ok(acts);
+                var list = acts.Select(x => new GetActivitiesRecommendationsResponse
+                {
+                    Name = x.ActivityName ?? "Unknown",
+                    AddressString = $"{x.Location?.AddressCity ?? ""} {x.Location?.AddressStreet ?? ""} {x.Location?.AddressBuildingNumber ?? ""}",
+                    imageUrl = x.ImageUrl ?? "",
+                    LocationName = x.Location?.LocationName ?? "Unknown",
+                    StartPrice = x.Slots != null && x.Slots.Any() ? x.Slots.Min(s => s.Price) : 0
+                });
+
+                return Ok(list);
             }
             catch (Exception ex)
             {
@@ -133,12 +145,22 @@ namespace BackendReCharge.Controllers
         [HttpGet(Name = "GetNextActivity")]
         public IActionResult GetNextActivity()
         {
-            return null;
+            //todo: нужны name, imageUrl, locationName, addressString, coordinates, time
+            try
+            {
+                var acts = activityRepository.GetById(2);
+
+                return Ok(acts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet(Name = "GetActivityView")]
         public GetActivityViewResponse GetActivityView(int id)
         {
-            //todo: смотри фигму экран 
+            //todo: смотри фигму экран 6
             var act = activityRepository.GetById(id);
             if (act is null)
             {

@@ -13,7 +13,7 @@ namespace ReChargeBackend.Data
 
             if (context.Database.GetPendingMigrations().Any())
             {
-                context.Database.Migrate();
+                //context.Database.Migrate();
             }
 
             //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location ON");
