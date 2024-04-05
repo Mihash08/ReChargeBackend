@@ -16,7 +16,7 @@ namespace ReChargeBackend.Data
                 context.Database.Migrate();
             }
 
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location ON");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location ON");
             if (!context.Locations.Any())
             {
                 context.Locations.AddRange(
@@ -85,10 +85,10 @@ namespace ReChargeBackend.Data
                 );
             }
             context.SaveChanges();
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location OFF");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location OFF");
 
 
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.category ON");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.category ON");
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
@@ -99,10 +99,10 @@ namespace ReChargeBackend.Data
                 );
             }
             context.SaveChanges();
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.category OFF");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.category OFF");
 
 
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.activity ON");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.activity ON");
             if (!context.Activities.Any())
             {
                 context.Activities.AddRange(
@@ -197,7 +197,7 @@ namespace ReChargeBackend.Data
 
             }
             context.SaveChanges();
-            context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.activity OFF");
+            //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.activity OFF");
 
 
             context.Database.CloseConnection();

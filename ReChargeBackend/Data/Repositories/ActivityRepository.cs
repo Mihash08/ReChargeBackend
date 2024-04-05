@@ -63,9 +63,9 @@ namespace Data.Repositories
         {
             if (categoryId == -1)
             {
-                return dbSet.Include(x => x.Slots).ToList();
+                return dbSet.Include(x => x.Slots).Include(x => x.Category).ToList();
             }
-            return dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Slots).ToList();
+            return dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Category).Include(x => x.Slots).ToList();
         }
 
         public Activity? GetById(int id)

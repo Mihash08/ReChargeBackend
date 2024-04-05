@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class AccessToken : Migration
+    public partial class postgres : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,10 +16,10 @@ namespace ReChargeBackend.Migrations
                 name: "category",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    image = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,19 +30,19 @@ namespace ReChargeBackend.Migrations
                 name: "location",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    location_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    admin_ig = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    admin_wa = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    location_description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address_city = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address_street = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address_building_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address_nearest_metro = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    address_longitude = table.Column<double>(type: "float", nullable: false),
-                    address_latitude = table.Column<double>(type: "float", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    location_name = table.Column<string>(type: "text", nullable: false),
+                    admin_ig = table.Column<string>(type: "text", nullable: false),
+                    admin_wa = table.Column<string>(type: "text", nullable: false),
+                    image = table.Column<string>(type: "text", nullable: true),
+                    location_description = table.Column<string>(type: "text", nullable: false),
+                    address_city = table.Column<string>(type: "text", nullable: false),
+                    address_street = table.Column<string>(type: "text", nullable: false),
+                    address_building_number = table.Column<string>(type: "text", nullable: false),
+                    address_nearest_metro = table.Column<string>(type: "text", nullable: false),
+                    address_longitude = table.Column<double>(type: "double precision", nullable: false),
+                    address_latitude = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,16 +53,16 @@ namespace ReChargeBackend.Migrations
                 name: "user",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    birthdate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    access_hash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    gender = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    surname = table.Column<string>(type: "text", nullable: true),
+                    email = table.Column<string>(type: "text", nullable: true),
+                    birthdate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    phone_number = table.Column<string>(type: "text", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: true),
+                    access_hash = table.Column<string>(type: "text", nullable: true),
+                    gender = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,12 +73,12 @@ namespace ReChargeBackend.Migrations
                 name: "verification_code",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    phone_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    session_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    creation_datetime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    phone_number = table.Column<string>(type: "text", nullable: false),
+                    code = table.Column<string>(type: "text", nullable: false),
+                    session_id = table.Column<string>(type: "text", nullable: false),
+                    creation_datetime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,17 +89,18 @@ namespace ReChargeBackend.Migrations
                 name: "activity",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    activity_name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    location_id = table.Column<int>(type: "int", nullable: false),
-                    category_id = table.Column<int>(type: "int", nullable: false),
-                    activity_description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    activity_admin_tg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    activity_admin_wa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    warning_text = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    should_display_warning = table.Column<bool>(type: "bit", nullable: false),
-                    image_url = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    activity_name = table.Column<string>(type: "text", nullable: false),
+                    location_id = table.Column<int>(type: "integer", nullable: false),
+                    category_id = table.Column<int>(type: "integer", nullable: false),
+                    activity_description = table.Column<string>(type: "text", nullable: false),
+                    activity_admin_tg = table.Column<string>(type: "text", nullable: true),
+                    activity_admin_wa = table.Column<string>(type: "text", nullable: true),
+                    warning_text = table.Column<string>(type: "text", nullable: true),
+                    should_display_warning = table.Column<bool>(type: "boolean", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: true),
+                    cancelation_message = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,12 +123,13 @@ namespace ReChargeBackend.Migrations
                 name: "slot",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    activity_id = table.Column<int>(type: "int", nullable: false),
-                    date_time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    print = table.Column<int>(type: "int", nullable: false),
-                    free_places = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    activity_id = table.Column<int>(type: "integer", nullable: false),
+                    date_time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    print = table.Column<int>(type: "integer", nullable: false),
+                    free_places = table.Column<int>(type: "integer", nullable: false),
+                    length_minutes = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -143,11 +146,11 @@ namespace ReChargeBackend.Migrations
                 name: "reservation",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    slot_id = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    is_over = table.Column<bool>(type: "bit", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    slot_id = table.Column<int>(type: "integer", nullable: false),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    is_over = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {

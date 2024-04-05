@@ -28,7 +28,7 @@ namespace SportsStore.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=ReChargeDb;Trusted_Connection=True");
+            optionsBuilder.UseNpgsql("Host=db;Database=example;Username=postgres;Password=example");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
