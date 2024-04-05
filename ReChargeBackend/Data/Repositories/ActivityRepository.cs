@@ -2,7 +2,7 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SportsStore.Data;
+using ReCharge.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +70,9 @@ namespace Data.Repositories
 
         public Activity? GetById(int id)
         {
-            var entity = dbSet.Include(x => x.Slots).FirstOrDefault(x => x.Id == id);
+            var entity = dbSet.Include(x => x.Slots).Include(x => x.Location)
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return null;

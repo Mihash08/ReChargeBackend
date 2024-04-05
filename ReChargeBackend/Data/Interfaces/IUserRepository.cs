@@ -1,7 +1,7 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
 
-namespace SportsStore.Data.Interfaces
+namespace ReCharge.Data.Interfaces
 {
     public interface IUserRepository :IRepository<User>
     {

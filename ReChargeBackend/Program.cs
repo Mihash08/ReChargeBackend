@@ -1,17 +1,19 @@
 
 using Microsoft.EntityFrameworkCore;
-using SportsStore.Data;
+using ReCharge.Data;
 using Data.Interfaces;
 using Data.Repositories;
-using SportsStore.Data.Interfaces;
+using ReCharge.Data.Interfaces;
 using ReChargeBackend.Data;
 using Microsoft.AspNetCore.Identity;
 using Data;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -20,29 +22,31 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("ReCharge"));
 });
 
+
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IVerificationCodeRepository, VerificationCodeRepository>();
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 
-var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+var host = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+if (host.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    host.UseSwagger();
+    host.UseSwaggerUI();
 } else
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    host.UseSwagger();
+    host.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+host.UseHttpsRedirection();
 
-app.UseAuthorization();
-app.UseAuthentication();
+host.UseAuthorization();
+host.UseAuthentication();
 
-app.MapControllers();
+host.MapControllers();
 
-TestSeedData.EnsurePopulated(app);
+TestSeedData.EnsurePopulated(host);
 
-app.Run();
+await host.RunAsync();

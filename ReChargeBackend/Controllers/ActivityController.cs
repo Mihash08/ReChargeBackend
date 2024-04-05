@@ -143,14 +143,26 @@ namespace BackendReCharge.Controllers
             };
         }
         [HttpGet(Name = "GetNextActivity")]
-        public IActionResult GetNextActivity()
+        public IActionResult GetNextActivity(string accessToken)
         {
-            //todo: нужны name, imageUrl, locationName, addressString, coordinates, time
+            //todo: this is mock
             try
             {
-                var acts = activityRepository.GetById(2);
-
-                return Ok(acts);
+                var act = activityRepository.GetById(2);
+                var response = new GetNextActivityResponse
+                {
+                    Name = act.ActivityName,
+                    imageUrl = act.ImageUrl,
+                    timeMilliseconds = act.Slots[0].SlotDateTime.ToUniversalTime().Millisecond,
+                    AddressString = $"{act.Location?.AddressCity ?? ""} {act.Location?.AddressStreet ?? ""} {act.Location?.AddressBuildingNumber ?? ""}",
+                    Coordinates = new Coordinates
+                    {
+                        Latitude = act.Location.AddressLatitude,
+                        Longitude = act.Location.AddressLongitude
+                    },
+                    LocationName = act.Location.LocationName
+                };
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -2,7 +2,7 @@
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using SportsStore.Data;
+using ReCharge.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;

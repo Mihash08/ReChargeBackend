@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReChargeBackend.Requests;
 using ReChargeBackend.Responses;
 using Data.Interfaces;
-using SportsStore.Data.Interfaces;
+using ReCharge.Data.Interfaces;
 using ReChargeBackend.Utility;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;

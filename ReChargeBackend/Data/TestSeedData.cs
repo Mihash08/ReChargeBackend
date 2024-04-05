@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SportsStore.Data;
+using ReCharge.Data;
 using Data.Entities;
 
 namespace ReChargeBackend.Data
@@ -15,6 +15,187 @@ namespace ReChargeBackend.Data
             {
                 //context.Database.Migrate();
             }
+
+            if (!context.Slots.Any())
+            {
+                context.Slots.AddRange(
+                      new Slot()
+                      {
+                          ActivityId = 1,
+                          Id = 1,
+                          FreePlaces = 5,
+                          Price = 1500,
+                          SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                      },
+                new Slot()
+                {
+                    ActivityId = 1,
+                    Id = 2,
+                    FreePlaces = 5,
+                    Price = 2000,
+                    SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                },
+                new Slot()
+                {
+                    ActivityId = 1,
+                    Id = 3,
+                    FreePlaces = 5,
+                    Price = 1250,
+                    SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                },
+
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 4,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 5,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 6,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 7,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 8,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 9,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 10,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 11,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 12,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 13,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 14,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 15,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 6,
+                            Id = 16,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 6,
+                            Id = 17,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 6,
+                            Id = 18,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 7,
+                            Id = 19,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 7,
+                            Id = 20,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0)
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 7,
+                            Id = 21,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0)
+                        }
+                    );
+            }
+            context.SaveChanges();
 
             //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location ON");
             if (!context.Locations.Any())
@@ -198,7 +379,6 @@ namespace ReChargeBackend.Data
             }
             context.SaveChanges();
             //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.activity OFF");
-
 
             context.Database.CloseConnection();
         }
