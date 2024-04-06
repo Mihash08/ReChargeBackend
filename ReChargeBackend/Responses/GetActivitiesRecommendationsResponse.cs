@@ -8,6 +8,7 @@
         public int StartPrice { get; set; }
         public string LocationName { get; set; }
         public string AddressString { get; set; }
+        public int Id { get; set; }
 
     }
 }

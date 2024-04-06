@@ -113,7 +113,8 @@ namespace BackendReCharge.Controllers
                     AddressString = $"{x.Location?.AddressCity ?? ""} {x.Location?.AddressStreet ?? ""} {x.Location?.AddressBuildingNumber ?? ""}",
                     imageUrl = x.ImageUrl ?? "",
                     LocationName = x.Location?.LocationName ?? "Unknown",
-                    StartPrice = x.Slots != null && x.Slots.Any() ? x.Slots.Min(s => s.Price) : 0
+                    StartPrice = x.Slots != null && x.Slots.Any() ? x.Slots.Min(s => s.Price) : 0,
+                    Id = x.Id
                 });
 
                 return Ok(list);
