@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
-namespace SportsStore.Data
+namespace ReCharge.Data
 {
     public class AppDbContext : DbContext
     {
