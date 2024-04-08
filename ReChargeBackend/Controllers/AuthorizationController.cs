@@ -30,7 +30,7 @@ namespace BackendReCharge.Controllers
         private readonly ILogger<UserController> _logger;
 
         [HttpPost(Name = "RequestCode")]
-        public PhoneAuthResponse AuthPhone([FromBody] PhoneAuthRequest info)
+        public IActionResult AuthPhone([FromBody] PhoneAuthRequest info)
         {
             //TODO: IMPLEMENT PROPER NUMBER CHECKING
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
@@ -42,40 +42,36 @@ namespace BackendReCharge.Controllers
                     PhoneNumber = info.phoneNumber,
                     SessionId = sessionId,
                 });
-                return new PhoneAuthResponse()
+                return Ok(new PhoneAuthResponse()
                 {
-                    isSuccess = true,
                     //TODO: idk how session ids work...
-                    sessionId = sessionId,
-                    titleText = "Введите код, полученный на " + info.phoneNumber,
-                    codeSize = 4,
-                    conditionalInfo = new ConditionalInfoResponse()
+                    SessionId = sessionId,
+                    TitleText = "Введите код, полученный на " + info.phoneNumber,
+                    CodeSize = 4,
+                    ConditionalInfo = new ConditionalInfoResponse()
                     {
-                        message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
-                        url = "google.com"
+                        Message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
+                        Url = "google.com"
                     }
 
-                };
+                });
             }
 
-            return new PhoneAuthResponse()
-            {
-                isSuccess = false,
-            };
+            return BadRequest("Phone number invalid");
         }
         [HttpGet(Name = "GetConditionalInfo")]
-        public ConditionalInfoResponse GetConditionalInfo()
+        public IActionResult GetConditionalInfo()
         {
-            return new ConditionalInfoResponse()
+            return Ok(new ConditionalInfoResponse()
             {
-                message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
-                url = "google.com"
-            };
+                Message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
+                Url = "google.com"
+            });
         }
 
         [AllowAnonymous]
         [HttpPost(Name = "Auth")]
-        public AuthResponse Auth([FromBody] AuthRequest info)
+        public IActionResult Auth([FromBody] AuthRequest info)
         {
             try
             {
@@ -88,11 +84,7 @@ namespace BackendReCharge.Controllers
                     {
                         if (DateTime.Now - session.CreationDateTime < new TimeSpan(0, 5, 0))
                         {
-                            return new AuthResponse()
-                            {
-                                statusCode = StatusCodes.Status419AuthenticationTimeout,
-                                statusMessage = "Code expired"
-                            };
+                            return BadRequest("Code has expired");
                         }
                         userRepository.Add(new User()
                         {
@@ -119,28 +111,15 @@ namespace BackendReCharge.Controllers
                         identityUser = userManager.Users.FirstOrDefault(x => x.PhoneNumber == info.phoneNumber);
                     }
 
-                    return new AuthResponse()
-                    {
-                        statusCode = StatusCodes.Status200OK,
-
-                        accessToken = accessToken,
-                    };
+                    return Ok(accessToken);
                 }
-                return new AuthResponse()
-                {
-                    statusCode = StatusCodes.Status406NotAcceptable,
-                    statusMessage = "Wrong code"
-                };
+                return BadRequest("Wrong code");
             } catch (ArgumentException e)
             {
                 Console.WriteLine(e);
                 Console.WriteLine(e.Message);
             }
-            return new AuthResponse()
-            {
-                statusCode = StatusCodes.Status404NotFound,
-                statusMessage = "Session not found"
-            };
+            return BadRequest("Seesion not found");
 
         }
 

@@ -114,43 +114,61 @@ namespace BackendReCharge.Controllers
             this.slotRepository = slotRepository;
         }
 
-        [HttpGet(Name = "GetSlots")]
-        public IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime)
+        [HttpGet(Name = "GetSlotsByCategory")]
+        public IActionResult GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime)
         {
-            return slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime);
+            var slots = slotRepository.GetSlotsByCategoryIdAndTime(categoryId, dateTime);
+            List<GetSlotsByCategoryAndDateResponse> resp = slots.Select(x => new GetSlotsByCategoryAndDateResponse
+            {
+                ActivityName = x.Activity.ActivityName,
+                Address = $"{x.Activity.Location.AddressCity} {x.Activity.Location.AddressStreet} {x.Activity.Location.AddressBuildingNumber}",
+                Coordinates = new ReChargeBackend.Utility.Coordinates
+                {
+                    Latitude = x.Activity.Location.AddressLatitude,
+                    Longitude = x.Activity.Location.AddressLongitude
+                },
+                DateTime = x.SlotDateTime,
+                ActivityId = x.ActivityId,
+                ImageUrl = x.Activity.ImageUrl,
+                LengthMinutes = x.LengthMinutes,
+                LocationName = x.Activity.Location.LocationName,
+                Price = x.Price
+            }).ToList();
+
+            return Ok(resp);
         }
-        [HttpGet(Name = "GetSlot")]
+        [HttpGet(Name = "GetSlotsByActivityIdAndTimeTest")]
+        public IActionResult GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
+        {
+            return Ok(slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime));
+        }
+        [HttpGet(Name = "GetSlotTest")]
         public Slot GetSlot(int id)
         {
             return slotRepository.GetById(id);
         }
         [HttpGet(Name = "GetActivityViewSlots")]
-        public GetActivityViewSlotsResponse GetActivityViewSlots(int activityId, DateTime Date)
+        public IActionResult GetActivityViewSlots(int activityId, DateTime Date)
         {
             var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date == Date.Date);
-            return new GetActivityViewSlotsResponse
-            {
-                Slots = slots.Select(x => new SlotView { DurationMinutes = x.LengthMinutes, Price = x.Price, SlotId = x.Id, StartTime = x.SlotDateTime}).ToArray(),
-                StatusCode = StatusCodes.Status200OK,
-            };
+            return Ok(slots.Select(x => 
+                new SlotView { 
+                    DurationMinutes = x.LengthMinutes, 
+                    Price = x.Price, 
+                    SlotId = x.Id, 
+                    StartTime = 
+                    x.SlotDateTime 
+                }).ToArray());
         }
         [HttpGet(Name = "GetSlotFreeSpots")]
-        public GetSlotFreeSpotsResponse GetSlotFreeSpots(int id)
+        public IActionResult GetSlotFreeSpots(int id)
         {
             var slot = slotRepository.GetById(id);
             if (slot == null)
             {
-                return new GetSlotFreeSpotsResponse
-                {
-                    StatusCode = StatusCodes.Status404NotFound,
-                    StatusMessage = "Slot not found"
-                };
+                return NotFound($"Slot with id {id} not found");
             }
-            return new GetSlotFreeSpotsResponse
-            {
-                StatusCode = StatusCodes.Status200OK,
-                FreeSpots = slot.FreePlaces
-            };
+            return Ok(slot.FreePlaces);
         }
     }
 }

@@ -1,5 +1,12 @@
-﻿using Data.Entities;
+﻿using Azure.Core;
+using Data.Entities;
+using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using ReCharge.Data.Interfaces;
+using ReChargeBackend.Responses;
+using ReChargeBackend.Utility;
+using Utility;
 
 namespace BackendReCharge.Controllers
 {
@@ -7,28 +14,66 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class ReservationsController : ControllerBase
     {
-        List<Reservation> reservations = new()
-        {
-            new Reservation {Id = 1, IsOver = false, SlotId= 2, UserId = 1 },
-            new Reservation {Id = 2, IsOver = true, SlotId= 1, UserId = 1 },
-            new Reservation {Id = 3, IsOver = false, SlotId= 4, UserId = 1 },
-        };
+        private IReservationRepository reservationRepository;
+        private IUserRepository userRepository;
         private readonly ILogger<ReservationsController> _logger;
 
-        public ReservationsController(ILogger<ReservationsController> logger)
+        public ReservationsController(ILogger<ReservationsController> logger, IReservationRepository reservationRepository, IUserRepository userRepository)
         {
             _logger = logger;
+            this.reservationRepository = reservationRepository;
+            this.userRepository = userRepository;
         }
 
-        [HttpGet(Name = "GetReservationsByUserId")]
-        public IEnumerable<Reservation> GetReservationsByUserId(int userId)
+        [HttpGet(Name = "GetReservationsByToken")]
+        public IActionResult GetReservationsByToken(string accessToken)
         {
-            return reservations.Where(x => x.UserId == userId);
+            var user = userRepository.GetByAccessToken(accessToken);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+            return Ok(reservationRepository.GetReservationsByUser(user.Id));
         }
         [HttpGet(Name = "GetReservation")]
-        public Reservation GetSlot(int id)
+        public Reservation? GetReservation(int id)
         {
-            return reservations.Where(x => x.Id == id).First();
+            return reservationRepository.GetById(id);
+        }
+
+        [HttpGet(Name = "GetNextReservation")]
+        public IActionResult GetNextReservation(string accessToken)
+        {
+
+            var user = userRepository.GetByAccessToken(accessToken);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+
+            var res = reservationRepository.GetNextReservation(user.Id);
+            if (res is null)
+            {
+                return Ok();
+            }
+
+            var response = new GetNextReservationResponse
+            {
+                Name = res.Slot.Activity.ActivityName,
+                ImageUrl = res.Slot.Activity.ImageUrl,
+                TimeMilliseconds = res.Slot.SlotDateTime.ToUniversalTime().Millisecond,
+                AddressString = $"{res.Slot.Activity.Location?.AddressCity ?? ""} {res.Slot.Activity.Location?.AddressStreet ?? ""} {res.Slot.Activity.Location?.AddressBuildingNumber ?? ""}",
+                Coordinates = new Coordinates
+                {
+                    Latitude = res.Slot.Activity.Location.AddressLatitude,
+                    Longitude = res.Slot.Activity.Location.AddressLongitude
+                },
+                LocationName = res.Slot.Activity.Location.LocationName,
+                ReservationId = 1
+
+            };
+            return Ok(response);
+
         }
     }
 }

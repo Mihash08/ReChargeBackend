@@ -2,6 +2,7 @@
 using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using ReChargeBackend.Responses;
+using ReChargeBackend.Utility;
 
 namespace BackendReCharge.Controllers
 {
@@ -111,7 +112,7 @@ namespace BackendReCharge.Controllers
                 {
                     Name = x.ActivityName ?? "Unknown",
                     AddressString = $"{x.Location?.AddressCity ?? ""} {x.Location?.AddressStreet ?? ""} {x.Location?.AddressBuildingNumber ?? ""}",
-                    imageUrl = x.ImageUrl ?? "",
+                    ImageUrl = x.ImageUrl ?? "",
                     LocationName = x.Location?.LocationName ?? "Unknown",
                     StartPrice = x.Slots != null && x.Slots.Any() ? x.Slots.Min(s => s.Price) : 0,
                     Id = x.Id
@@ -124,68 +125,28 @@ namespace BackendReCharge.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet(Name = "GetActivityTest")]
-        public GetActivityIdResponse GetActivity(int id)
+        [HttpGet(Name = "GetActivity")]
+        public IActionResult GetActivity(int id)
         {
             var act = activityRepository.GetById(id);
             if (act is null)
             {
-                return new GetActivityIdResponse()
-                {
-                    StatusCode = StatusCodes.Status404NotFound,
-                    StatusMessage = "Activity not found"
-                };
+                NotFound($"Activity with id {id} not found");
             }
-            return new GetActivityIdResponse()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Activity = act,
-
-            };
+            return Ok(act);
         }
-        [HttpGet(Name = "GetNextActivity")]
-        public IActionResult GetNextActivity(string accessToken)
-        {
-            //todo: this is mock
-            try
-            {
-                var act = activityRepository.GetById(2);
-                var response = new GetNextActivityResponse
-                {
-                    Name = act.ActivityName,
-                    imageUrl = act.ImageUrl,
-                    timeMilliseconds = act.Slots[0].SlotDateTime.ToUniversalTime().Millisecond,
-                    AddressString = $"{act.Location?.AddressCity ?? ""} {act.Location?.AddressStreet ?? ""} {act.Location?.AddressBuildingNumber ?? ""}",
-                    Coordinates = new Coordinates
-                    {
-                        Latitude = act.Location.AddressLatitude,
-                        Longitude = act.Location.AddressLongitude
-                    },
-                    LocationName = act.Location.LocationName
-                };
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
         [HttpGet(Name = "GetActivityView")]
-        public GetActivityViewResponse GetActivityView(int id)
+        public IActionResult GetActivityView(int id)
         {
             //todo: смотри фигму экран 6
             var act = activityRepository.GetById(id);
             if (act is null)
             {
-                return new GetActivityViewResponse
-                {
-                    StatusCode = StatusCodes.Status404NotFound,
-                    StatusMessage = "Activity not found"
-                };
+                return NotFound($"Activity with id {id} not found");
             }
-            return new GetActivityViewResponse
+            return Ok(new GetActivityViewResponse
             {
-                StatusCode = StatusCodes.Status200OK,
                 ActivityId = act.Id,
                 ActivityName = act.ActivityName,
                 AdminPhoneWA = act.ActivityAdminWa,
@@ -199,7 +160,7 @@ namespace BackendReCharge.Controllers
                 ImageURL = act.ImageUrl,
                 LocationAddress = act.Location.AddressCity + ", " + act.Location.AddressStreet + ", " + act.Location.AddressBuildingNumber,
                 ActivityDescription = act.ActivityDescription
-            };
+            });
         }
         [HttpGet(Name = "GetActivitiesByCategory")]
         public List<Activity> GetActivityByCategory(int categoryId)

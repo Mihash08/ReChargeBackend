@@ -1,4 +1,6 @@
 ﻿
+using ReChargeBackend.Utility;
+
 namespace ReChargeBackend.Responses
 {
     public class GetActivityViewResponse
@@ -14,8 +16,6 @@ namespace ReChargeBackend.Responses
         public string? Warning { get; set; }
         public string? CancellationMessage { get; set; }
         public Coordinates? Coordinates { get; set; }
-        public int StatusCode {  get; set; }
-        public string? StatusMessage { get; set; }
 
     }
 }

@@ -8,5 +8,6 @@ namespace Data.Interfaces
     {
         IEnumerable<Slot> GetAllByActivityId(int activityId);
         IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime);
+        IEnumerable<Slot> GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime);
     }
 }

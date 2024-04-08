@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 using System.Threading.Tasks;
+using Utility;
 
 namespace Data.Repositories
 {
@@ -58,6 +59,23 @@ namespace Data.Repositories
         public IEnumerable<User> GetAll()
         {
             return dbSet.Include(x => x.Reservations).ToList();
+        }
+
+        public User? GetByAccessToken(string accessToken)
+        {
+            try
+            {
+                var test = Hasher.Verify("123", "$2a$11$zf7y0J4heYz1ufhpxI71du$2a$11$zf7y0J4heYz1ufhpxI71duIZhDleVZZ2eiOpURfQiBVMcHDvVKYP2");
+                var entity = dbSet.Include(x => x.Reservations).ToList().First(x => 
+                    x.AccessHash != null && Hasher.Verify(accessToken, x.AccessHash));
+                return entity;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                return null;
+            }
         }
 
         public User? GetById(int id)

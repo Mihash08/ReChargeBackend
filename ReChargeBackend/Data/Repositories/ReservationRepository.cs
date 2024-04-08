@@ -91,12 +91,22 @@ namespace Data.Repositories
 
         public Reservation? GetNextReservation(int userId)
         {
-            var reservations = dbSet.Include(x => x.User).Include(x => x.Slot).Where(x => x.UserId == userId && !x.IsOver);
+            var reservations = dbSet.Include(x => x.Slot.Activity.Location).Where(x => x.UserId == userId && !x.IsOver);
             if (reservations == null || reservations.Count() < 1)
             {
                 return null;
             }
             return reservations.OrderBy(x => x.Slot.SlotDateTime).ToList()[0];
+        }
+
+        public IEnumerable<Reservation> GetReservationsByUser(int userId)
+        {
+            var reservations = dbSet.Include(x => x.Slot.Activity.Location).Where(x => x.UserId == userId && !x.IsOver);
+            if (reservations == null)
+            {
+                return null;
+            }
+            return reservations.ToList();
         }
     }
 }

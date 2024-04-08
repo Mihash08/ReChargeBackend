@@ -6,7 +6,5 @@ namespace ReChargeBackend.Responses
     {
         public string? Name { get; set; }
         public string? PhotoUrl { get; set; }
-        public int StatusCode {  get; set; }
-        public string? StatusMessage { get; set;}
     }
 }

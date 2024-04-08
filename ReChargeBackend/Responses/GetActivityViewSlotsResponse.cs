@@ -4,8 +4,6 @@ namespace ReChargeBackend.Responses
     public class GetActivityViewSlotsResponse
     {
         public SlotView[] Slots;
-        public int StatusCode;
-        public string? StatusMessage;
 
     }
 

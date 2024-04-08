@@ -3,11 +3,9 @@ namespace ReChargeBackend.Responses
 {
     public class PhoneAuthResponse
     {
-        public bool isSuccess { get; set; }
-        public string? errorText { get; set; }
-        public string? sessionId { get; set; }
-        public string? titleText { get; set; }
-        public int codeSize { get; set; }
-        public ConditionalInfoResponse? conditionalInfo { get; set; }
+        public string? SessionId { get; set; }
+        public string? TitleText { get; set; }
+        public int CodeSize { get; set; }
+        public ConditionalInfoResponse? ConditionalInfo { get; set; }
     }
 }

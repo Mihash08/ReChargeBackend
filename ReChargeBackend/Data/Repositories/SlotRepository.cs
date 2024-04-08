@@ -77,7 +77,14 @@ namespace Data.Repositories
 
         public IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime)
         {
-            return dbSet.Where(x => x.ActivityId == activityId && x.SlotDateTime > dateTime && x.SlotDateTime.Date == dateTime.Date);
+            return dbSet.Where(x => x.ActivityId == activityId && x.SlotDateTime > dateTime && x.SlotDateTime.Date == dateTime.Date)
+                .Include(x => x.Activity.Location);
+        }
+
+        public IEnumerable<Slot> GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime)
+        {
+            return dbSet.Where(x => x.Activity.CategoryId == categoryId && x.SlotDateTime > dateTime && x.SlotDateTime.Date == dateTime.Date)
+                .Include(x => x.Activity.Location);
         }
 
         public Slot Update(Slot entity)
