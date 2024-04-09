@@ -12,8 +12,8 @@ using ReCharge.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240409183107_IdFixAttempt")]
-    partial class IdFixAttempt
+    [Migration("20240409192545_CatTabIdAdded")]
+    partial class CatTabIdAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
