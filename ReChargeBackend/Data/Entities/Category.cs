@@ -16,9 +16,7 @@ namespace Data.Entities
         public string Name { get; set; }
         [Column("image")]
         public string? Image { get; set; }
-        [ForeignKey("CategoryCategory")]
         [Column("cat_cat_id")]
         public int CategoryCategoryId {  get; set; }
-        public CategoryCategory CategoryCategory { get; set; }
     }
 }

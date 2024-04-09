@@ -7,22 +7,24 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class CatCatsAdded : Migration
+    public partial class IdFixAttempt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "category_category",
+                name: "category",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    name = table.Column<string>(type: "text", nullable: false),
+                    image = table.Column<string>(type: "text", nullable: true),
+                    cat_cat_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_category_category", x => x.id);
+                    table.PrimaryKey("PK_category", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,27 +84,6 @@ namespace ReChargeBackend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_verification_code", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "category",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    image = table.Column<string>(type: "text", nullable: true),
-                    cat_cat_id = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_category", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_category_category_category_cat_cat_id",
-                        column: x => x.cat_cat_id,
-                        principalTable: "category_category",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,11 +181,6 @@ namespace ReChargeBackend.Migrations
                 column: "location_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_category_cat_cat_id",
-                table: "category",
-                column: "cat_cat_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_reservation_slot_id",
                 table: "reservation",
                 column: "slot_id");
@@ -243,9 +219,6 @@ namespace ReChargeBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "location");
-
-            migrationBuilder.DropTable(
-                name: "category_category");
         }
     }
 }
