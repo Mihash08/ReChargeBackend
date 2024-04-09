@@ -120,6 +120,7 @@ namespace BackendReCharge.Controllers
             var slots = slotRepository.GetSlotsByCategoryIdAndTime(categoryId, dateTime);
             List<GetSlotsByCategoryAndDateResponse> resp = slots.Select(x => new GetSlotsByCategoryAndDateResponse
             {
+                SlotId = x.Id,
                 ActivityName = x.Activity.ActivityName,
                 Address = $"{x.Activity.Location.AddressCity} {x.Activity.Location.AddressStreet} {x.Activity.Location.AddressBuildingNumber}",
                 Coordinates = new ReChargeBackend.Utility.Coordinates

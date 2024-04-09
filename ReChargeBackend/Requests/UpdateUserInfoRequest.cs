@@ -9,6 +9,5 @@
         public DateTime BirthDay {  get; set; }
         public string Gender { get; set; }
         public string ImageURL { get; set; }
-        public string accessToken { get; set; }
     }
 }

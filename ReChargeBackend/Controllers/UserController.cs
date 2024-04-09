@@ -8,6 +8,7 @@ using ReChargeBackend.Utility;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
 using Utility;
+using Microsoft.Extensions.Primitives;
 
 //TODO: !!! add status code to all responses
 namespace BackendReCharge.Controllers
@@ -31,9 +32,14 @@ namespace BackendReCharge.Controllers
         private readonly ILogger<UserController> _logger;
 
         [HttpGet(Name = "GetProfileHeader")]
-        public IActionResult GetProfileHeader(string accessToken)
+        public IActionResult GetProfileHeader()
         {
-            var user = userRepository.GetByAccessToken(accessToken);
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
                 return NotFound("User not found");
@@ -45,8 +51,8 @@ namespace BackendReCharge.Controllers
                 PhotoUrl = user.ImageUrl,
             });
         }
-        [HttpGet(Name = "GetUserByNumber")]
-        public User GetUserByNumber(string number)
+        [HttpGet(Name = "GetUserByNumberTest")]
+        public User GetUserByNumberTest(string number)
         {
             return userRepository.GetByNumber(number);
         }
@@ -54,7 +60,12 @@ namespace BackendReCharge.Controllers
         [HttpPost(Name = "UpdateUser")]
         public IActionResult UpdateUser(UpdateUserInfoRequest request)
         {
-            var user = userRepository.GetByAccessToken(request.accessToken);
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
             if (user == null)
             {
                 return NotFound("user not found");

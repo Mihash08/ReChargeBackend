@@ -12,8 +12,8 @@ using ReCharge.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240409134051_IdFixAttempt")]
-    partial class IdFixAttempt
+    [Migration("20240409151919_CatCatsAdded")]
+    partial class CatCatsAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,10 @@ namespace ReChargeBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryCategoryId")
+                        .HasColumnType("integer")
+                        .HasColumnName("cat_cat_id");
+
                     b.Property<string>("Image")
                         .HasColumnType("text")
                         .HasColumnName("image");
@@ -105,7 +109,28 @@ namespace ReChargeBackend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryCategoryId");
+
                     b.ToTable("category");
+                });
+
+            modelBuilder.Entity("Data.Entities.CategoryCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("category_category");
                 });
 
             modelBuilder.Entity("Data.Entities.Location", b =>
@@ -338,6 +363,17 @@ namespace ReChargeBackend.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("Data.Entities.Category", b =>
+                {
+                    b.HasOne("Data.Entities.CategoryCategory", "CategoryCategory")
+                        .WithMany()
+                        .HasForeignKey("CategoryCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryCategory");
                 });
 
             modelBuilder.Entity("Data.Entities.Reservation", b =>

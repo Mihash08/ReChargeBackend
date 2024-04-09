@@ -3,6 +3,7 @@ using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using ReCharge.Data.Interfaces;
 using ReChargeBackend.Responses;
 using ReChargeBackend.Utility;
@@ -26,12 +27,17 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet(Name = "GetReservationsByToken")]
-        public IActionResult GetReservationsByToken(string accessToken)
+        public IActionResult GetReservationsByToken()
         {
-            var user = userRepository.GetByAccessToken(accessToken);
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("User not found (or invalid token)");
             }
             return Ok(reservationRepository.GetReservationsByUser(user.Id));
         }
@@ -42,10 +48,15 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet(Name = "GetNextReservation")]
-        public IActionResult GetNextReservation(string accessToken)
+        public IActionResult GetNextReservation()
         {
 
-            var user = userRepository.GetByAccessToken(accessToken);
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
                 return NotFound("User not found");
@@ -59,6 +70,7 @@ namespace BackendReCharge.Controllers
 
             var response = new GetNextReservationResponse
             {
+                ActivityId = res.Slot.ActivityId,
                 Name = res.Slot.Activity.ActivityName,
                 ImageUrl = res.Slot.Activity.ImageUrl,
                 DateTime = res.Slot.SlotDateTime,

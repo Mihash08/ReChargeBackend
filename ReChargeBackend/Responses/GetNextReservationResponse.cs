@@ -6,6 +6,7 @@ namespace ReChargeBackend.Responses
     {
         //todo: нужны name, imageUrl, locationName, addressString, coordinates, time
         public string Name { get; set; }
+        public int ActivityId {  get; set; }
         public string ImageUrl { get; set; }
         public DateTime DateTime { get; set; }
         public Coordinates Coordinates { get; set; }
