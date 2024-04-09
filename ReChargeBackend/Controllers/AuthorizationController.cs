@@ -8,6 +8,8 @@ using ReChargeBackend.Utility;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Utility;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BackendReCharge.Controllers
 {
@@ -17,14 +19,10 @@ namespace BackendReCharge.Controllers
     {
         private readonly IUserRepository userRepository;
         private readonly IVerificationCodeRepository verificationCodeRepository;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
-        public AuthorizationController(IUserRepository userRepository, IVerificationCodeRepository verificationCodeRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) 
+        public AuthorizationController(IUserRepository userRepository, IVerificationCodeRepository verificationCodeRepository) 
         {
             this.userRepository = userRepository;
             this.verificationCodeRepository = verificationCodeRepository;
-            this.signInManager = signInManager;
-            this.userManager = userManager;
         }
 
         private readonly ILogger<UserController> _logger;
@@ -36,18 +34,21 @@ namespace BackendReCharge.Controllers
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
             {
                 var sessionId = Temp.GenerateSessionId();
+                //var code = Temp.GenerateCode();
+                var code = "12345";
                 verificationCodeRepository.Add(new VerificationCode()
                 {
-                    Code = Temp.GenerateCode(),
+                    Code = Hasher.Encrypt(code),
                     PhoneNumber = info.phoneNumber,
                     SessionId = sessionId,
                 });
+                //TODO: send code to phone
+                Console.WriteLine(code);
                 return Ok(new PhoneAuthResponse()
                 {
-                    //TODO: idk how session ids work...
                     SessionId = sessionId,
                     TitleText = "Введите код, полученный на " + info.phoneNumber,
-                    CodeSize = 4,
+                    CodeSize = 5,
                     ConditionalInfo = new ConditionalInfoResponse()
                     {
                         Message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
@@ -69,16 +70,15 @@ namespace BackendReCharge.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpPost(Name = "Auth")]
         public IActionResult Auth([FromBody] AuthRequest info)
         {
             try
             {
                 var session = verificationCodeRepository.GetBySession(info.sessionId);
-                if (session.Code == info.code)
+                if (Hasher.Verify(info.code, session.Code))
                 {
-                    var user = userRepository.GetByNumber(info.phoneNumber);
+                    var user = userRepository.GetByNumber(session.PhoneNumber);
                     string accessToken = Temp.GenerateAccessToken();
                     if (user is null)
                     {
@@ -88,27 +88,13 @@ namespace BackendReCharge.Controllers
                         }
                         userRepository.Add(new User()
                         {
-                            PhoneNumber = info.phoneNumber,
-                            AccessHash = Utility.Hasher.Encrypt(accessToken)
+                            PhoneNumber = session.PhoneNumber,
+                            AccessHash = Hasher.Encrypt(accessToken)
                         });
                     } else
                     {
-                        user.AccessHash = Utility.Hasher.Encrypt(accessToken);
+                        user.AccessHash = Hasher.Encrypt(accessToken);
                         userRepository.Update(user);
-                    }
-                    IdentityUser? identityUser = userManager.Users.FirstOrDefault(x => x.PhoneNumber == info.phoneNumber);
-                    if (identityUser is null)
-                    {
-                        identityUser = new IdentityUser(info.phoneNumber)
-                        {
-                            PhoneNumber = info.phoneNumber,
-                            PhoneNumberConfirmed = true,
-                        };
-
-                        userManager.CreateAsync(identityUser).Wait();
-                        signInManager.SignOutAsync().Wait();
-                        signInManager.SignInAsync(identityUser, isPersistent: false).Wait();
-                        identityUser = userManager.Users.FirstOrDefault(x => x.PhoneNumber == info.phoneNumber);
                     }
 
                     return Ok(accessToken);

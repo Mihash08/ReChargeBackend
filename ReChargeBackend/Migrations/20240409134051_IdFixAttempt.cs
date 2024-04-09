@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class postgres : Migration
+    public partial class IdFixAttempt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

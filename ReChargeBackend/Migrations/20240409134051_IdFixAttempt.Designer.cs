@@ -12,8 +12,8 @@ using ReCharge.Data;
 namespace ReChargeBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240405125849_postgres")]
-    partial class postgres
+    [Migration("20240409134051_IdFixAttempt")]
+    partial class IdFixAttempt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

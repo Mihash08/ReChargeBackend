@@ -7,7 +7,7 @@ namespace ReChargeBackend.Utility
         //TODO: this is temporary, remove it later
         public static bool IsPhoneNumberValid(string phoneNumber)
         {
-            if (phoneNumber.Length < 10 || (phoneNumber[0] != '7' && phoneNumber[0] != '8'))
+            if (phoneNumber.Length < 10 || (phoneNumber[0] != '7' && phoneNumber[0] != '8' && phoneNumber[0] != '+'))
             {
                 return false;
             }

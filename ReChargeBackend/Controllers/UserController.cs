@@ -68,7 +68,8 @@ namespace BackendReCharge.Controllers
                     Name = request.FirstName,
                     PhoneNumber = request.Phone,
                     Surname = request.LastName,
-                    ImageUrl = request.ImageURL
+                    ImageUrl = request.ImageURL,
+                    Id = user.Id
                 });
                 return Ok();
             }
