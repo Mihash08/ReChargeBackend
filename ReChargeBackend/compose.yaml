@@ -9,6 +9,7 @@
 # https://github.com/docker/awesome-compose
 services:
   server:
+    platform: linux/amd64
     build:
       context: .
       target: final
