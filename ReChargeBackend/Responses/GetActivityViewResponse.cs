@@ -11,7 +11,7 @@ namespace ReChargeBackend.Responses
         public string? AdminPhoneWA { get; set; }
         public string? AdminTgUsername { get; set; }
         public string? LocationName { get; set; }
-        public string? LocationAddress { get; set; }
+        public string? LocationAddress { get; set; }    
         public string? ActivityDescription { get; set; }
         public string? Warning { get; set; }
         public string? CancellationMessage { get; set; }

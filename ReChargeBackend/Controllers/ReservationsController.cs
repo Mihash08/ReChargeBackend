@@ -61,7 +61,7 @@ namespace BackendReCharge.Controllers
             {
                 Name = res.Slot.Activity.ActivityName,
                 ImageUrl = res.Slot.Activity.ImageUrl,
-                TimeMilliseconds = res.Slot.SlotDateTime.ToUniversalTime().Millisecond,
+                DateTime = res.Slot.SlotDateTime,
                 AddressString = $"{res.Slot.Activity.Location?.AddressCity ?? ""} {res.Slot.Activity.Location?.AddressStreet ?? ""} {res.Slot.Activity.Location?.AddressBuildingNumber ?? ""}",
                 Coordinates = new Coordinates
                 {

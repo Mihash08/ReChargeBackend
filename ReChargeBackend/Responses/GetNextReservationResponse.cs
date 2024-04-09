@@ -7,7 +7,7 @@ namespace ReChargeBackend.Responses
         //todo: нужны name, imageUrl, locationName, addressString, coordinates, time
         public string Name { get; set; }
         public string ImageUrl { get; set; }
-        public long TimeMilliseconds { get; set; }
+        public DateTime DateTime { get; set; }
         public Coordinates Coordinates { get; set; }
         public string LocationName { get; set; }
         public string AddressString { get; set; }
