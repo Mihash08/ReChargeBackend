@@ -79,7 +79,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("activity");
+                    b.ToTable("activity_table");
                 });
 
             modelBuilder.Entity("Data.Entities.Category", b =>
@@ -106,7 +106,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("category");
+                    b.ToTable("category_table");
                 });
 
             modelBuilder.Entity("Data.Entities.Location", b =>
@@ -172,7 +172,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("location");
+                    b.ToTable("location_table");
                 });
 
             modelBuilder.Entity("Data.Entities.Reservation", b =>
@@ -202,7 +202,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("reservation");
+                    b.ToTable("reservation_table");
                 });
 
             modelBuilder.Entity("Data.Entities.Slot", b =>
@@ -238,7 +238,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("slot");
+                    b.ToTable("slot_table");
                 });
 
             modelBuilder.Entity("Data.Entities.User", b =>
@@ -286,7 +286,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("user_table");
                 });
 
             modelBuilder.Entity("Data.Entities.VerificationCode", b =>
@@ -319,7 +319,7 @@ namespace ReChargeBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("verification_code");
+                    b.ToTable("verification_code_table");
                 });
 
             modelBuilder.Entity("Data.Entities.Activity", b =>

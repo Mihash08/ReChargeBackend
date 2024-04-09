@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    [Table("slot")]
+    [Table("slot_table")]
     public class Slot : BaseEntity
     {
         [ForeignKey("Activity")]

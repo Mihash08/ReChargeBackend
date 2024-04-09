@@ -28,6 +28,8 @@ namespace ReCharge.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // "Host=db;Database=example;Username=postgres;Password=example"
+            // "Host=localhost; Port=5432; Database=postgres; User Id=postgres; Password=39011093;"
             optionsBuilder.UseNpgsql("Host=db;Database=example;Username=postgres;Password=example");
         }
 

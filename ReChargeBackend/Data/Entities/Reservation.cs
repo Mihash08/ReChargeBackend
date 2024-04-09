@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    [Table("reservation")]
+    [Table("reservation_table")]
     public class Reservation : BaseEntity
     {
         [ForeignKey("Slot")]

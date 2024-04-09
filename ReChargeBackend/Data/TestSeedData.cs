@@ -14,7 +14,7 @@ namespace ReChargeBackend.Data
 
             if (context.Database.GetPendingMigrations().Any())
             {
-                //context.Database.Migrate();
+                context.Database.Migrate();
             }
 
             if (!context.Users.Any())
