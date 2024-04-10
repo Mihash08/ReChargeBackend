@@ -14,7 +14,7 @@ namespace ReChargeBackend.Data
 
             if (context.Database.GetPendingMigrations().Any())
             {
-                //context.Database.Migrate();
+                context.Database.Migrate();
             }
 
             if (!context.Users.Any())
@@ -234,7 +234,7 @@ namespace ReChargeBackend.Data
                     Id = 2,
                     FreePlaces = 5,
                     Price = 2000,
-                    SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                    SlotDateTime = DateTime.Now.AddHours(1),
                     LengthMinutes = 45,
                 },
                 new Slot()
@@ -243,7 +243,7 @@ namespace ReChargeBackend.Data
                     Id = 3,
                     FreePlaces = 5,
                     Price = 1250,
-                    SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                    SlotDateTime = DateTime.Now.AddHours(2),
                     LengthMinutes = 45,
                 },
 
@@ -253,7 +253,7 @@ namespace ReChargeBackend.Data
                             Id = 4,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                     LengthMinutes = 45,
                         },
                         new Slot()
@@ -262,7 +262,7 @@ namespace ReChargeBackend.Data
                             Id = 5,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                     LengthMinutes = 45,
                         },
                         new Slot()
@@ -271,7 +271,7 @@ namespace ReChargeBackend.Data
                             Id = 6,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                     LengthMinutes = 45,
                         },
 
@@ -281,7 +281,7 @@ namespace ReChargeBackend.Data
                             Id = 7,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -290,7 +290,7 @@ namespace ReChargeBackend.Data
                             Id = 8,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -299,7 +299,7 @@ namespace ReChargeBackend.Data
                             Id = 9,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         },
 
@@ -309,7 +309,7 @@ namespace ReChargeBackend.Data
                             Id = 10,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -318,7 +318,7 @@ namespace ReChargeBackend.Data
                             Id = 11,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -327,7 +327,7 @@ namespace ReChargeBackend.Data
                             Id = 12,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         },
 
@@ -337,7 +337,7 @@ namespace ReChargeBackend.Data
                             Id = 13,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -346,7 +346,7 @@ namespace ReChargeBackend.Data
                             Id = 14,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -355,7 +355,7 @@ namespace ReChargeBackend.Data
                             Id = 15,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         },
 
@@ -365,7 +365,7 @@ namespace ReChargeBackend.Data
                             Id = 16,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -374,7 +374,7 @@ namespace ReChargeBackend.Data
                             Id = 17,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -383,7 +383,7 @@ namespace ReChargeBackend.Data
                             Id = 18,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         },
 
@@ -393,7 +393,7 @@ namespace ReChargeBackend.Data
                             Id = 19,
                             FreePlaces = 5,
                             Price = 1500,
-                            SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -402,7 +402,7 @@ namespace ReChargeBackend.Data
                             Id = 20,
                             FreePlaces = 5,
                             Price = 2000,
-                            SlotDateTime = new DateTime(2023, 11, 20, 10, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
@@ -411,7 +411,7 @@ namespace ReChargeBackend.Data
                             Id = 21,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = new DateTime(2023, 11, 20, 18, 30, 0),
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         }
                     );
