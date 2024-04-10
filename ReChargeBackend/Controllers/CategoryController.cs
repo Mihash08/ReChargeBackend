@@ -26,8 +26,12 @@ namespace BackendReCharge.Controllers
             return categoryRepository.GetAll();
         }
         [HttpGet(Name = "GetCategoriesByTab")]
-        public IEnumerable<Category> GetCategoriesByTabId(int tabId)
+        public IEnumerable<Category> GetCategoriesByTabId(int tabId = -1)
         {
+            if (tabId < 0)
+            {
+                return categoryRepository.GetAll();
+            }
             return categoryRepository.GetAll().Where(x => x.CategoryCategoryId == tabId);
         }
 
