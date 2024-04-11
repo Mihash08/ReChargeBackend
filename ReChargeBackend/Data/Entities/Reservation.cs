@@ -9,7 +9,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Data.Entities
 {
-    [Table("reservation")]
+    [Table("reservations")]
     public class Reservation : BaseEntity
     {
         [ForeignKey("Slot")]

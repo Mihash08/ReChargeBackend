@@ -122,6 +122,7 @@ namespace BackendReCharge.Controllers
             {
                 SlotId = x.Id,
                 ActivityName = x.Activity.ActivityName,
+                CategoryName = x.Activity.Category.Name,
                 Address = $"{x.Activity.Location.AddressCity} {x.Activity.Location.AddressStreet} {x.Activity.Location.AddressBuildingNumber}",
                 Coordinates = new ReChargeBackend.Utility.Coordinates
                 {

@@ -7,13 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class ReservationsComplete : Migration
+    public partial class ReservationsFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "category",
+                name: "categories",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -24,11 +24,11 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_category", x => x.id);
+                    table.PrimaryKey("PK_categories", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "location",
+                name: "locations",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -47,11 +47,11 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_location", x => x.id);
+                    table.PrimaryKey("PK_locations", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "user",
+                name: "users",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -68,11 +68,11 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user", x => x.id);
+                    table.PrimaryKey("PK_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "verification_code",
+                name: "verification_codes",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -84,11 +84,11 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_verification_code", x => x.id);
+                    table.PrimaryKey("PK_verification_codes", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "activity",
+                name: "activities",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -106,23 +106,23 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_activity", x => x.id);
+                    table.PrimaryKey("PK_activities", x => x.id);
                     table.ForeignKey(
-                        name: "FK_activity_category_category_id",
+                        name: "FK_activities_categories_category_id",
                         column: x => x.category_id,
-                        principalTable: "category",
+                        principalTable: "categories",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_activity_location_location_id",
+                        name: "FK_activities_locations_location_id",
                         column: x => x.location_id,
-                        principalTable: "location",
+                        principalTable: "locations",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "slot",
+                name: "slots",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -135,17 +135,17 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_slot", x => x.id);
+                    table.PrimaryKey("PK_slots", x => x.id);
                     table.ForeignKey(
-                        name: "FK_slot_activity_activity_id",
+                        name: "FK_slots_activities_activity_id",
                         column: x => x.activity_id,
-                        principalTable: "activity",
+                        principalTable: "activities",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "reservation",
+                name: "reservations",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
@@ -160,44 +160,44 @@ namespace ReChargeBackend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_reservation", x => x.id);
+                    table.PrimaryKey("PK_reservations", x => x.id);
                     table.ForeignKey(
-                        name: "FK_reservation_slot_slot_id",
+                        name: "FK_reservations_slots_slot_id",
                         column: x => x.slot_id,
-                        principalTable: "slot",
+                        principalTable: "slots",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_reservation_user_user_id",
+                        name: "FK_reservations_users_user_id",
                         column: x => x.user_id,
-                        principalTable: "user",
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_activity_category_id",
-                table: "activity",
+                name: "IX_activities_category_id",
+                table: "activities",
                 column: "category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_activity_location_id",
-                table: "activity",
+                name: "IX_activities_location_id",
+                table: "activities",
                 column: "location_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reservation_slot_id",
-                table: "reservation",
+                name: "IX_reservations_slot_id",
+                table: "reservations",
                 column: "slot_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_reservation_user_id",
-                table: "reservation",
+                name: "IX_reservations_user_id",
+                table: "reservations",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_slot_activity_id",
-                table: "slot",
+                name: "IX_slots_activity_id",
+                table: "slots",
                 column: "activity_id");
         }
 
@@ -205,25 +205,25 @@ namespace ReChargeBackend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "reservation");
+                name: "reservations");
 
             migrationBuilder.DropTable(
-                name: "verification_code");
+                name: "verification_codes");
 
             migrationBuilder.DropTable(
-                name: "slot");
+                name: "slots");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "users");
 
             migrationBuilder.DropTable(
-                name: "activity");
+                name: "activities");
 
             migrationBuilder.DropTable(
-                name: "category");
+                name: "categories");
 
             migrationBuilder.DropTable(
-                name: "location");
+                name: "locations");
         }
     }
 }

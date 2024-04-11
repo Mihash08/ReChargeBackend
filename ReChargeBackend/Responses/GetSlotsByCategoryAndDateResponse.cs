@@ -8,6 +8,7 @@ namespace ReChargeBackend.Responses
         public int ActivityId { get; set; }
         public string ActivityName {  get; set; }
         public string ImageUrl {  get; set; }
+        public string CategoryName {  get; set; }
         public DateTime DateTime { get; set; }
         public int LengthMinutes { get; set; }
         public int Price {  get; set; }
