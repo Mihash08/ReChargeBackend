@@ -115,6 +115,7 @@ namespace Data.Repositories
             existingEntity.PhoneNumber = entity.PhoneNumber;
             existingEntity.Surname = entity.Surname;    
             existingEntity.Gender = entity.Gender;
+            existingEntity.AccessHash = entity.AccessHash;
             context.SaveChanges();
             return existingEntity;
         }

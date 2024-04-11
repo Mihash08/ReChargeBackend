@@ -55,6 +55,50 @@ namespace BackendReCharge.Controllers
         {
             return userRepository.GetByNumber(number);
         }
+
+        [HttpGet(Name = "GetUserByAccessToken")]
+        public IActionResult GetUserByAccessToken()
+        {
+
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+            return Ok(new GetUserByTokenResponse
+            {
+                Name= user.Name,
+                Surname = user.Surname,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                City = user.City,
+                Gender = user.Gender,
+                ImageUrl = user.ImageUrl,
+                PhoneNumber = user.PhoneNumber
+            });
+        }
+        [HttpPost(Name = "LogOut")]
+        public IActionResult LogOut()
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+            user.AccessHash = null;
+            userRepository.Update(user);
+            return Ok();
+        }
         //TODO: аксесс токен хранить на сессиию с устройством, чтобы не логаутило
         [HttpPost(Name = "UpdateUser")]
         public IActionResult UpdateUser(UpdateUserInfoRequest request)
