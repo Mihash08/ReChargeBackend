@@ -97,7 +97,7 @@ namespace BackendReCharge.Controllers
                         userRepository.Update(user);
                     }
 
-                    return Ok(accessToken);
+                    return Ok(new AuthResponse { AccessToken = accessToken});
                 }
                 return BadRequest("Wrong code");
             } catch (ArgumentException e)
