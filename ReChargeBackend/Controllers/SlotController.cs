@@ -170,7 +170,7 @@ namespace BackendReCharge.Controllers
             {
                 return NotFound($"Slot with id {id} not found");
             }
-            return Ok(slot.FreePlaces);
+            return Ok(new GetSlotFreeSpotsResponse {FreeSpots = slot.FreePlaces });
         }
     }
 }
