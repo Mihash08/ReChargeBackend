@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Utility;
 using Microsoft.Extensions.Primitives;
 
-//TODO: !!! add status code to all responses
 namespace BackendReCharge.Controllers
 {
     [ApiController]
@@ -94,5 +93,4 @@ namespace BackendReCharge.Controllers
 
 
     }
-    //TODO: getProfileHeader
 }

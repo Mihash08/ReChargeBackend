@@ -63,7 +63,6 @@ namespace BackendReCharge.Controllers
         [HttpGet(Name = "GetActivityView")]
         public IActionResult GetActivityView(int id)
         {
-            //todo: смотри фигму экран 6
             var act = activityRepository.GetById(id);
             if (act is null)
             {

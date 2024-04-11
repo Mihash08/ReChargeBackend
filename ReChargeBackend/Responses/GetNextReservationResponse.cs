@@ -4,7 +4,6 @@ namespace ReChargeBackend.Responses
 {
     public class GetNextReservationResponse
     {
-        //todo: нужны name, imageUrl, locationName, addressString, coordinates, time
         public string Name { get; set; }
         public int ActivityId {  get; set; }
         public string ImageUrl { get; set; }

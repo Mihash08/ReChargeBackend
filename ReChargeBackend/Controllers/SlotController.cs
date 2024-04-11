@@ -10,8 +10,6 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class SlotController : ControllerBase
     {
-        //TODO: убери мок данных
-        //TODO: сделай полный подсос данных
         private readonly ISlotRepository slotRepository;
         //List<Slot> slots = new List<Slot>()
         //    {

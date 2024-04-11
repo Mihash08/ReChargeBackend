@@ -11,7 +11,6 @@ namespace BackendReCharge.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository categoryRepository;
-        //TODO: добавь категории вместо мока
         private readonly ILogger<CategoryController> _logger;
 
         public CategoryController(ILogger<CategoryController> logger, ICategoryRepository categoryRepository)

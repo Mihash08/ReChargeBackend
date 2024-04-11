@@ -10,7 +10,6 @@ namespace ReCharge.Data
 {
     public class AppDbContext : DbContext
     {
-        //todo add dbSets like below
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Location> Locations { get; set; }
@@ -35,7 +34,6 @@ namespace ReCharge.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //todo build model  
             //Database.Migrate();
             base.OnModelCreating(modelBuilder);
 

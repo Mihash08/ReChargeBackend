@@ -29,7 +29,6 @@ namespace Data.Entities
         public string? Gender {  get; set; }
         [Column("city")]
         public string? City { get; set; }
-        //todo: add city
         public IList<Reservation>? Reservations { get; set; }
         public User(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber, string? imageUrl, string? accessHash, string? gender) : base()
         {
