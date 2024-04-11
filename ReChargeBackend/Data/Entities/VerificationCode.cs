@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    [Table("verification_code_table")]
+    [Table("verification_code")]
     public class VerificationCode : BaseEntity
     {
         [Column("phone_number")]

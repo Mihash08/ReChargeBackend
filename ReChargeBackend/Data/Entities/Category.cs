@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    [Table("category_table")]
+    [Table("category")]
     public class Category : BaseEntity
     {
         //todo: add recomendationImage

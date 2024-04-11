@@ -23,6 +23,7 @@ WORKDIR /source
 ARG TARGETARCH
 
 RUN dotnet restore --disable-parallel
+# RUN dotnet ef database update
 # Build the application.
 # Leverage a cache mount to /root/.nuget/packages so that subsequent builds don't have to re-download packages.
 # If TARGETARCH is "amd64", replace it with "x64" - "x64" is .NET's canonical name for this and "amd64" doesn't

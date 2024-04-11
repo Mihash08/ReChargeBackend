@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Data.Entities
 {
-    [Table("user_table")]
+    [Table("user")]
     public class User : BaseEntity
     {
         [Column("name")]

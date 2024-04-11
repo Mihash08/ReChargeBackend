@@ -36,7 +36,7 @@ namespace ReCharge.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //todo build model  
-
+            //Database.Migrate();
             base.OnModelCreating(modelBuilder);
 
             // Reservations
