@@ -5,6 +5,7 @@ using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using ReCharge.Data.Interfaces;
+using ReChargeBackend.Requests;
 using ReChargeBackend.Responses;
 using ReChargeBackend.Utility;
 using Utility;
@@ -17,13 +18,18 @@ namespace BackendReCharge.Controllers
     {
         private IReservationRepository reservationRepository;
         private IUserRepository userRepository;
+        private ISlotRepository slotRepository;
         private readonly ILogger<ReservationsController> _logger;
 
-        public ReservationsController(ILogger<ReservationsController> logger, IReservationRepository reservationRepository, IUserRepository userRepository)
+        public ReservationsController(ILogger<ReservationsController> logger, 
+            IReservationRepository reservationRepository, 
+            IUserRepository userRepository,
+            ISlotRepository slotRepository)
         {
             _logger = logger;
             this.reservationRepository = reservationRepository;
             this.userRepository = userRepository;
+            this.slotRepository = slotRepository;
         }
 
         [HttpGet(Name = "GetReservationsByToken")]
@@ -47,6 +53,45 @@ namespace BackendReCharge.Controllers
             return reservationRepository.GetById(id);
         }
 
+        [HttpPost(Name = "MakeReservation")]
+        public IActionResult MakeReservation(int slotId, [FromBody] MakeReservationRequest request)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found (or invalid token)");
+            }
+            var slot = slotRepository.GetById(slotId);
+            if (slot is null)
+            {
+                return BadRequest($"Slot with id {slotId} not found");
+            }
+            if (slot.FreePlaces >= request.ReserveCount)
+            {
+                reservationRepository.Add(new Reservation
+                {
+                    IsOver = false,
+                    Slot = slot,
+                    SlotId = slotId,
+                    User = user,
+                    UserId = user.Id,
+                    Count = request.ReserveCount,
+                    Email = request.Email,
+                    Name = request.Name,
+                    PhoneNumber = request.Phone
+                });
+                slot.FreePlaces -= request.ReserveCount;
+                slotRepository.Update(slot);
+                return Ok();
+            }
+            return BadRequest($"Not enough free spaces in slot ({slot.FreePlaces} spaces available");
+
+        }
         [HttpGet(Name = "GetNextReservation")]
         public IActionResult GetNextReservation()
         {

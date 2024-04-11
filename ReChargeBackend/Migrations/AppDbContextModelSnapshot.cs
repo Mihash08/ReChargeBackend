@@ -184,9 +184,28 @@ namespace ReChargeBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Count")
+                        .HasColumnType("integer")
+                        .HasColumnName("count");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
                     b.Property<bool>("IsOver")
                         .HasColumnType("boolean")
                         .HasColumnName("is_over");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
 
                     b.Property<int>("SlotId")
                         .HasColumnType("integer")
@@ -257,6 +276,10 @@ namespace ReChargeBackend.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("birthdate");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text")
+                        .HasColumnName("city");
 
                     b.Property<string>("Email")
                         .HasColumnType("text")

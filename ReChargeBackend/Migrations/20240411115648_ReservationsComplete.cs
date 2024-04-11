@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ReChargeBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class CatTabIdAdded : Migration
+    public partial class ReservationsComplete : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,8 @@ namespace ReChargeBackend.Migrations
                     phone_number = table.Column<string>(type: "text", nullable: false),
                     image_url = table.Column<string>(type: "text", nullable: true),
                     access_hash = table.Column<string>(type: "text", nullable: true),
-                    gender = table.Column<string>(type: "text", nullable: true)
+                    gender = table.Column<string>(type: "text", nullable: true),
+                    city = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -151,7 +152,11 @@ namespace ReChargeBackend.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     slot_id = table.Column<int>(type: "integer", nullable: false),
                     user_id = table.Column<int>(type: "integer", nullable: false),
-                    is_over = table.Column<bool>(type: "boolean", nullable: false)
+                    is_over = table.Column<bool>(type: "boolean", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    phone_number = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    count = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

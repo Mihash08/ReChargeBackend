@@ -29,6 +29,7 @@ namespace ReChargeBackend.Data
                     Name = "Mikhail",
                     PhoneNumber = "+79251851096",
                     Surname = "Sandomirskii",
+                    City = "Москва",
                     ImageUrl = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
                 });
             }
@@ -421,9 +422,9 @@ namespace ReChargeBackend.Data
             if (!context.Reservations.Any())
             {
                 context.Reservations.AddRange(
-                    new Reservation { Id = 1, IsOver = false, SlotId = 2, UserId = 1 },
-                    new Reservation { Id = 2, IsOver = true, SlotId = 1, UserId = 1 },
-                    new Reservation { Id = 3, IsOver = false, SlotId = 4, UserId = 1 }
+                    new Reservation { Id = 1, IsOver = false, SlotId = 2, UserId = 1, Count = 1, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
+                    new Reservation { Id = 2, IsOver = true, SlotId = 1, UserId = 1, Count = 3, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
+                    new Reservation { Id = 3, IsOver = false, SlotId = 4, UserId = 1, Count = 1, Email = "gled@gmail.com", Name = "Zhora", PhoneNumber = "+79251851096" }
                 );
             }
             context.SaveChanges();
