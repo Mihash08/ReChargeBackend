@@ -2,7 +2,7 @@
 
 namespace ReChargeBackend.Responses
 {
-    public class GetSlotsByCategoryAndDateResponse
+    public class GetSlotByCategoryAndDateResponse
     {
         public int SlotId { get; set; }
         public int ActivityId { get; set; }

@@ -29,7 +29,7 @@ namespace BackendReCharge.Controllers
         {
             var slots = slotRepository.GetSlotsByCategoryIdAndTime(categoryId, dateTime);
             var catName = categoryRepository.GetById(categoryId).Name;
-            List<GetSlotsByCategoryAndDateResponse> resp = slots.Select(x => new GetSlotsByCategoryAndDateResponse
+            List<GetSlotByCategoryAndDateResponse> resp = slots.Select(x => new GetSlotByCategoryAndDateResponse
             {
                 SlotId = x.Id,
                 ActivityName = x.Activity.ActivityName,
@@ -47,7 +47,11 @@ namespace BackendReCharge.Controllers
                 Price = x.Price
             }).ToList();
 
-            return Ok(new List<Object> { resp, catName });
+            return Ok(new GetSlotsByCategoryAndDateResponse
+            {
+                CategoryName = catName,
+                Slots = resp.ToList()
+            });
         }
         [HttpGet(Name = "GetSlotsByActivityIdAndTimeTest")]
         public IActionResult GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
