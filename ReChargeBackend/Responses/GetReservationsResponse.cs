@@ -17,6 +17,10 @@ namespace ReChargeBackend.Responses
         public string? ImageUrl {  get; set; }
         public DateTime DateTime { get; set; }
         public string Address {  get; set; }
+        public string ActivityName {  get; set; }
+        public double CoordinatesLatitude { get; set; }
+        public double CoordinatesLongitude { get; set; }
+        public int ActivityId {  get; set; }
 
     }
 }

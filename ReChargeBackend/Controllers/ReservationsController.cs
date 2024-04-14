@@ -32,22 +32,6 @@ namespace BackendReCharge.Controllers
             this.slotRepository = slotRepository;
         }
 
-        [HttpGet(Name = "GetReservationsByToken")]
-        public IActionResult GetReservationsByToken()
-        {
-            StringValues token = string.Empty;
-            if (!Request.Headers.TryGetValue("accessToken", out token))
-            {
-                return BadRequest("Not authorized, access token required");
-            }
-            var user = userRepository.GetByAccessToken(token);
-            if (user is null)
-            {
-                return NotFound("User not found (or invalid token)");
-            }
-            return Ok(reservationRepository.GetReservationsByUser(user.Id));
-        }
-
         [HttpPost(Name = "MakeReservation")]
         public IActionResult MakeReservation(int slotId, [FromBody] MakeReservationRequest request)
         {
@@ -199,7 +183,11 @@ namespace BackendReCharge.Controllers
                 DateTime = x.Slot.SlotDateTime,
                 ImageUrl = x.Slot.Activity.ImageUrl,
                 LocationName = x.Slot.Activity.Location.LocationName,
-                ReservationId = x.Id
+                ReservationId = x.Id,
+                ActivityId = x.Slot.ActivityId,
+                ActivityName = x.Slot.Activity.ActivityName,
+                CoordinatesLatitude = x.Slot.Activity.Location.AddressLatitude,
+                CoordinatesLongitude = x.Slot.Activity.Location.AddressLongitude
 
             }).ToList();
             var response = new GetReservationsResponse
