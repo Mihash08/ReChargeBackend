@@ -101,7 +101,9 @@ namespace Data.Repositories
 
         public IEnumerable<Reservation> GetReservationsByUser(int userId)
         {
-            var reservations = dbSet.Include(x => x.Slot.Activity.Location).Where(x => x.UserId == userId && !x.IsOver);
+            var reservations = dbSet.Include(x => x.Slot.Activity.Location)
+                .Where(x => x.UserId == userId && !x.IsOver)
+                .Where(x => x.Slot.SlotDateTime >= DateTime.Now);
             if (reservations == null)
             {
                 return null;

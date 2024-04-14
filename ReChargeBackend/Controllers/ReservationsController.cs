@@ -162,7 +162,44 @@ namespace BackendReCharge.Controllers
 
             };
             return Ok(response);
+        }
+        [HttpGet(Name = "GetReservations")]
+        public IActionResult GetReservations(DateTime startDate, DateTime endDate)
+        {
 
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+
+            var reservations = reservationRepository.GetReservationsByUser(user.Id);
+            if (reservations is null)
+            {
+                return Ok("No reservations");
+            }
+            var reservationsResponse = reservations.Select(x => new GetSingleReservation
+            {
+                Address = $"{x.Slot.Activity.Location.AddressCity} {x.Slot.Activity.Location.AddressStreet} {x.Slot.Activity.Location.AddressBuildingNumber}",
+                DateTime = x.Slot.SlotDateTime,
+                ImageUrl = x.Slot.Activity.ImageUrl,
+                LocationName = x.Slot.Activity.Location.LocationName,
+                ReservationId = x.Id
+
+            }).ToList();
+            var response = new GetReservationsResponse
+            {
+                SelectedDateTimeStart = startDate,
+                SelectedDateTimeEnd = endDate,
+                Reservations =  reservationsResponse
+
+            };
+            return Ok(response);
         }
     }
 }
