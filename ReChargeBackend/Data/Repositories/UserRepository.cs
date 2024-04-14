@@ -111,8 +111,10 @@ namespace Data.Repositories
             }
             existingEntity.BirthDate = entity.BirthDate;
             existingEntity.Email = entity.Email;
+            existingEntity.City = entity.City;
             existingEntity.Name = entity.Name;
             existingEntity.PhoneNumber = entity.PhoneNumber;
+            existingEntity.ImageUrl = entity.ImageUrl;
             existingEntity.Surname = entity.Surname;    
             existingEntity.Gender = entity.Gender;
             existingEntity.AccessHash = entity.AccessHash;

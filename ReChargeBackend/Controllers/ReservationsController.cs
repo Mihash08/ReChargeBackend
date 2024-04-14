@@ -21,8 +21,8 @@ namespace BackendReCharge.Controllers
         private ISlotRepository slotRepository;
         private readonly ILogger<ReservationsController> _logger;
 
-        public ReservationsController(ILogger<ReservationsController> logger, 
-            IReservationRepository reservationRepository, 
+        public ReservationsController(ILogger<ReservationsController> logger,
+            IReservationRepository reservationRepository,
             IUserRepository userRepository,
             ISlotRepository slotRepository)
         {
@@ -66,7 +66,7 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest($"Slot with id {slotId} not found");
             }
-            if (reservationRepository.GetReservationsByUser(user.Id).Any(x=> x.SlotId == slot.Id))
+            if (reservationRepository.GetReservationsByUser(user.Id).Any(x => x.SlotId == slot.Id))
             {
                 return StatusCode(452, "Вы уже записаны на это занятие");
             }
@@ -154,6 +154,16 @@ namespace BackendReCharge.Controllers
 
             var response = new GetReservationResponse
             {
+                //todo: тут нужны такие данные
+                /*
+                 * data class ReservationDataModel(
+                val reservationId: Int? = null,
+                val activityId: Int? = null,
+                val time: Date? = null,
+                val userNumber: Int,
+                val accessCode: String? = null
+                )
+                */
                 SlotId = res.SlotId,
                 Count = res.Count,
                 Email = res.Email,
@@ -196,7 +206,7 @@ namespace BackendReCharge.Controllers
             {
                 SelectedDateTimeStart = startDate,
                 SelectedDateTimeEnd = endDate,
-                Reservations =  reservationsResponse
+                Reservations = reservationsResponse
 
             };
             return Ok(response);

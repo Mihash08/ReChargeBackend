@@ -126,6 +126,7 @@ namespace BackendReCharge.Controllers
                     Id = user.Id,
                     City = request.City,
                     AccessHash = user.AccessHash,
+                    Gender = request.Gender,
                 });
                 return Ok();
             }
