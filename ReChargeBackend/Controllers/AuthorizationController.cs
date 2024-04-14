@@ -84,7 +84,7 @@ namespace BackendReCharge.Controllers
                     {
                         if (DateTime.Now - session.CreationDateTime < new TimeSpan(0, 5, 0))
                         {
-                            return BadRequest("Code has expired");
+                            return BadRequest("Время действия кода истекло");
                         }
                         userRepository.Add(new User()
                         {
@@ -99,7 +99,7 @@ namespace BackendReCharge.Controllers
 
                     return Ok(new AuthResponse { AccessToken = accessToken});
                 }
-                return BadRequest("Wrong code");
+                return BadRequest("Неправильный код");
             } catch (ArgumentException e)
             {
                 Console.WriteLine(e);

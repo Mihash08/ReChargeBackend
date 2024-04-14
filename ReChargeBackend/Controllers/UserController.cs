@@ -119,10 +119,10 @@ namespace BackendReCharge.Controllers
                 {
                     BirthDate = request.BirthDay,
                     Email = request.Email,
-                    Name = request.FirstName,
-                    PhoneNumber = request.Phone,
-                    Surname = request.LastName,
-                    ImageUrl = request.ImageURL,
+                    Name = request.Name,
+                    PhoneNumber = request.PhoneNumber,
+                    Surname = request.Surname,
+                    ImageUrl = request.ImageUrl,
                     Id = user.Id
                 });
                 return Ok();
