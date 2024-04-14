@@ -422,9 +422,9 @@ namespace ReChargeBackend.Data
             if (!context.Reservations.Any())
             {
                 context.Reservations.AddRange(
-                    new Reservation { Id = 1, IsOver = false, SlotId = 2, UserId = 1, Count = 1, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
-                    new Reservation { Id = 2, IsOver = true, SlotId = 1, UserId = 1, Count = 3, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
-                    new Reservation { Id = 3, IsOver = false, SlotId = 4, UserId = 1, Count = 1, Email = "gled@gmail.com", Name = "Zhora", PhoneNumber = "+79251851096" }
+                    new Reservation { Id = 999999, IsOver = false, SlotId = 2, UserId = 1, Count = 1, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
+                    new Reservation { Id = 999998, IsOver = true, SlotId = 1, UserId = 1, Count = 3, Email = "mihsasandomirskiy@gmail.com", Name = "Misha", PhoneNumber = "+79251851096" },
+                    new Reservation { Id = 999997, IsOver = false, SlotId = 4, UserId = 1, Count = 1, Email = "gled@gmail.com", Name = "Zhora", PhoneNumber = "+79251851096" }
                 );
             }
             context.SaveChanges();
