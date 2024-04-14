@@ -12,7 +12,7 @@ namespace Data.Entities
     public class User : BaseEntity
     {
         [Column("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Column("surname")]
         public string? Surname { get; set; }
         [Column("email")]

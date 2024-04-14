@@ -123,7 +123,9 @@ namespace BackendReCharge.Controllers
                     PhoneNumber = request.PhoneNumber,
                     Surname = request.Surname,
                     ImageUrl = request.ImageUrl,
-                    Id = user.Id
+                    Id = user.Id,
+                    City = request.City,
+                    AccessHash = user.AccessHash,
                 });
                 return Ok();
             }
