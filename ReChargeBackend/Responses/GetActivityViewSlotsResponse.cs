@@ -4,6 +4,7 @@ namespace ReChargeBackend.Responses
     public class GetActivityViewSlotsResponse
     {
         public SlotView[] Slots;
+        public DateTime DateTime;
 
     }
 

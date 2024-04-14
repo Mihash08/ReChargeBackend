@@ -50,7 +50,8 @@ namespace BackendReCharge.Controllers
             return Ok(new GetSlotsByCategoryAndDateResponse
             {
                 CategoryName = catName,
-                Slots = resp.ToList()
+                Slots = resp.ToList(),
+                dateTime = dateTime
             });
         }
         [HttpGet(Name = "GetSlotsByActivityIdAndTimeTest")]
@@ -67,14 +68,19 @@ namespace BackendReCharge.Controllers
         public IActionResult GetActivityViewSlots(int activityId, DateTime Date)
         {
             var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date == Date.Date);
-            return Ok(slots.Select(x => 
-                new SlotView { 
-                    DurationMinutes = x.LengthMinutes, 
-                    Price = x.Price, 
-                    SlotId = x.Id, 
-                    StartTime = 
-                    x.SlotDateTime 
-                }).ToArray());
+            return Ok(new GetActivityViewSlotsResponse
+            {
+                Slots = slots.Select(x =>
+                new SlotView
+                {
+                    DurationMinutes = x.LengthMinutes,
+                    Price = x.Price,
+                    SlotId = x.Id,
+                    StartTime =
+                    x.SlotDateTime
+                }).ToArray(),
+                DateTime = Date
+            });
         }
         [HttpGet(Name = "GetSlotFreeSpots")]
         public IActionResult GetSlotFreeSpots(int id)
