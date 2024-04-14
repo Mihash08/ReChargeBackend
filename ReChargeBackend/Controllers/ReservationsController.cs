@@ -47,11 +47,6 @@ namespace BackendReCharge.Controllers
             }
             return Ok(reservationRepository.GetReservationsByUser(user.Id));
         }
-        [HttpGet(Name = "GetReservation")]
-        public Reservation? GetReservation(int id)
-        {
-            return reservationRepository.GetById(id);
-        }
 
         [HttpPost(Name = "MakeReservation")]
         public IActionResult MakeReservation(int slotId, [FromBody] MakeReservationRequest request)
@@ -131,6 +126,39 @@ namespace BackendReCharge.Controllers
                 },
                 LocationName = res.Slot.Activity.Location.LocationName,
                 ReservationId = 1
+
+            };
+            return Ok(response);
+
+        }
+        [HttpGet(Name = "GetReservation")]
+        public IActionResult GetReservation(int reservationId)
+        {
+
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+
+            var res = reservationRepository.GetById(reservationId);
+            if (res is null)
+            {
+                return BadRequest($"Reservation with id {reservationId} doesn't exist");
+            }
+
+            var response = new GetReservationResponse
+            {
+                SlotId = res.SlotId,
+                Count = res.Count,
+                Email = res.Email,
+                Name = res.Name,
+                PhoneNumber = res.PhoneNumber
 
             };
             return Ok(response);
