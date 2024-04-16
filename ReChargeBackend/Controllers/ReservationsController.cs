@@ -110,7 +110,7 @@ namespace BackendReCharge.Controllers
                     Longitude = res.Slot.Activity.Location.AddressLongitude
                 },
                 LocationName = res.Slot.Activity.Location.LocationName,
-                ReservationId = 1
+                ReservationId = res.Id
 
             };
             return Ok(response);
@@ -164,7 +164,8 @@ namespace BackendReCharge.Controllers
                 return NotFound("User not found");
             }
 
-            var reservations = reservationRepository.GetReservationsByUser(user.Id);
+            var reservations = reservationRepository.GetReservationsByUser(user.Id)
+                .Where(x => x.Slot.SlotDateTime >= startDate && x.Slot.SlotDateTime <= endDate);
             if (reservations is null)
             {
                 return Ok("No reservations");
