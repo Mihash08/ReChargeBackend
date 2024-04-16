@@ -1,6 +1,7 @@
 ﻿using Data.Entities;
+using ReChargeBackend.Utility;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using Utility;
 namespace ReChargeBackend.Responses
 {
     public class GetReservationsResponse
@@ -18,9 +19,9 @@ namespace ReChargeBackend.Responses
         public DateTime DateTime { get; set; }
         public string Address {  get; set; }
         public string ActivityName {  get; set; }
-        public double CoordinatesLatitude { get; set; }
-        public double CoordinatesLongitude { get; set; }
+        public Coordinates Coordinates { get; set; }
         public int ActivityId {  get; set; }
 
     }
+
 }

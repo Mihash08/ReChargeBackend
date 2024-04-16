@@ -178,8 +178,11 @@ namespace BackendReCharge.Controllers
                 ReservationId = x.Id,
                 ActivityId = x.Slot.ActivityId,
                 ActivityName = x.Slot.Activity.ActivityName,
-                CoordinatesLatitude = x.Slot.Activity.Location.AddressLatitude,
-                CoordinatesLongitude = x.Slot.Activity.Location.AddressLongitude
+                Coordinates = new Coordinates
+                {
+                    Latitude = x.Slot.Activity.Location.AddressLatitude,
+                    Longitude = x.Slot.Activity.Location.AddressLongitude
+                }
 
             }).ToList();
             var response = new GetReservationsResponse
