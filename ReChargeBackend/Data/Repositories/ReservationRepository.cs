@@ -64,7 +64,7 @@ namespace Data.Repositories
             var entity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return null;
             }
             return entity;
         }

@@ -29,6 +29,8 @@ namespace Data.Entities
         public string Email { get; set; }
         [Column("count")]
         public int Count { get; set; }
+        [Column("access_code")]
+        public string AccessCode {  get; set; }
 
         public Slot Slot { get; set; }
         public User User { get; set; }

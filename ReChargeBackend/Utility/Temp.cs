@@ -38,5 +38,12 @@ namespace ReChargeBackend.Utility
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[RandomNumberGenerator.GetInt32(s.Length)]).ToArray());
         }
+        public static string GenerateAccessCode()
+        {
+            int length = 7;
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[RandomNumberGenerator.GetInt32(s.Length)]).ToArray());
+        }
     }
 }

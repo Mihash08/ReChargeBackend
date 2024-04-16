@@ -66,7 +66,8 @@ namespace BackendReCharge.Controllers
                     Count = request.ReserveCount,
                     Email = request.Email,
                     Name = request.Name,
-                    PhoneNumber = request.Phone
+                    PhoneNumber = request.Phone,
+                    AccessCode = Temp.GenerateAccessCode(),
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 slotRepository.Update(slot);
@@ -138,21 +139,12 @@ namespace BackendReCharge.Controllers
 
             var response = new GetReservationResponse
             {
-                //todo: тут нужны такие данные
-                /*
-                 * data class ReservationDataModel(
-                val reservationId: Int? = null,
-                val activityId: Int? = null,
-                val time: Date? = null,
-                val userNumber: Int,
-                val accessCode: String? = null
-                )
-                */
+                ActivityId = res.Slot.ActivityId,
+                ReservationId = reservationId,
+                AccessCode = res.AccessCode,
+                DateTime = res.Slot.SlotDateTime,
                 SlotId = res.SlotId,
                 Count = res.Count,
-                Email = res.Email,
-                Name = res.Name,
-                PhoneNumber = res.PhoneNumber
 
             };
             return Ok(response);
