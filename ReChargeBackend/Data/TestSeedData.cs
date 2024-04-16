@@ -26,7 +26,7 @@ namespace ReChargeBackend.Data
                     BirthDate = DateTime.Now,
                     Email = "mihsasandomirskiy@gmail.com",
                     Gender = "male",
-                    Id = 0,
+                    Id = 1,
                     Name = "Mikhail",
                     PhoneNumber = "+79251851096",
                     Surname = "Sandomirskii",
