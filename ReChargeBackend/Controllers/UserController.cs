@@ -117,7 +117,7 @@ namespace BackendReCharge.Controllers
             {
                 userRepository.Update(new User()
                 {
-                    BirthDate = request.BirthDay,
+                    BirthDate = request.BirthDate,
                     Email = request.Email,
                     Name = request.Name,
                     PhoneNumber = request.PhoneNumber,

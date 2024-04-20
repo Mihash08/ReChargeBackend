@@ -228,7 +228,8 @@ namespace ReChargeBackend.Data
                           Id = 1,
                           FreePlaces = 5,
                           Price = 1500,
-                          SlotDateTime = new DateTime(2023, 11, 20, 16, 30, 0)
+                          SlotDateTime = DateTime.Now.AddHours(1),
+                          LengthMinutes = 45,
                       },
                 new Slot()
                 {

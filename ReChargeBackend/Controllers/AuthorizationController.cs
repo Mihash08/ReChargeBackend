@@ -96,7 +96,7 @@ namespace BackendReCharge.Controllers
                         user.AccessHash = Hasher.Encrypt(accessToken);
                         userRepository.Update(user);
                     }
-
+                    verificationCodeRepository.Delete(session);
                     return Ok(new AuthResponse { AccessToken = accessToken});
                 }
                 return BadRequest("Неправильный код");
