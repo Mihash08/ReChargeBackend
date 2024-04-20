@@ -82,7 +82,8 @@ namespace BackendReCharge.Controllers
                 },
                 ImageURL = act.ImageUrl,
                 LocationAddress = act.Location.AddressCity + ", " + act.Location.AddressStreet + ", " + act.Location.AddressBuildingNumber,
-                ActivityDescription = act.ActivityDescription
+                ActivityDescription = act.ActivityDescription,
+                LocationName = act.Location.LocationName
             });
         }
         [HttpGet(Name = "GetActivitiesByCategory")]
