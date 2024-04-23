@@ -28,8 +28,7 @@ namespace BackendReCharge.Controllers
                 var acts = activityRepository.GetByCategory(category_id);
                 if (acts == null || !acts.Any())
                 {
-                    // Handle case when no activities are found
-                    return NotFound();
+                    return Ok(new List<GetActivitiesRecommendationsResponse>());
                 }
 
                 var list = acts.Select(x => new GetActivitiesRecommendationsResponse

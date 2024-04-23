@@ -110,11 +110,11 @@ namespace ReChargeBackend.Data
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
-                    new Category { Id = 4, Name = "Плаванье", Image = "https://w7.pngwing.com/pngs/655/142/png-transparent-computer-icons-synchronised-swimming-swimming-text-sport-swimming-pool.png", CategoryCategoryId = 0 },
-                    new Category { Id = 3, Name = "Спорт залы", Image = "https://w7.pngwing.com/pngs/79/814/png-transparent-fitness-centre-computer-icons-dumbbell-weight-training-gym-physical-fitness-text-sports-thumbnail.png", CategoryCategoryId = 0 },
+                    new Category { Id = 4, Name = "Плаванье", Image = "https://www.freeiconspng.com/thumbs/swimming-icon-png/sports-swimming-icon-png-1.png", CategoryCategoryId = 0 },
+                    new Category { Id = 3, Name = "Спорт залы", Image = "https://cdn-icons-png.flaticon.com/512/755/755298.png", CategoryCategoryId = 0 },
                     new Category { Id = 1, Name = "Бокс", Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", CategoryCategoryId = 0},
-                    new Category { Id = 2, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
-                    new Category { Id = 5, Name = "Ноготички", Image = "https://w7.pngwing.com/pngs/185/672/png-transparent-nail-polish-bottle-art-manicure-nail-computer-icons-pedicure-beauty-parlour-beauty-parlor-s-cosmetics-fashion-nail-polish.png", CategoryCategoryId = 1 },
+                    new Category { Id = 82, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
+                    new Category { Id = 5, Name = "Ноготички", Image = "https://cdn-icons-png.flaticon.com/512/80/80405.png", CategoryCategoryId = 1 },
                     new Category { Id = 6, Name = "Массаж", Image = "https://cdn-icons-png.flaticon.com/512/837/837377.png", CategoryCategoryId = 1 }
                 );
             }
