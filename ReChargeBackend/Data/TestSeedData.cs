@@ -113,7 +113,7 @@ namespace ReChargeBackend.Data
                     new Category { Id = 4, Name = "Плаванье", Image = "https://www.freeiconspng.com/thumbs/swimming-icon-png/sports-swimming-icon-png-1.png", CategoryCategoryId = 0 },
                     new Category { Id = 3, Name = "Спорт залы", Image = "https://cdn-icons-png.flaticon.com/512/755/755298.png", CategoryCategoryId = 0 },
                     new Category { Id = 1, Name = "Бокс", Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", CategoryCategoryId = 0},
-                    new Category { Id = 82, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
+                    new Category { Id = 2, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
                     new Category { Id = 5, Name = "Ноготички", Image = "https://cdn-icons-png.flaticon.com/512/80/80405.png", CategoryCategoryId = 1 },
                     new Category { Id = 6, Name = "Массаж", Image = "https://cdn-icons-png.flaticon.com/512/837/837377.png", CategoryCategoryId = 1 }
                 );
