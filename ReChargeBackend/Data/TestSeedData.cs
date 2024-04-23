@@ -110,12 +110,12 @@ namespace ReChargeBackend.Data
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
-                    new Category { Id = 4, Name = "Плаванье", Image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFsFjfGYNytLnLRpVMHt9LBAue_yc8XqceVG4Z9-vIfA&s", CategoryCategoryId = 0 },
-                    new Category { Id = 3, Name = "Спорт залы", Image = "https://t4.ftcdn.net/jpg/03/29/67/97/360_F_329679742_4vrHnqpRSsqiTrLWEsmpLwvwHc3aNc4I.jpg", CategoryCategoryId = 0 },
-                    new Category { Id = 1, Name = "Бокс", Image = "https://static.vecteezy.com/system/resources/thumbnails/000/421/048/small/Sports__28112_29.jpg", CategoryCategoryId = 0},
+                    new Category { Id = 4, Name = "Плаванье", Image = "https://w7.pngwing.com/pngs/655/142/png-transparent-computer-icons-synchronised-swimming-swimming-text-sport-swimming-pool.png", CategoryCategoryId = 0 },
+                    new Category { Id = 3, Name = "Спорт залы", Image = "https://w7.pngwing.com/pngs/79/814/png-transparent-fitness-centre-computer-icons-dumbbell-weight-training-gym-physical-fitness-text-sports-thumbnail.png", CategoryCategoryId = 0 },
+                    new Category { Id = 1, Name = "Бокс", Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", CategoryCategoryId = 0},
                     new Category { Id = 2, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
-                    new Category { Id = 5, Name = "Ноготички", Image = "https://i.pinimg.com/236x/ee/07/83/ee078346b43a46705c4da433b6c7e392.jpg", CategoryCategoryId = 1 },
-                    new Category { Id = 6, Name = "Массаж", Image = "https://actual-cosmetology.ru/wp-content/uploads/2022/08/7-1.jpg", CategoryCategoryId = 1 }
+                    new Category { Id = 5, Name = "Ноготички", Image = "https://w7.pngwing.com/pngs/185/672/png-transparent-nail-polish-bottle-art-manicure-nail-computer-icons-pedicure-beauty-parlour-beauty-parlor-s-cosmetics-fashion-nail-polish.png", CategoryCategoryId = 1 },
+                    new Category { Id = 6, Name = "Массаж", Image = "https://cdn-icons-png.flaticon.com/512/837/837377.png", CategoryCategoryId = 1 }
                 );
             }
             context.SaveChanges();
