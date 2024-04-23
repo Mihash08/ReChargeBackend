@@ -26,7 +26,7 @@ namespace ReChargeBackend.Data
                     BirthDate = DateTime.Now,
                     Email = "mihsasandomirskiy@gmail.com",
                     Gender = "male",
-                    Id = 0,
+                    Id = 1,
                     Name = "Mikhail",
                     PhoneNumber = "+79251851096",
                     Surname = "Sandomirskii",
@@ -275,89 +275,192 @@ namespace ReChargeBackend.Data
                             FreePlaces = 5,
                             Price = 1250,
                             SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                    LengthMinutes = 45,
+                            LengthMinutes = 45,
                         },
-
                         new Slot()
                         {
-                            ActivityId = 3,
+                            ActivityId = 2,
                             Id = 7,
                             FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
                         {
-                            ActivityId = 3,
+                            ActivityId = 2,
                             Id = 8,
                             FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(1),
                             LengthMinutes = 45,
                         },
                         new Slot()
                         {
-                            ActivityId = 3,
+                            ActivityId = 2,
                             Id = 9,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
+                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(1),
                             LengthMinutes = 45,
                         },
 
                         new Slot()
                         {
-                            ActivityId = 4,
+                            ActivityId = 2,
                             Id = 10,
                             FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
                         {
-                            ActivityId = 4,
+                            ActivityId = 2,
                             Id = 11,
                             FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(2),
                             LengthMinutes = 45,
                         },
                         new Slot()
                         {
-                            ActivityId = 4,
+                            ActivityId = 2,
                             Id = 12,
                             FreePlaces = 5,
                             Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
+                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(2),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 13,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(2),
                             LengthMinutes = 45,
                         },
 
                         new Slot()
                         {
-                            ActivityId = 5,
-                            Id = 13,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 5,
+                            ActivityId = 2,
                             Id = 14,
                             FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(3),
                             LengthMinutes = 45,
                         },
                         new Slot()
                         {
-                            ActivityId = 5,
+                            ActivityId = 2,
                             Id = 15,
                             FreePlaces = 5,
                             Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(1),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 16,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(3),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 2,
+                            Id = 17,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(3),
+                            LengthMinutes = 45,
+                        },
+                        //todo continue mock
+
+
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 18,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = DateTime.Now.AddHours(1),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 19,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = DateTime.Now.AddHours(2),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 3,
+                            Id = 20,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
+                            LengthMinutes = 45,
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 21,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = DateTime.Now.AddHours(1),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 22,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = DateTime.Now.AddHours(2),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 4,
+                            Id = 23,
+                            FreePlaces = 5,
+                            Price = 1250,
+                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
+                            LengthMinutes = 45,
+                        },
+
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 24,
+                            FreePlaces = 5,
+                            Price = 1500,
+                            SlotDateTime = DateTime.Now.AddHours(1),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 25,
+                            FreePlaces = 5,
+                            Price = 2000,
+                            SlotDateTime = DateTime.Now.AddHours(2),
+                            LengthMinutes = 45,
+                        },
+                        new Slot()
+                        {
+                            ActivityId = 5,
+                            Id = 26,
+                            FreePlaces = 5,
+                            Price = 1250,
                             SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
                             LengthMinutes = 45,
                         },
@@ -365,7 +468,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 6,
-                            Id = 16,
+                            Id = 27,
                             FreePlaces = 5,
                             Price = 1500,
                             SlotDateTime = DateTime.Now.AddHours(1),
@@ -374,7 +477,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 6,
-                            Id = 17,
+                            Id = 28,
                             FreePlaces = 5,
                             Price = 2000,
                             SlotDateTime = DateTime.Now.AddHours(2),
@@ -383,7 +486,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 6,
-                            Id = 18,
+                            Id = 29,
                             FreePlaces = 5,
                             Price = 1250,
                             SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
@@ -393,7 +496,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 7,
-                            Id = 19,
+                            Id = 30,
                             FreePlaces = 5,
                             Price = 1500,
                             SlotDateTime = DateTime.Now.AddHours(1),
@@ -402,7 +505,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 7,
-                            Id = 20,
+                            Id = 31,
                             FreePlaces = 5,
                             Price = 2000,
                             SlotDateTime = DateTime.Now.AddHours(2),
@@ -411,7 +514,7 @@ namespace ReChargeBackend.Data
                         new Slot()
                         {
                             ActivityId = 7,
-                            Id = 21,
+                            Id = 32,
                             FreePlaces = 5,
                             Price = 1250,
                             SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
@@ -428,7 +531,7 @@ namespace ReChargeBackend.Data
                         Id = 999999, 
                         IsOver = false, 
                         SlotId = 2, 
-                        UserId = 0,
+                        UserId = 1,
                         Count = 1, 
                         Email = "mihsasandomirskiy@gmail.com",
                         Name = "Misha", 
@@ -439,7 +542,7 @@ namespace ReChargeBackend.Data
                         Id = 999998, 
                         IsOver = true, 
                         SlotId = 1, 
-                        UserId = 0, 
+                        UserId = 1, 
                         Count = 3, 
                         Email = "mihsasandomirskiy@gmail.com", 
                         Name = "Misha", 
@@ -450,7 +553,7 @@ namespace ReChargeBackend.Data
                         Id = 999997, 
                         IsOver = false, 
                         SlotId = 4,
-                        UserId = 0, 
+                        UserId = 1, 
                         Count = 1, 
                         Email = "gled@gmail.com", 
                         Name = "Zhora", 
