@@ -30,7 +30,9 @@ namespace BackendReCharge.Controllers
         {
             var slots = slotRepository.GetSlotsByCategoryIdAndTime(categoryId, dateTime);
             var catName = categoryRepository.GetById(categoryId).Name;
-            List<GetSlotByCategoryAndDateResponse> resp = slots.Select(x => new GetSlotByCategoryAndDateResponse
+            List<GetSlotByCategoryAndDateResponse> resp = slots
+                .Where(x => x.SlotDateTime > DateTime.Now)
+                .Select(x => new GetSlotByCategoryAndDateResponse
             {
                 SlotId = x.Id,
                 ActivityName = x.Activity.ActivityName,
@@ -58,7 +60,8 @@ namespace BackendReCharge.Controllers
         [HttpGet(Name = "GetSlotsByActivityIdAndTimeTest")]
         public IActionResult GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
         {
-            return Ok(slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime));
+            return Ok(slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime)
+                .Where(x => x.SlotDateTime > DateTime.Now));
         }
         [HttpGet(Name = "GetSlotTest")]
         public Slot GetSlot(int id)
@@ -68,7 +71,9 @@ namespace BackendReCharge.Controllers
         [HttpGet(Name = "GetActivityViewSlots")]
         public IActionResult GetActivityViewSlots(int activityId, DateTime dateTime)
         {
-            var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24));
+            var slots = slotRepository.GetAllByActivityId(activityId)
+                .Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
+                .Where(x => x.SlotDateTime > DateTime.Now);
             return Ok(new GetActivityViewSlotsResponse
             {
                 Slots = slots.Select(x =>
