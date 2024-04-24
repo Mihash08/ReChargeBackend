@@ -102,6 +102,20 @@ namespace ReChargeBackend.Data
                     LocationDescription = "Супер тренировки, супер корты, самое новое оборудование и добрые тренера (или тренеры)." +
                     " Нет в мире лучше теннисного клуба, чем Tennis Capital",
                     LocationName = "Tennis Capital"
+                },
+                new Location
+                {
+                    Id = 5,
+                    AddressBuildingNumber = "23",
+                    AddressCity = "Москва",
+                    AddressLatitude = 55.827385,
+                    AddressLongitude = 37.479324,
+                    AddressNearestMetro = "Алексеевская",
+                    AddressStreet = "Ленинградское шоссе",
+                    AdminTG = "Mihash08",
+                    AdminWA = "+79251851096",
+                    LocationDescription = "Ноготочки супер топ. Лучшие в мире. Еще массаж есть, просто отличный.",
+                    LocationName = "Nails and Spa"
                 }
                 );
             }
@@ -112,7 +126,7 @@ namespace ReChargeBackend.Data
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
-                    new Category { Id = 4, Name = "Плаванье", Image = "https://www.freeiconspng.com/thumbs/swimming-icon-png/sports-swimming-icon-png-1.png", CategoryCategoryId = 0 },
+                    new Category { Id = 4, Name = "Плаванье", Image = "https://cdn-icons-png.flaticon.com/512/50/50004.png", CategoryCategoryId = 0 },
                     new Category { Id = 3, Name = "Спорт залы", Image = "https://cdn-icons-png.flaticon.com/512/755/755298.png", CategoryCategoryId = 0 },
                     new Category { Id = 1, Name = "Бокс", Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", CategoryCategoryId = 0},
                     new Category { Id = 2, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
@@ -211,8 +225,30 @@ namespace ReChargeBackend.Data
                         CategoryId = 2,
                         Id = 7,
                         LocationId = 4,
-                        ShouldDisplayWarning = false,
+                        ShouldDisplayWarning = true,
                         WarningText = "Требуется своя экипировка",
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                    },
+                    new Activity()
+                    {
+                        ActivityDescription = "Лучший маникюр и педикюр. Любые формы, любой цвет.",
+                        ActivityName = "Маникюр",
+                        CategoryId = 5,
+                        Id = 8,
+                        LocationId = 5,
+                        ShouldDisplayWarning = false,
+                        WarningText = "",
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                    },
+                    new Activity()
+                    {
+                        ActivityDescription = "Клевый массаж",
+                        ActivityName = "Массаж",
+                        CategoryId = 6,
+                        Id = 9,
+                        LocationId = 5,
+                        ShouldDisplayWarning = false,
+                        WarningText = "",
                         ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
                     }
                 );
@@ -224,11 +260,11 @@ namespace ReChargeBackend.Data
             if (!context.Slots.Any())
             {
                 int slotId = 1;
-                for (int activityId = 1; activityId <= 7; activityId++)
+                for (int activityId = 1; activityId <= 9; activityId++)
                 {
                     for (int daySkip = 0;  daySkip <= 7; daySkip++)
                     {
-                        for (int hourSkip = -5;  hourSkip <= 5; hourSkip++)
+                        for (int hourSkip = -10;  hourSkip <= 2; hourSkip++)
                         {
                             context.Slots.Add(
                                 new Slot()

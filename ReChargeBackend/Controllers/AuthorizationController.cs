@@ -47,11 +47,11 @@ namespace BackendReCharge.Controllers
                 return Ok(new PhoneAuthResponse()
                 {
                     SessionId = sessionId,
-                    TitleText = "Введите код, полученный на " + info.phoneNumber,
+                    TitleText = "Введите полученный код",
                     CodeSize = 5,
                     ConditionalInfo = new ConditionalInfoResponse()
                     {
-                        Message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
+                        Message = "Совершая авторизацию,\nвы соглашаетесь с правилами сервиса",
                         Url = "google.com"
                     }
 
