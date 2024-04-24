@@ -29,7 +29,7 @@ namespace BackendReCharge.Controllers
         }
 
         private readonly ILogger<UserController> _logger;
-
+        /*
         [HttpGet(Name = "GetUserByNumberTest")]
         public AdminUser GetUserByNumberTest(string number)
         {
@@ -109,7 +109,7 @@ namespace BackendReCharge.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        */
 
     }
 }
