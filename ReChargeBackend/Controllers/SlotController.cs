@@ -3,6 +3,7 @@ using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using ReChargeBackend.Requests;
 using ReChargeBackend.Responses;
+using System;
 
 namespace BackendReCharge.Controllers
 {
@@ -65,9 +66,9 @@ namespace BackendReCharge.Controllers
             return slotRepository.GetById(id);
         }
         [HttpGet(Name = "GetActivityViewSlots")]
-        public IActionResult GetActivityViewSlots(int activityId, DateTime Date)
+        public IActionResult GetActivityViewSlots(int activityId, DateTime dateTime)
         {
-            var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date == Date.Date);
+            var slots = slotRepository.GetAllByActivityId(activityId).Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24));
             return Ok(new GetActivityViewSlotsResponse
             {
                 Slots = slots.Select(x =>
@@ -79,7 +80,7 @@ namespace BackendReCharge.Controllers
                     StartTime =
                     x.SlotDateTime
                 }).ToArray(),
-                DateTime = Date
+                DateTime = dateTime
             });
         }
         [HttpGet(Name = "GetSlotFreeSpots")]

@@ -13,6 +13,8 @@ namespace ReChargeBackend.Data
             AppDbContext context = app.ApplicationServices.CreateScope().ServiceProvider.GetService<AppDbContext>();
             context.Database.OpenConnection();
 
+            Random rnd = new Random();
+
             if (context.Database.GetPendingMigrations().Any())
             {
                 context.Database.Migrate();
@@ -221,306 +223,28 @@ namespace ReChargeBackend.Data
             
             if (!context.Slots.Any())
             {
-                context.Slots.AddRange(
-                      new Slot()
-                      {
-                          ActivityId = 1,
-                          Id = 1,
-                          FreePlaces = 5,
-                          Price = 1500,
-                          SlotDateTime = DateTime.Now.AddHours(1),
-                          LengthMinutes = 45,
-                      },
-                new Slot()
+                int slotId = 1;
+                for (int activityId = 1; activityId <= 7; activityId++)
                 {
-                    ActivityId = 1,
-                    Id = 2,
-                    FreePlaces = 5,
-                    Price = 2000,
-                    SlotDateTime = DateTime.Now.AddHours(1),
-                    LengthMinutes = 45,
-                },
-                new Slot()
-                {
-                    ActivityId = 1,
-                    Id = 3,
-                    FreePlaces = 5,
-                    Price = 1250,
-                    SlotDateTime = DateTime.Now.AddHours(2),
-                    LengthMinutes = 45,
-                },
-
-                        new Slot()
+                    for (int daySkip = 0;  daySkip <= 7; daySkip++)
+                    {
+                        for (int hourSkip = -5;  hourSkip <= 5; hourSkip++)
                         {
-                            ActivityId = 2,
-                            Id = 4,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                    LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 5,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                    LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 6,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 7,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 8,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 9,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 10,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 11,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 12,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 13,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(2),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 14,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(3),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 15,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(2).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 16,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(0).AddDays(3),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 2,
-                            Id = 17,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(-1).AddDays(3),
-                            LengthMinutes = 45,
-                        },
-                        //todo continue mock
-
-
-                        new Slot()
-                        {
-                            ActivityId = 3,
-                            Id = 18,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 3,
-                            Id = 19,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 3,
-                            Id = 20,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 4,
-                            Id = 21,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 4,
-                            Id = 22,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 4,
-                            Id = 23,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 5,
-                            Id = 24,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 5,
-                            Id = 25,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 5,
-                            Id = 26,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 6,
-                            Id = 27,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 6,
-                            Id = 28,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 6,
-                            Id = 29,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
-                        },
-
-                        new Slot()
-                        {
-                            ActivityId = 7,
-                            Id = 30,
-                            FreePlaces = 5,
-                            Price = 1500,
-                            SlotDateTime = DateTime.Now.AddHours(1),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 7,
-                            Id = 31,
-                            FreePlaces = 5,
-                            Price = 2000,
-                            SlotDateTime = DateTime.Now.AddHours(2),
-                            LengthMinutes = 45,
-                        },
-                        new Slot()
-                        {
-                            ActivityId = 7,
-                            Id = 32,
-                            FreePlaces = 5,
-                            Price = 1250,
-                            SlotDateTime = DateTime.Now.AddHours(1).AddDays(1),
-                            LengthMinutes = 45,
+                            context.Slots.Add(
+                                new Slot()
+                                {
+                                    ActivityId = activityId,
+                                    Id = slotId,
+                                    FreePlaces = rnd.Next(0, 10),
+                                    Price = rnd.Next(4, 8) * 250,
+                                    SlotDateTime = DateTime.Now.AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-2, 2) * 15),
+                                    LengthMinutes = rnd.Next(1, 6) * 15,
+                                }
+                            );
+                            slotId++;
                         }
-                    );
+                    }
+                }
             }
             context.SaveChanges();
 
