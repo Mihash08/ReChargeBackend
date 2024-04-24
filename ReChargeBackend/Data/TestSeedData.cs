@@ -154,7 +154,8 @@ namespace ReChargeBackend.Data
                         LocationId = 1,
                         ShouldDisplayWarning = true,
                         WarningText = "Требуется справка",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -167,8 +168,8 @@ namespace ReChargeBackend.Data
                         Id = 2,
                         LocationId = 2,
                         ShouldDisplayWarning = false,
-                        WarningText = "",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -180,8 +181,8 @@ namespace ReChargeBackend.Data
                         Id = 3,
                         LocationId = 2,
                         ShouldDisplayWarning = false,
-                        WarningText = "",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -191,9 +192,10 @@ namespace ReChargeBackend.Data
                         CategoryId = 1,
                         Id = 4,
                         LocationId = 3,
-                        ShouldDisplayWarning = false,
+                        ShouldDisplayWarning = true,
                         WarningText = "Вас будут бить",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -204,8 +206,8 @@ namespace ReChargeBackend.Data
                         Id = 5,
                         LocationId = 3,
                         ShouldDisplayWarning = false,
-                        WarningText = "Вас будут бить",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -216,7 +218,8 @@ namespace ReChargeBackend.Data
                         LocationId = 4,
                         ShouldDisplayWarning = true,
                         WarningText = "Требуется своя экипировка",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -227,7 +230,8 @@ namespace ReChargeBackend.Data
                         LocationId = 4,
                         ShouldDisplayWarning = true,
                         WarningText = "Требуется своя экипировка",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -237,8 +241,8 @@ namespace ReChargeBackend.Data
                         Id = 8,
                         LocationId = 5,
                         ShouldDisplayWarning = false,
-                        WarningText = "",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
                     {
@@ -248,8 +252,8 @@ namespace ReChargeBackend.Data
                         Id = 9,
                         LocationId = 5,
                         ShouldDisplayWarning = false,
-                        WarningText = "",
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg"
+                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     }
                 );
 
