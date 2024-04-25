@@ -126,12 +126,48 @@ namespace ReChargeBackend.Data
             if (!context.Categories.Any())
             {
                 context.Categories.AddRange(
-                    new Category { Id = 4, Name = "Плаванье", Image = "https://cdn-icons-png.flaticon.com/512/50/50004.png", CategoryCategoryId = 0 },
-                    new Category { Id = 3, Name = "Спорт залы", Image = "https://cdn-icons-png.flaticon.com/512/755/755298.png", CategoryCategoryId = 0 },
-                    new Category { Id = 1, Name = "Бокс", Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", CategoryCategoryId = 0},
-                    new Category { Id = 2, Name = "Теннис", Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", CategoryCategoryId = 0 },
-                    new Category { Id = 5, Name = "Ноготички", Image = "https://cdn-icons-png.flaticon.com/512/80/80405.png", CategoryCategoryId = 1 },
-                    new Category { Id = 6, Name = "Массаж", Image = "https://cdn-icons-png.flaticon.com/512/837/837377.png", CategoryCategoryId = 1 }
+                    new Category { 
+                        Id = 4, 
+                        Name = "Плаванье", 
+                        Image = "https://cdn-icons-png.flaticon.com/512/50/50004.png", 
+                        CategoryCategoryId = 0,
+                        FullImageUrl = "https://www.health.com/thmb/Yv4HuoQyNbHNNxgtOTm63zqxurQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Health-Swimming-080c78802f384a4687df5a3b13d5611e-3719a8e40a3c4c43a63a4d795e47c505.jpg"
+                    },
+                    new Category { 
+                        Id = 3, 
+                        Name = "Спорт залы", 
+                        Image = "https://cdn-icons-png.flaticon.com/512/755/755298.png", 
+                        CategoryCategoryId = 0,
+                        FullImageUrl = "https://prod-ne-cdn-media.puregym.com/media/819394/gym-workout-plan-for-gaining-muscle_header.jpg?quality=80",
+                    },
+                    new Category { 
+                        Id = 1, 
+                        Name = "Бокс", 
+                        Image = "https://cdn-icons-png.flaticon.com/512/73/73029.png", 
+                        CategoryCategoryId = 0,
+                        FullImageUrl = "https://media.newyorker.com/photos/653fe516ebe5be0a063b2116/4:3/w_2276,h_1707,c_limit/Sanneh-UFC-10-30-23.jpg"
+                    },
+                    new Category { 
+                        Id = 2, 
+                        Name = "Теннис", 
+                        Image = "https://icons.iconarchive.com/icons/iconsmind/outline/512/Tennis-icon.png", 
+                        CategoryCategoryId = 0,
+                        FullImageUrl = "https://cdn.britannica.com/57/183257-050-0BA11B4B/Roger-Federer-2012.jpg"
+                    },
+                    new Category { 
+                        Id = 5, 
+                        Name = "Ноготички", 
+                        Image = "https://cdn-icons-png.flaticon.com/512/80/80405.png", 
+                        CategoryCategoryId = 1,
+                        FullImageUrl = "https://laque-lounge.ru/wp-content/uploads/2023/02/img_6394555.jpeg"
+                    },
+                    new Category { 
+                        Id = 6, 
+                        Name = "Массаж", 
+                        Image = "https://cdn-icons-png.flaticon.com/512/837/837377.png", 
+                        CategoryCategoryId = 1,
+                        FullImageUrl = "https://i0.wp.com/post.healthline.com/wp-content/uploads/2022/03/massage-on-back-1296-728-header.jpg?w=1155&h=1528"
+                    }
                 );
             }
             context.SaveChanges();
@@ -147,7 +183,12 @@ namespace ReChargeBackend.Data
                         ActivityAdminTg = "@Mihash08",
                         ActivityAdminWa = "+79251851096",
                         ActivityDescription = "Свободное плавание в бассейне Чайка это 5 дорожек длинной " +
-                    "50 метров с разной глубиной. Занимайтесь плаваньем для того-то чего-то и будет все хорошо",
+                    "50 метров с разной глубиной. Занимайтесь плаваньем для того-то чего-то и будет все хорошо" +
+                    "Открытый бассейн «Чайка», который работает круглый год. Тут вам и кафе, и лежаки, и " +
+                    "знакомство с фридайвингом, и теплая водичка в холодное время года, и даже соляная " +
+                    "пещера. Обратите внимание, что для посещения обязательна справка," +
+                    " но для удобства вы можете получить ее прямо на территории бассейна," +
+                    " если штатный врач будет на месте.",
                         ActivityName = "Свободное плавание 45 минут",
                         CategoryId = 4,
                         Id = 1,
@@ -173,9 +214,10 @@ namespace ReChargeBackend.Data
                     },
                     new Activity()
                     {
-                        ActivityDescription = "Тренировка с профессиональным тренером это намного эффективнее и круче! " +
-                        "А если вам кажется, что вы и сами все знаете, попробуйте тренировку с тренером в Fitness Planet и познайте, что такое" +
-                        "по настоящему интенсивная тренировка ",
+                        ActivityDescription = "Открытый теннисный корт. Покрытие 9-ти слойный хард со " +
+                        "смягчением 2020 года.\r\nБесплатная парковка, раздевалки, душ.. ОБОРУДОВАНИЕ В " +
+                        "АРЕНДУ НЕ ПРЕДОСТАВЛЯЕТСЯ\r\nОсвещение - 400 люкс \r\nКОРТ ДЛЯ ФОТОСЕССИЙ, " +
+                        "СЪЕМОК И МЕРОПРИЯТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ",
                         ActivityName = "Часовая тренировка с личным тренером",
                         CategoryId = 3,
                         Id = 3,

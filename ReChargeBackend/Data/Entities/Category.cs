@@ -18,5 +18,7 @@ namespace Data.Entities
         public string? Image { get; set; }
         [Column("cat_cat_id")]
         public int CategoryCategoryId {  get; set; }
+        [Column("fullImage")]
+        public string? FullImageUrl { get; set; }
     }
 }
