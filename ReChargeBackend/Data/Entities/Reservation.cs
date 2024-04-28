@@ -9,6 +9,15 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Data.Entities
 {
+    public enum State
+    {
+        New,
+        Confirmed,
+        Used,
+        Missed,
+        CanceledByUser,
+        CanceledByAdmin
+    }
     [Table("reservations")]
     public class Reservation : BaseEntity
     {
@@ -31,6 +40,8 @@ namespace Data.Entities
         public int Count { get; set; }
         [Column("access_code")]
         public string AccessCode {  get; set; }
+        [Column("state")]
+        public State State { get; set; }
 
         public Slot Slot { get; set; }
         public User User { get; set; }

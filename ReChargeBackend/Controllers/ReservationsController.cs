@@ -68,6 +68,7 @@ namespace BackendReCharge.Controllers
                     Name = request.Name,
                     PhoneNumber = request.Phone,
                     AccessCode = Temp.GenerateAccessCode(),
+                    State = State.New
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 slotRepository.Update(slot);
@@ -110,7 +111,8 @@ namespace BackendReCharge.Controllers
                     Longitude = res.Slot.Activity.Location.AddressLongitude
                 },
                 LocationName = res.Slot.Activity.Location.LocationName,
-                ReservationId = res.Id
+                ReservationId = res.Id,
+                State = res.State
 
             };
             return Ok(response);
@@ -149,6 +151,7 @@ namespace BackendReCharge.Controllers
                 DateTime = res.Slot.SlotDateTime,
                 SlotId = res.SlotId,
                 Count = res.Count,
+                State = res.State,
 
             };
             return Ok(response);
@@ -187,7 +190,8 @@ namespace BackendReCharge.Controllers
                 {
                     Latitude = x.Slot.Activity.Location.AddressLatitude,
                     Longitude = x.Slot.Activity.Location.AddressLongitude
-                }
+                },
+                State = x.State
 
             }).ToList();
             var response = new GetReservationsResponse

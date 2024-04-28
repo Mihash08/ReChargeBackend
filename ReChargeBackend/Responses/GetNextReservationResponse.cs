@@ -1,4 +1,5 @@
-﻿using ReChargeBackend.Utility;
+﻿using Data.Entities;
+using ReChargeBackend.Utility;
 
 namespace ReChargeBackend.Responses
 {
@@ -12,6 +13,7 @@ namespace ReChargeBackend.Responses
         public string LocationName { get; set; }
         public string AddressString { get; set; }
         public int ReservationId {  get; set; }
+        public State State { get; set; }
 
     }
 }

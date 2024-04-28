@@ -48,7 +48,7 @@ namespace BackendReCharge.Controllers
                 LengthMinutes = x.LengthMinutes,
                 LocationName = x.Activity.Location.LocationName,
                 Price = x.Price
-            }).ToList();
+            }).OrderBy(x => x.DateTime).ToList();
 
             return Ok(new GetSlotsByCategoryAndDateResponse
             {
@@ -61,7 +61,7 @@ namespace BackendReCharge.Controllers
         public IActionResult GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
         {
             return Ok(slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime)
-                .Where(x => x.SlotDateTime > DateTime.Now));
+                .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime));
         }
         [HttpGet(Name = "GetSlotTest")]
         public Slot GetSlot(int id)
@@ -73,7 +73,7 @@ namespace BackendReCharge.Controllers
         {
             var slots = slotRepository.GetAllByActivityId(activityId)
                 .Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
-                .Where(x => x.SlotDateTime > DateTime.Now);
+                .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime);
             return Ok(new GetActivityViewSlotsResponse
             {
                 Slots = slots.Select(x =>

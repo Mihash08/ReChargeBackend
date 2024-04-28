@@ -422,35 +422,38 @@ namespace ReChargeBackend.Data
                     new Reservation { 
                         Id = 999999, 
                         IsOver = false, 
-                        SlotId = 2, 
+                        SlotId = 30, 
                         UserId = 1,
                         Count = 1, 
                         Email = "mihsasandomirskiy@gmail.com",
                         Name = "Misha", 
                         PhoneNumber = "+79251851096", 
-                        AccessCode = Temp.GenerateAccessCode()
+                        AccessCode = Temp.GenerateAccessCode(),
+                        State = State.Confirmed
                     },
                     new Reservation { 
                         Id = 999998, 
                         IsOver = true, 
-                        SlotId = 1, 
+                        SlotId = 54, 
                         UserId = 1, 
                         Count = 3, 
                         Email = "mihsasandomirskiy@gmail.com", 
                         Name = "Misha", 
                         PhoneNumber = "+79251851096",
-                        AccessCode = Temp.GenerateAccessCode()
+                        AccessCode = Temp.GenerateAccessCode(),
+                        State = State.CanceledByAdmin
                     },
                     new Reservation { 
                         Id = 999997, 
                         IsOver = false, 
-                        SlotId = 4,
+                        SlotId = 73,
                         UserId = 1, 
                         Count = 1, 
                         Email = "gled@gmail.com", 
                         Name = "Zhora", 
                         PhoneNumber = "+79251851096",
-                        AccessCode = Temp.GenerateAccessCode()
+                        AccessCode = Temp.GenerateAccessCode(),
+                        State = State.New
                     }
                 );
             }
