@@ -184,7 +184,7 @@ namespace BackendReCharge.Controllers
                 ActivityName = x.Name,
                 ReservationCount = x.Count,
                 ReservationId = x.Id,
-                SlotTime = x.Slot.SlotDateTime,
+                SlotTime = x.Slot.SlotDateTime, 
                 Status = x.Status,
                 TotalPrice = x.Count * x.Slot.Price
             }));

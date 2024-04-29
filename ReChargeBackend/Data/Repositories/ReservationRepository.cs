@@ -124,7 +124,7 @@ namespace Data.Repositories
 
         public IEnumerable<Reservation> GetReservationsByLocation(int locationId)
         {
-            return dbSet.Where(x => x.Slot.Activity.LocationId == locationId);
+            return dbSet.Where(x => x.Slot.Activity.LocationId == locationId).Include(x => x.Slot);
         }
     }
 }
