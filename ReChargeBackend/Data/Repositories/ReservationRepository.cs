@@ -86,6 +86,7 @@ namespace Data.Repositories
             existingEntity.User = entity.User;
             existingEntity.UserId = entity.UserId;
             existingEntity.Status = entity.Status;
+            context.SaveChanges();
             return existingEntity;
         }
 
