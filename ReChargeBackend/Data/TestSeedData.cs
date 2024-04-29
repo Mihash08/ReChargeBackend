@@ -465,7 +465,7 @@ namespace ReChargeBackend.Data
                         new AdminUser { AccessHash = Hasher.Encrypt("12345"), Email = "mihash08@yandex.com", Id = 1, LocationId = 1, Name = "Антон", Surname = "Чураков", PhoneNumber = "9951160000" }
                     );
             }
-
+            context.SaveChanges();
             context.Database.CloseConnection();
         }
     }
