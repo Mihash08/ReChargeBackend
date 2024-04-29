@@ -58,7 +58,7 @@ namespace Data.Repositories
 
         public IEnumerable<AdminUser> GetAll()
         {
-            return dbSet.Include(x => x.Reservations).ToList();
+            return dbSet.ToList();
         }
 
         public AdminUser? GetByAccessToken(string accessToken)
@@ -66,7 +66,7 @@ namespace Data.Repositories
             try
             {
                 var test = Hasher.Verify("123", "$2a$11$zf7y0J4heYz1ufhpxI71du$2a$11$zf7y0J4heYz1ufhpxI71duIZhDleVZZ2eiOpURfQiBVMcHDvVKYP2");
-                var entity = dbSet.Include(x => x.Reservations).ToList().First(x => 
+                var entity = dbSet.ToList().First(x => 
                     x.AccessHash != null && Hasher.Verify(accessToken, x.AccessHash));
                 return entity;
             }
@@ -82,7 +82,7 @@ namespace Data.Repositories
         {
             try
             {
-                var entity = dbSet.Include(x => x.Reservations).First(x => x.Id == id);
+                var entity = dbSet.First(x => x.Id == id);
                 return entity;
             }
             catch (Exception e)
@@ -95,7 +95,7 @@ namespace Data.Repositories
 
         public AdminUser? GetByNumber(string number)
         {
-            var entity = dbSet.Include(x => x.Reservations).FirstOrDefault(x => x.PhoneNumber == number);
+            var entity = dbSet.FirstOrDefault(x => x.PhoneNumber == number);
             return entity;
         }
         public AdminUser Update(AdminUser entity)

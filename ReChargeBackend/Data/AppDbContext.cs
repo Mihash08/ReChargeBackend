@@ -17,6 +17,7 @@ namespace ReCharge.Data
         public DbSet<Slot> Slots { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
+        public DbSet<AdminUser> AdminUsers { get; set; }
         public AppDbContext() : base()
         {
 

@@ -85,6 +85,7 @@ namespace Data.Repositories
             existingEntity.SlotId = entity.SlotId;
             existingEntity.User = entity.User;
             existingEntity.UserId = entity.UserId;
+            existingEntity.Status = entity.Status;
             return existingEntity;
         }
 
@@ -109,6 +110,21 @@ namespace Data.Repositories
                 return null;
             }
             return reservations.ToList();
+        }
+
+        public Reservation? GetReservationByCode(string code)
+        {
+            var reservation = dbSet.Where(x => x.AccessCode == code);
+            if (reservation.Count() > 0)
+            {
+                return reservation.First();
+            }
+            return null;
+        }
+
+        public IEnumerable<Reservation> GetReservationsByLocation(int locationId)
+        {
+            return dbSet.Where(x => x.Slot.Activity.LocationId == locationId);
         }
     }
 }

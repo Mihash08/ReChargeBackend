@@ -68,7 +68,7 @@ namespace BackendReCharge.Controllers
                     Name = request.Name,
                     PhoneNumber = request.Phone,
                     AccessCode = Temp.GenerateAccessCode(),
-                    State = State.New
+                    Status = Status.New
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 slotRepository.Update(slot);
@@ -112,7 +112,7 @@ namespace BackendReCharge.Controllers
                 },
                 LocationName = res.Slot.Activity.Location.LocationName,
                 ReservationId = res.Id,
-                State = res.State
+                State = res.Status
 
             };
             return Ok(response);
@@ -151,7 +151,7 @@ namespace BackendReCharge.Controllers
                 DateTime = res.Slot.SlotDateTime,
                 SlotId = res.SlotId,
                 Count = res.Count,
-                State = res.State,
+                State = res.Status,
 
             };
             return Ok(response);
@@ -191,7 +191,7 @@ namespace BackendReCharge.Controllers
                     Latitude = x.Slot.Activity.Location.AddressLatitude,
                     Longitude = x.Slot.Activity.Location.AddressLongitude
                 },
-                State = x.State
+                State = x.Status
 
             }).ToList();
             var response = new GetReservationsResponse
@@ -202,6 +202,30 @@ namespace BackendReCharge.Controllers
 
             };
             return Ok(response);
+        }
+
+        [HttpPost(Name = "SetReservationCanceledByUser")]
+        public IActionResult SetReservationCanceledByUser(int reservationId)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var user = userRepository.GetByAccessToken(token);
+            if (user is null)
+            {
+                return NotFound("User not found");
+            }
+
+            var res = reservationRepository.GetById(reservationId);
+            if (res.Status != Status.New && res.Status != Status.Confirmed)
+            {
+                return BadRequest("Reservation is not in \"New\" or \"Confirmed\" state");
+            }
+            res.Status = Status.CanceledByUser;
+            reservationRepository.Update(res);
+            return Ok();
         }
     }
 }

@@ -429,7 +429,7 @@ namespace ReChargeBackend.Data
                         Name = "Misha", 
                         PhoneNumber = "+79251851096", 
                         AccessCode = Temp.GenerateAccessCode(),
-                        State = State.Confirmed
+                        Status = Status.Confirmed
                     },
                     new Reservation { 
                         Id = 999998, 
@@ -441,7 +441,7 @@ namespace ReChargeBackend.Data
                         Name = "Misha", 
                         PhoneNumber = "+79251851096",
                         AccessCode = Temp.GenerateAccessCode(),
-                        State = State.CanceledByAdmin
+                        Status = Status.CanceledByAdmin
                     },
                     new Reservation { 
                         Id = 999997, 
@@ -453,11 +453,18 @@ namespace ReChargeBackend.Data
                         Name = "Zhora", 
                         PhoneNumber = "+79251851096",
                         AccessCode = Temp.GenerateAccessCode(),
-                        State = State.New
+                        Status = Status.New
                     }
                 );
             }
             context.SaveChanges();
+
+            if(!context.AdminUsers.Any())
+            {
+                context.AdminUsers.AddRange(
+                        new AdminUser { AccessHash = Hasher.Encrypt("12345"), Email = "mihash08@yandex.com", Id = 1, LocationId = 1, Name = "Антон", Surname = "Чураков", PhoneNumber = "9951160000" }
+                    );
+            }
 
             context.Database.CloseConnection();
         }

@@ -21,7 +21,10 @@ namespace Data.Entities
         public string PhoneNumber { get; set; }
         [Column("access_hash")]
         public string? AccessHash {  get; set; }
-        public IList<Reservation>? Reservations { get; set; }
+        [ForeignKey("Location")]
+        [Column("location_id")]
+        public int LocationId {  get; set; }
+        public Location Location { get; set; }
         public AdminUser(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber, string? imageUrl, string? accessHash, string? gender) : base()
         {
             Name = name;

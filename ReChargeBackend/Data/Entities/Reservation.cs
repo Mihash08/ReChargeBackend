@@ -9,7 +9,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Data.Entities
 {
-    public enum State
+    public enum Status
     {
         New,
         Confirmed,
@@ -41,7 +41,7 @@ namespace Data.Entities
         [Column("access_code")]
         public string AccessCode {  get; set; }
         [Column("state")]
-        public State State { get; set; }
+        public Status Status { get; set; }
 
         public Slot Slot { get; set; }
         public User User { get; set; }

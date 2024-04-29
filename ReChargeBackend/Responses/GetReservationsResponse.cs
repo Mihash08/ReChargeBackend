@@ -21,7 +21,7 @@ namespace ReChargeBackend.Responses
         public string ActivityName {  get; set; }
         public Coordinates Coordinates { get; set; }
         public int ActivityId {  get; set; }
-        public State State { get; set; }
+        public Status State { get; set; }
 
     }
 
