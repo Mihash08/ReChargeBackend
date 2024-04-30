@@ -184,7 +184,33 @@ namespace BackendReCharge.Controllers
                 ActivityName = x.Name,
                 ReservationCount = x.Count,
                 ReservationId = x.Id,
-                SlotTime = x.Slot.SlotDateTime, 
+                SlotTime = x.Slot.SlotDateTime,
+                Status = x.Status,
+                TotalPrice = x.Count * x.Slot.Price
+            }));
+
+        }
+        [HttpGet(Name = "GetLocationNewReservations")]
+        public IActionResult GetLocationNewReservations()
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Not authorized, access token required");
+            }
+            var admin = adminRepository.GetByAccessToken(token);
+            if (admin is null)
+            {
+                return NotFound("Admin not found");
+            }
+
+            var reses = reservationRepository.GetReservationsByLocation(admin.LocationId).Where(x => x.Status == Status.New);
+            return Ok(reses.Select(x => new GetLocationReservationsResponse
+            {
+                ActivityName = x.Name,
+                ReservationCount = x.Count,
+                ReservationId = x.Id,
+                SlotTime = x.Slot.SlotDateTime,
                 Status = x.Status,
                 TotalPrice = x.Count * x.Slot.Price
             }));
