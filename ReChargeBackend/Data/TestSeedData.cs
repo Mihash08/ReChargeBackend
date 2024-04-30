@@ -58,6 +58,36 @@ namespace ReChargeBackend.Data
                 },
                 new Location
                 {
+                    Id = 6,
+                    AddressBuildingNumber = "24",
+                    AddressCity = "Москва",
+                    AddressLatitude = 56.024104,
+                    AddressLongitude = 36.599872,
+                    AddressNearestMetro = "Алексеевская",
+                    AddressStreet = "Коптевский проезд",
+                    AdminTG = "Mihash08",
+                    AdminWA = "+79251851096",
+                    LocationDescription = "Спортивный зал Spirit Fitness на Алексеевской это новейший спортивный зал с чем-то там еще новым," +
+                    "типа новыми технологиями и добрыми тренерами по выгодной цене",
+                    LocationName = "Spirit Fitness"
+                },
+                new Location
+                {
+                    Id = 7,
+                    AddressBuildingNumber = "43",
+                    AddressCity = "Москва",
+                    AddressLatitude = 55.924104,
+                    AddressLongitude = 36.799872,
+                    AddressNearestMetro = "Бабушкинская",
+                    AddressStreet = "Кривошеев переулок",
+                    AdminTG = "Mihash08",
+                    AdminWA = "+79251851096",
+                    LocationDescription = "Спортивный зал Sport Now на Алексеевской это новейший спортивный зал с чем-то там еще новым," +
+                    "типа новыми технологиями и добрыми тренерами по выгодной цене",
+                    LocationName = "Sport Now"
+                },
+                new Location
+                {
                     Id = 1,
                     AddressBuildingNumber = "39с53",
                     AddressCity = "Москва",
@@ -245,12 +275,81 @@ namespace ReChargeBackend.Data
                         "были свободные.\r\nМы заботимся о том, чтобы наши тренажерные залы были " +
                         "не только функциональными, но и эстетически красивыми: большие зеркала, " +
                         "панорамные окна и стильный интерьер, в котором получаются красивые фотографии.\r\n",
-                        ActivityName = "Часовая тренировка с личным тренером",
+                        ActivityName = "Тренировка с личным тренером",
                         CategoryId = 3,
                         Id = 3,
                         LocationId = 2,
                         ShouldDisplayWarning = false,
                         ImageUrl = "https://www.gymnas.ru/wp-content/uploads/2018/04/47510994_l-1024x626.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
+                    },
+                    new Activity()
+                    {
+                        ActivityAdminTg = "@Mihash08",
+                        ActivityAdminWa = "+79251851096",
+                        ActivityDescription = "Проход в Spirit Fitness даёт вам безлимитный доступ ко всем тренажёрам, " +
+                        "раздевалке, сауне и душу, а так же бесплатным косультациям тренеров. В фитнес-клубе есть " +
+                        "вело- и кардиотренажеры, силовое оборудование, эллипсы, беговые дорожки." +
+                        " Самых популярных тренажеров в зале несколько экземпляров, чтобы всегда " +
+                        "были свободные.\r\nМы заботимся о том, чтобы наши тренажерные залы были " +
+                        "не только функциональными, но и эстетически красивыми: большие зеркала, " +
+                        "панорамные окна и стильный интерьер, в котором получаются красивые фотографии.\r\n",
+                        ActivityName = "Проход в Spirit Fitness",
+                        CategoryId = 3,
+                        Id = 13,
+                        LocationId = 6,
+                        ShouldDisplayWarning = false,
+                        ImageUrl = "https://sportleader.kz/images/cms/opt%20tr/468884-pfz4p2-187.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
+                    },
+                    new Activity()
+                    {
+                        ActivityDescription = "Занятие с личным треннером в Spirit Fitness. В фитнес-клубе есть " +
+                        "вело- и кардиотренажеры, силовое оборудование, эллипсы, беговые дорожки." +
+                        " Самых популярных тренажеров в зале несколько экземпляров, чтобы всегда " +
+                        "были свободные.\r\nМы заботимся о том, чтобы наши тренажерные залы были " +
+                        "не только функциональными, но и эстетически красивыми: большие зеркала, " +
+                        "панорамные окна и стильный интерьер, в котором получаются красивые фотографии.\r\n",
+                        ActivityName = "Тренировка с личным тренером",
+                        CategoryId = 3,
+                        Id = 14,
+                        LocationId = 6,
+                        ShouldDisplayWarning = false,
+                        ImageUrl = "https://niidpo.ru/uplfile/news_image/Professiya-fitnes-trenera-plyusyi-minusyi-nyuansyi.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
+                    }, new Activity()
+                    {
+                        ActivityAdminTg = "@Mihash08",
+                        ActivityAdminWa = "+79251851096",
+                        ActivityDescription = "Проход в Sport Now даёт вам безлимитный доступ ко всем тренажёрам, " +
+                        "раздевалке, сауне и душу, а так же бесплатным косультациям тренеров. В фитнес-клубе есть " +
+                        "вело- и кардиотренажеры, силовое оборудование, эллипсы, беговые дорожки." +
+                        " Самых популярных тренажеров в зале несколько экземпляров, чтобы всегда " +
+                        "были свободные.\r\nМы заботимся о том, чтобы наши тренажерные залы были " +
+                        "не только функциональными, но и эстетически красивыми: большие зеркала, " +
+                        "панорамные окна и стильный интерьер, в котором получаются красивые фотографии.\r\n",
+                        ActivityName = "Проход в Sport Now",
+                        CategoryId = 3,
+                        Id = 15,
+                        LocationId = 7,
+                        ShouldDisplayWarning = false,
+                        ImageUrl = "https://static.tildacdn.com/tild3663-3261-4730-b762-383831356634/IMG_9824.jpg",
+                        CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
+                    },
+                    new Activity()
+                    {
+                        ActivityDescription = "Занятие с личным треннером в Sport Now. В фитнес-клубе есть " +
+                        "вело- и кардиотренажеры, силовое оборудование, эллипсы, беговые дорожки." +
+                        " Самых популярных тренажеров в зале несколько экземпляров, чтобы всегда " +
+                        "были свободные.\r\nМы заботимся о том, чтобы наши тренажерные залы были " +
+                        "не только функциональными, но и эстетически красивыми: большие зеркала, " +
+                        "панорамные окна и стильный интерьер, в котором получаются красивые фотографии.\r\n",
+                        ActivityName = "Тренировка с личным тренером",
+                        CategoryId = 3,
+                        Id = 16,
+                        LocationId = 7,
+                        ShouldDisplayWarning = false,
+                        ImageUrl = "https://proftren.ru/assets/images/articles/4093/trainer-min.jpg",
                         CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
@@ -392,7 +491,7 @@ namespace ReChargeBackend.Data
             if (!context.Slots.Any())
             {
                 int slotId = 1;
-                for (int activityId = 1; activityId <= 12; activityId++)
+                for (int activityId = 1; activityId <= 16; activityId++)
                 {
                     for (int daySkip = 0;  daySkip <= 7; daySkip++)
                     {
