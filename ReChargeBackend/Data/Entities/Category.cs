@@ -11,7 +11,6 @@ namespace Data.Entities
     [Table("categories")]
     public class Category : BaseEntity
     {
-        //todo: add recomendationImage
         [Column("name")]
         public string Name { get; set; }
         [Column("image")]

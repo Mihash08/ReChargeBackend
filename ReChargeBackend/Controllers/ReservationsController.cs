@@ -58,7 +58,6 @@ namespace BackendReCharge.Controllers
             {
                 reservationRepository.Add(new Reservation
                 {
-                    IsOver = false,
                     Slot = slot,
                     SlotId = slotId,
                     User = user,

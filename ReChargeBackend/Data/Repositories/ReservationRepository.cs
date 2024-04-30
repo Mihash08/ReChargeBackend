@@ -80,7 +80,6 @@ namespace Data.Repositories
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            existingEntity.IsOver = entity.IsOver;
             existingEntity.Slot = entity.Slot;
             existingEntity.SlotId = entity.SlotId;
             existingEntity.User = entity.User;
@@ -107,7 +106,6 @@ namespace Data.Repositories
         public IEnumerable<Reservation> GetReservationsByUser(int userId)
         {
             var reservations = dbSet.Include(x => x.Slot.Activity.Location)
-                .Where(x => x.UserId == userId && !x.IsOver)
                 .Where(x => x.Slot.SlotDateTime >= DateTime.Now);
             if (reservations == null)
             {

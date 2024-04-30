@@ -520,7 +520,6 @@ namespace ReChargeBackend.Data
                 context.Reservations.AddRange(
                     new Reservation { 
                         Id = 999999, 
-                        IsOver = false, 
                         SlotId = 30, 
                         UserId = 1,
                         Count = 1, 
@@ -532,7 +531,6 @@ namespace ReChargeBackend.Data
                     },
                     new Reservation { 
                         Id = 999998, 
-                        IsOver = true, 
                         SlotId = 54, 
                         UserId = 1, 
                         Count = 3, 
@@ -544,7 +542,6 @@ namespace ReChargeBackend.Data
                     },
                     new Reservation { 
                         Id = 999997, 
-                        IsOver = false, 
                         SlotId = 73,
                         UserId = 1, 
                         Count = 1, 

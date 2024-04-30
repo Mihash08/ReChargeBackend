@@ -27,9 +27,6 @@ namespace Data.Entities
         [ForeignKey("User")]
         [Column("user_id")]
         public int UserId { get; set; }
-
-        [Column("is_over")]
-        public bool IsOver { get; set; }
         [Column("name")]
         public string Name { get; set; }
         [Column("phone_number")]
