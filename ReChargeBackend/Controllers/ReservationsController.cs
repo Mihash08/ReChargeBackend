@@ -219,9 +219,21 @@ namespace BackendReCharge.Controllers
             }
 
             var res = reservationRepository.GetById(reservationId);
+            if (res is null)
+            {
+                return BadRequest("Reservation not found");
+            }
+            if (res.UserId != user.Id)
+            {
+                return BadRequest("This reservation belongs to another user");
+            }
             if (res.Status != Status.New && res.Status != Status.Confirmed)
             {
                 return BadRequest("Reservation is not in \"New\" or \"Confirmed\" state");
+            }
+            if (res.Slot.SlotDateTime - DateTime.Now < new TimeSpan(12, 0, 0))
+            {
+                return BadRequest("Can't cancel reservation less then 12 hours ahead");
             }
             res.Status = Status.CanceledByUser;
             reservationRepository.Update(res);
