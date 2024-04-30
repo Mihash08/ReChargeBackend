@@ -19,7 +19,7 @@ namespace ReChargeBackend.Responses
         public DateTime DateTime { get; set; }
         public int Count { get; set; }
         public string AccessCode { get; set; }
-        public Status State { get; set; }
+        public Status Status { get; set; }
 
     }
 }

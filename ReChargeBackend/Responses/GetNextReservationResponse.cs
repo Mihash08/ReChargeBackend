@@ -13,7 +13,7 @@ namespace ReChargeBackend.Responses
         public string LocationName { get; set; }
         public string AddressString { get; set; }
         public int ReservationId {  get; set; }
-        public Status State { get; set; }
+        public Status Status { get; set; }
 
     }
 }

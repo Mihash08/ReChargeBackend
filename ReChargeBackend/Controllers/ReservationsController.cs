@@ -112,7 +112,7 @@ namespace BackendReCharge.Controllers
                 },
                 LocationName = res.Slot.Activity.Location.LocationName,
                 ReservationId = res.Id,
-                State = res.Status
+                Status = res.Status
 
             };
             return Ok(response);
@@ -151,7 +151,7 @@ namespace BackendReCharge.Controllers
                 DateTime = res.Slot.SlotDateTime,
                 SlotId = res.SlotId,
                 Count = res.Count,
-                State = res.Status,
+                Status = res.Status,
 
             };
             return Ok(response);
@@ -191,7 +191,7 @@ namespace BackendReCharge.Controllers
                     Latitude = x.Slot.Activity.Location.AddressLatitude,
                     Longitude = x.Slot.Activity.Location.AddressLongitude
                 },
-                State = x.Status
+                Status = x.Status
 
             }).ToList();
             var response = new GetReservationsResponse
