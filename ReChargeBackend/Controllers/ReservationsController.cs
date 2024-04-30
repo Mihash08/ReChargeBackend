@@ -140,10 +140,10 @@ namespace BackendReCharge.Controllers
             }
             if (res.UserId != user.Id)
             {
-                return BadRequest($"ACCESS ERROR: this reservation is from another user");
+                return BadRequest("ACCESS ERROR: this reservation is from another user");
             }
 
-                var response = new GetReservationResponse
+            var response = new GetReservationResponse
             {
                 ActivityId = res.Slot.ActivityId,
                 ReservationId = reservationId,

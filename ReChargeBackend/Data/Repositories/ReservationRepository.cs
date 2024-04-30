@@ -115,7 +115,7 @@ namespace Data.Repositories
 
         public Reservation? GetReservationByCode(string code)
         {
-            var reservation = dbSet.Where(x => x.AccessCode == code);
+            var reservation = dbSet.Where(x => x.AccessCode == code).Include(x => x.Slot.Activity);
             if (reservation.Count() > 0)
             {
                 return reservation.First();
