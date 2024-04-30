@@ -366,7 +366,7 @@ namespace ReChargeBackend.Data
                         Id = 4,
                         LocationId = 3,
                         ShouldDisplayWarning = false,
-                        ImageUrl = "https://img.freepik.com/free-photo/sports-tools_53876-138077.jpg",
+                        ImageUrl = "https://www.novosti.rs/data/images/2024-04-27/477269_dusan-veletic2_fmob.jpg",
                         CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
