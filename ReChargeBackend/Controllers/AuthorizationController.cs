@@ -58,7 +58,7 @@ namespace BackendReCharge.Controllers
                 });
             }
 
-            return BadRequest("Phone number invalid");
+            return BadRequest("Невалидный номер телефона");
         }
         [HttpGet(Name = "GetConditionalInfo")]
         public IActionResult GetConditionalInfo()
@@ -106,7 +106,7 @@ namespace BackendReCharge.Controllers
                 Console.WriteLine(e);
                 Console.WriteLine(e.Message);
             }
-            return BadRequest("Seesion not found");
+            return BadRequest("Сессия не найдена");
 
         }
 

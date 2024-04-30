@@ -38,17 +38,17 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found (or invalid token)");
+                return NotFound("Пользоватен не найден (невалидный токен доступа)");
             }
             var slot = slotRepository.GetById(slotId);
             if (slot is null)
             {
-                return BadRequest($"Slot with id {slotId} not found");
+                return BadRequest($"Слот с id {slotId} не найден");
             }
             if (reservationRepository.GetReservationsByUser(user.Id).Any(x => x.SlotId == slot.Id))
             {
@@ -73,7 +73,7 @@ namespace BackendReCharge.Controllers
                 slotRepository.Update(slot);
                 return Ok();
             }
-            return BadRequest($"Not enough free spaces in slot ({slot.FreePlaces} spaces available");
+            return BadRequest($"Не достаточно свободных мест на слоте. Достуных мест: {slot.FreePlaces}");
 
         }
         [HttpGet(Name = "GetNextReservation")]
@@ -83,12 +83,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
 
             var res = reservationRepository.GetNextReservation(user.Id);
@@ -124,22 +124,22 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res is null)
             {
-                return BadRequest($"Reservation with id {reservationId} doesn't exist");
+                return BadRequest($"Брони с id {reservationId} не существует");
             }
             if (res.UserId != user.Id)
             {
-                return BadRequest("ACCESS ERROR: this reservation is from another user");
+                return BadRequest("Данная бронь принадлежит другому пользователю");
             }
 
             var response = new GetReservationResponse
@@ -162,19 +162,19 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
 
             var reservations = reservationRepository.GetReservationsByUser(user.Id)
                 .Where(x => x.Slot.SlotDateTime >= startDate && x.Slot.SlotDateTime <= endDate);
             if (reservations is null)
             {
-                return Ok("No reservations");
+                return Ok("Нет броней");
             }
             var reservationsResponse = reservations.Select(x => new GetSingleReservation
             {
@@ -209,30 +209,30 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res is null)
             {
-                return BadRequest("Reservation not found");
+                return BadRequest("Брони не найдены");
             }
             if (res.UserId != user.Id)
             {
-                return BadRequest("This reservation belongs to another user");
+                return BadRequest("Данная бронь принадлежит другому пользователю");
             }
             if (res.Status != Status.New && res.Status != Status.Confirmed)
             {
-                return BadRequest("Reservation is not in \"New\" or \"Confirmed\" state");
+                return BadRequest("Бронь должна быть \"New\" или \"Confirmed\"");
             }
             if (res.Slot.SlotDateTime - DateTime.Now < new TimeSpan(12, 0, 0))
             {
-                return BadRequest("Can't cancel reservation less then 12 hours ahead");
+                return BadRequest("Нельзя отменить бронь менее, чем за 12 часов");
             }
             res.Status = Status.CanceledByUser;
             reservationRepository.Update(res);

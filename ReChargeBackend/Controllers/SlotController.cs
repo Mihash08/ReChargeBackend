@@ -94,7 +94,7 @@ namespace BackendReCharge.Controllers
             var slot = slotRepository.GetById(id);
             if (slot == null)
             {
-                return NotFound($"Slot with id {id} not found");
+                return NotFound($"Слот с id {id} не найден");
             }
             return Ok(new GetSlotFreeSpotsResponse {FreeSpots = slot.FreePlaces });
         }

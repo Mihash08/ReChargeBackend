@@ -36,12 +36,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
 
             return Ok(new GetProfileHeaderResponse()
@@ -63,12 +63,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
             return Ok(new GetUserByTokenResponse
             {
@@ -88,12 +88,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
             if (user is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь не найден");
             }
             user.AccessHash = null;
             userRepository.Update(user);
@@ -106,12 +106,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var user = userRepository.GetByAccessToken(token);
-            if (user == null)
+            if (user is null)
             {
-                return NotFound("user not found");
+                return NotFound("Пользователь не найден");
             }
             try
             {

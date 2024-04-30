@@ -54,7 +54,7 @@ namespace BackendReCharge.Controllers
             var act = activityRepository.GetById(id);
             if (act is null)
             {
-                NotFound($"Activity with id {id} not found");
+                return NotFound($"Активность с id {id} не найдена");
             }
             return Ok(act);
         }
@@ -65,7 +65,7 @@ namespace BackendReCharge.Controllers
             var act = activityRepository.GetById(id);
             if (act is null)
             {
-                return NotFound($"Activity with id {id} not found");
+                return NotFound($"Активность с id {id} не найдена");
             }
             return Ok(new GetActivityViewResponse
             {
