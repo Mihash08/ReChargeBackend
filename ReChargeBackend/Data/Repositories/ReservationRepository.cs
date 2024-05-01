@@ -94,7 +94,7 @@ namespace Data.Repositories
         {
             var reservations = dbSet.Include(x => x.Slot.Activity.Location)
                 .Where(x => x.UserId == userId)
-                .Where(x => x.Slot.SlotDateTime >= DateTime.Now)
+                .Where(x => x.Slot.SlotDateTime + new TimeSpan(0, x.Slot.LengthMinutes, 0) >= DateTime.Now)
                 .Where(x => x.Status == Status.New || x.Status == Status.Confirmed);
             if (reservations == null || reservations.Count() < 1)
             {
