@@ -36,15 +36,15 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
-            var user = adminRepository.GetByAccessToken(token);
-            if (user is null)
+            var admin = adminRepository.GetByAccessToken(token);
+            if (admin is null)
             {
-                return NotFound("User not found");
+                return NotFound("Пользователь администратора не найден");
             }
-            user.AccessHash = null;
-            adminRepository.Update(user);
+            admin.AccessHash = null;
+            adminRepository.Update(admin);
             return Ok();
         }
 
@@ -67,7 +67,7 @@ namespace BackendReCharge.Controllers
                     }
                     if (admin is null)
                     {
-                        return BadRequest("This admin doesn't exist");
+                        return BadRequest("Администратор не найден");
                     }
                     else
                     {
@@ -84,7 +84,7 @@ namespace BackendReCharge.Controllers
                 Console.WriteLine(e);
                 Console.WriteLine(e.Message);
             }
-            return BadRequest("Seesion not found");
+            return BadRequest("Сессия не найдена");
 
         }
         [HttpPost(Name = "AuthPhoneAdmind")]
@@ -118,40 +118,39 @@ namespace BackendReCharge.Controllers
                 });
             }
 
-            return BadRequest("Phone number invalid");
+            return BadRequest("Невалидный номер телефона");
         }
 
         [HttpPost(Name = "VerifyCode")]
         public IActionResult VerifyCode(string code)
         {
-
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
-            
+
             var res = reservationRepository.GetReservationByCode(code);
             if (res is null)
             {
-                return BadRequest("Invalid Code");
+                return BadRequest("Неверный код");
             }
             if (res.Status == Status.New)
             {
-                return BadRequest("Reservation is not confirmed");
+                return BadRequest("Бронь не подтверждена");
             }
             if (res.Status == Status.Used || res.Status == Status.Missed)
             {
-                return BadRequest("This reservation is over");
+                return BadRequest("Бронь уже прошла");
             }
             if (res.Status == Status.CanceledByUser || res.Status == Status.CanceledByAdmin)
             {
-                return BadRequest("This reservation is canceled");
+                return BadRequest("Бронь отменена");
             }
             return Ok(new VerifyCodeResponse
             {
@@ -170,12 +169,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var reses = reservationRepository.GetReservationsByLocation(admin.LocationId);
@@ -196,12 +195,12 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var reses = reservationRepository.GetReservationsByLocation(admin.LocationId).Where(x => x.Status == Status.New);
@@ -223,18 +222,18 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res.Status != Status.New)
             {
-                return BadRequest("Reservation is not in \"New\" state");
+                return BadRequest("Бронь не в статусе \"New\"");
             }
             res.Status = Status.Confirmed;
             reservationRepository.Update(res);
@@ -246,18 +245,18 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res.Status != Status.Confirmed)
             {
-                return BadRequest("Reservation is not in \"Confirmed\" state");
+                return BadRequest("Бронь не в статусе \"Confirmed\"");
             }
             res.Status = Status.Used;
             reservationRepository.Update(res);
@@ -270,18 +269,18 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res.Status != Status.Confirmed)
             {
-                return BadRequest("Reservation is not in \"Confirmed\" state");
+                return BadRequest("Бронь не в статусе \"Confirmed\"");
             }
             res.Status = Status.Missed;
             reservationRepository.Update(res);
@@ -293,18 +292,18 @@ namespace BackendReCharge.Controllers
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
-                return BadRequest("Not authorized, access token required");
+                return BadRequest("Отсутствует токен доступа");
             }
             var admin = adminRepository.GetByAccessToken(token);
             if (admin is null)
             {
-                return NotFound("Admin not found");
+                return NotFound("Пользователь администратора не найден");
             }
 
             var res = reservationRepository.GetById(reservationId);
             if (res.Status != Status.New && res.Status != Status.Confirmed)
             {
-                return BadRequest("Reservation is not in \"New\" or \"Confirmed\" state");
+                return BadRequest("Бронь не в статусе \"New\" или \"Confirmed\"");
             }
             res.Status = Status.CanceledByAdmin;
             reservationRepository.Update(res);
