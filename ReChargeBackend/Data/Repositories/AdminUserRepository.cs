@@ -66,7 +66,7 @@ namespace Data.Repositories
             try
             {
                 var test = Hasher.Verify("123", "$2a$11$zf7y0J4heYz1ufhpxI71du$2a$11$zf7y0J4heYz1ufhpxI71duIZhDleVZZ2eiOpURfQiBVMcHDvVKYP2");
-                var entity = await dbSet.FirstOrDefaultAsync(x => 
+                var entity = (await dbSet.ToListAsync()).First(x =>
                     x.AccessHash != null && Hasher.Verify(accessToken, x.AccessHash));
                 return entity;
             }
