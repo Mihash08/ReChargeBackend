@@ -50,7 +50,9 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest($"Слот с id {slotId} не найден");
             }
-            if (reservationRepository.GetReservationsByUser(user.Id).Any(x => x.SlotId == slot.Id))
+            if (reservationRepository.GetReservationsByUser(user.Id).Any(x => x.SlotId == slot.Id 
+            && x.Status != Status.New 
+            && x.Status != Status.Confirmed))
             {
                 return StatusCode(452, "Вы уже записаны на это занятие");
             }
