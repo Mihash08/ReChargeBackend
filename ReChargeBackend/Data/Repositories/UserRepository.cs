@@ -24,14 +24,14 @@ namespace Data.Repositories
         }
 
 
-        public User Add(User entity)
+        public async Task<User> AddAsync(User entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(User entity)
+        public async Task DeleteAsync(User entity)
         {
             if (entity == null)
             {
@@ -40,33 +40,33 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return dbSet.Include(x => x.Reservations).ToList();
+            return await dbSet.Include(x => x.Reservations).ToListAsync();
         }
 
-        public User? GetByAccessToken(string accessToken)
+        public async Task<User?> GetByAccessTokenAsync(string accessToken)
         {
             try
             {
                 var test = Hasher.Verify("123", "$2a$11$zf7y0J4heYz1ufhpxI71du$2a$11$zf7y0J4heYz1ufhpxI71duIZhDleVZZ2eiOpURfQiBVMcHDvVKYP2");
-                var entity = dbSet.Include(x => x.Reservations).ToList().First(x => 
+                var entity = (await dbSet.Include(x => x.Reservations).ToListAsync()).First(x => 
                     x.AccessHash != null && Hasher.Verify(accessToken, x.AccessHash));
                 return entity;
             }
@@ -78,11 +78,11 @@ namespace Data.Repositories
             }
         }
 
-        public User? GetById(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
             try
             {
-                var entity = dbSet.Include(x => x.Reservations).First(x => x.Id == id);
+                var entity = await dbSet.Include(x => x.Reservations).FirstAsync(x => x.Id == id);
                 return entity;
             }
             catch (Exception e)
@@ -93,18 +93,18 @@ namespace Data.Repositories
             }
         }
 
-        public User? GetByNumber(string number)
+        public async Task<User?> GetByNumberAsync(string number)
         {
-            var entity = dbSet.Include(x => x.Reservations).FirstOrDefault(x => x.PhoneNumber == number);
+            var entity = await dbSet.Include(x => x.Reservations).FirstOrDefaultAsync(x => x.PhoneNumber == number);
             return entity;
         }
-        public User Update(User entity)
+        public async Task<User> UpdateAsync(User entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
@@ -118,7 +118,7 @@ namespace Data.Repositories
             existingEntity.Surname = entity.Surname;    
             existingEntity.Gender = entity.Gender;
             existingEntity.AccessHash = entity.AccessHash;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return existingEntity;
         }
     }

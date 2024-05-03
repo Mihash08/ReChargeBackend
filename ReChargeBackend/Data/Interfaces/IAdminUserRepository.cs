@@ -5,7 +5,7 @@ namespace ReCharge.Data.Interfaces
 {
     public interface IAdminUserRepository :IRepository<AdminUser>
     {
-        AdminUser? GetByNumber(string number);
-        AdminUser? GetByAccessToken(string accessToken);
+        Task<AdminUser?> GetByNumberAsync(string number);
+        Task<AdminUser?> GetByAccessTokenAsync(string accessToken);
     }
 }

@@ -6,8 +6,8 @@ namespace Data.Interfaces
 {
     public interface ISlotRepository : IRepository<Slot>
     {
-        IEnumerable<Slot> GetAllByActivityId(int activityId);
-        IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime);
-        IEnumerable<Slot> GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime);
+        Task<IEnumerable<Slot>> GetAllByActivityIdAsync(int activityId);
+        Task<IEnumerable<Slot>> GetSlotsByActivityIdAndTimeAsync(int activityId, DateTime dateTime);
+        Task<IEnumerable<Slot>> GetSlotsByCategoryIdAndTimeAsync(int categoryId, DateTime dateTime);
     }
 }

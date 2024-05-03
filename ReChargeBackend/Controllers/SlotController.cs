@@ -26,10 +26,15 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet(Name = "GetSlotsByCategory")]
-        public IActionResult GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime)
+        public async Task<IActionResult> GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime)
         {
-            var slots = slotRepository.GetSlotsByCategoryIdAndTime(categoryId, dateTime);
-            var catName = categoryRepository.GetById(categoryId).Name;
+            var slots = await slotRepository.GetSlotsByCategoryIdAndTimeAsync(categoryId, dateTime);
+            var cat = await categoryRepository.GetByIdAsync(categoryId);
+            if (cat == null)
+            {
+                return BadRequest($"Категория с id {categoryId} не найден");
+            }
+            var catName = cat.Name;
             List<GetSlotByCategoryAndDateResponse> resp = slots
                 .Where(x => x.SlotDateTime > DateTime.Now)
                 .Select(x => new GetSlotByCategoryAndDateResponse
@@ -58,20 +63,25 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpGet(Name = "GetSlotsByActivityIdAndTimeTest")]
-        public IActionResult GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
+        public async Task<IActionResult> GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
         {
-            return Ok(slotRepository.GetSlotsByActivityIdAndTime(activityId, dateTime)
+            return Ok((await slotRepository.GetSlotsByActivityIdAndTimeAsync(activityId, dateTime))
                 .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime));
         }
         [HttpGet(Name = "GetSlotTest")]
-        public Slot GetSlot(int id)
+        public async Task<IActionResult> GetSlot(int id)
         {
-            return slotRepository.GetById(id);
+            var slot = await slotRepository.GetByIdAsync(id);
+            if (slot is null)
+            {
+                return BadRequest($"Слот с id {id} не найден");
+            }
+            return Ok(slot);
         }
         [HttpGet(Name = "GetActivityViewSlots")]
-        public IActionResult GetActivityViewSlots(int activityId, DateTime dateTime)
+        public async Task<IActionResult> GetActivityViewSlots(int activityId, DateTime dateTime)
         {
-            var slots = slotRepository.GetAllByActivityId(activityId)
+            var slots = (await slotRepository.GetAllByActivityIdAsync(activityId))
                 .Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
                 .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime);
             return Ok(new GetActivityViewSlotsResponse
@@ -89,9 +99,9 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpGet(Name = "GetSlotFreeSpots")]
-        public IActionResult GetSlotFreeSpots(int id)
+        public async Task<IActionResult> GetSlotFreeSpots(int id)
         {
-            var slot = slotRepository.GetById(id);
+            var slot = await slotRepository.GetByIdAsync(id);
             if (slot == null)
             {
                 return NotFound($"Слот с id {id} не найден");

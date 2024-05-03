@@ -2,6 +2,8 @@
 using Data.Entities;
 using Data.Interfaces;
 using Data.Repositories;
+using FirebaseAdmin;
+using FirebaseAdmin.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using ReCharge.Data.Interfaces;
@@ -33,32 +35,33 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpPost(Name = "MakeReservation")]
-        public IActionResult MakeReservation(int slotId, [FromBody] MakeReservationRequest request)
+        public async Task<IActionResult> MakeReservation(int slotId, [FromBody] MakeReservationRequest request)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользоватен не найден (невалидный токен доступа)");
             }
-            var slot = slotRepository.GetById(slotId);
+            var slot = await slotRepository.GetByIdAsync(slotId);
             if (slot is null)
             {
                 return BadRequest($"Слот с id {slotId} не найден");
             }
-            if (reservationRepository.GetReservationsByUser(user.Id).Any(x => x.SlotId == slot.Id 
-            && x.Status != Status.New 
-            && x.Status != Status.Confirmed))
+            if ((await reservationRepository.GetReservationsByUserAsync(user.Id))
+                .Any(x => x.SlotId == slot.Id 
+                && x.Status != Status.New 
+                && x.Status != Status.Confirmed))
             {
                 return StatusCode(452, "Вы уже записаны на это занятие");
             }
             if (slot.FreePlaces >= request.ReserveCount)
             {
-                reservationRepository.Add(new Reservation
+                await reservationRepository.AddAsync(new Reservation
                 {
                     Slot = slot,
                     SlotId = slotId,
@@ -72,14 +75,15 @@ namespace BackendReCharge.Controllers
                     Status = Status.New
                 });
                 slot.FreePlaces -= request.ReserveCount;
-                slotRepository.Update(slot);
+                await slotRepository.UpdateAsync(slot);
+
                 return Ok();
             }
             return BadRequest($"Не достаточно свободных мест на слоте. Достуных мест: {slot.FreePlaces}");
 
         }
         [HttpGet(Name = "GetNextReservation")]
-        public IActionResult GetNextReservation()
+        public async Task<IActionResult> GetNextReservation()
         {
 
             StringValues token = string.Empty;
@@ -87,13 +91,13 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
 
-            var res = reservationRepository.GetNextReservation(user.Id);
+            var res = await reservationRepository.GetNextReservationAsync(user.Id);
             if (res is null)
             {
                 return Ok();
@@ -120,7 +124,7 @@ namespace BackendReCharge.Controllers
 
         }
         [HttpGet(Name = "GetReservation")]
-        public IActionResult GetReservation(int reservationId)
+        public async Task<IActionResult> GetReservation(int reservationId)
         {
 
             StringValues token = string.Empty;
@@ -128,13 +132,13 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res is null)
             {
                 return BadRequest($"Брони с id {reservationId} не существует");
@@ -158,7 +162,7 @@ namespace BackendReCharge.Controllers
             return Ok(response);
         }
         [HttpGet(Name = "GetReservations")]
-        public IActionResult GetReservations(DateTime startDate, DateTime endDate)
+        public async Task<IActionResult> GetReservations(DateTime startDate, DateTime endDate)
         {
 
             StringValues token = string.Empty;
@@ -166,13 +170,13 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
 
-            var reservations = reservationRepository.GetReservationsByUser(user.Id)
+            var reservations = (await reservationRepository.GetReservationsByUserAsync(user.Id))
                 .Where(x => x.Slot.SlotDateTime >= startDate && x.Slot.SlotDateTime <= endDate);
             if (reservations is null)
             {
@@ -206,20 +210,20 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpPost(Name = "SetReservationCanceledByUser")]
-        public IActionResult SetReservationCanceledByUser(int reservationId)
+        public async Task<IActionResult> SetReservationCanceledByUser(int reservationId)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res is null)
             {
                 return BadRequest("Брони не найдены");
@@ -237,7 +241,7 @@ namespace BackendReCharge.Controllers
                 return BadRequest("Нельзя отменить бронь менее, чем за 12 часов");
             }
             res.Status = Status.CanceledByUser;
-            reservationRepository.Update(res);
+            await reservationRepository.UpdateAsync(res);
             return Ok();
         }
     }

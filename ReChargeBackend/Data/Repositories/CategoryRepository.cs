@@ -22,14 +22,14 @@ namespace Data.Repositories
         }
 
 
-        public Category Add(Category entity)
+        public async Task<Category> AddAsync(Category entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(Category entity)
+        public async Task DeleteAsync(Category entity)
         {
             if (entity == null)
             {
@@ -38,30 +38,30 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public Category? GetById(int id)
+        public async Task<Category?> GetByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
@@ -69,13 +69,13 @@ namespace Data.Repositories
             return entity;
         }
 
-        public Category Update(Category entity)
+        public async Task<Category> UpdateAsync(Category entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");

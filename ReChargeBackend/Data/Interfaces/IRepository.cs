@@ -6,15 +6,15 @@ namespace Data.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : BaseEntity
     {
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
-        TEntity? GetById(int id);
+        Task<TEntity?> GetByIdAsync(int id);
 
-        TEntity Add(TEntity entity);
+        Task<TEntity> AddAsync(TEntity entity);
 
-        void Delete(TEntity entity);
+        Task DeleteAsync(TEntity entity);
 
-        void DeleteById(int id);
-        TEntity Update(TEntity entity);
+        Task DeleteByIdAsync(int id);
+        Task<TEntity> UpdateAsync(TEntity entity);
     }
 }

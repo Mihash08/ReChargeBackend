@@ -20,30 +20,32 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet(Name = "GetCategories")]
-        public IEnumerable<Category> GetCategories()
+        public async Task<IEnumerable<Category>> GetCategories()
         {
-            return categoryRepository.GetAll();
+            return await categoryRepository.GetAllAsync();
         }
         [HttpGet(Name = "GetCategoriesByTab")]
-        public IEnumerable<Category> GetCategoriesByTabId(int tabId = -1)
+        public async Task<IEnumerable<Category>> GetCategoriesByTabId(int tabId = -1)
         {
             if (tabId < 0)
             {
-                return categoryRepository.GetAll();
+                return await categoryRepository.GetAllAsync();
             }
-            return categoryRepository.GetAll().Where(x => x.CategoryCategoryId == tabId);
+            return (await categoryRepository.GetAllAsync()).Where(x => x.CategoryCategoryId == tabId);
         }
 
         [HttpGet(Name = "GetCategory")]
-        public Category GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
-            return categoryRepository.GetById(id);
+            return Ok(await categoryRepository.GetByIdAsync(id));
         }
 
         [HttpGet(Name = "GetCategoryTabs")]
-        public IEnumerable<CategoryTabResponse> GetCategoryTabs()
+        public async Task<IActionResult> GetCategoryTabs()
         {
-            return new List<CategoryTabResponse> { new CategoryTabResponse { Id = 0, Name = "Тренировки" }, new CategoryTabResponse { Id = 1, Name = "Спа" } };
+            return Ok(new List<CategoryTabResponse> { 
+                new CategoryTabResponse { Id = 0, Name = "Тренировки" },
+                new CategoryTabResponse { Id = 1, Name = "Спа" } });
         }
     }
 }

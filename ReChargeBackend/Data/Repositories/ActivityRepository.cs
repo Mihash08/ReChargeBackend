@@ -22,14 +22,14 @@ namespace Data.Repositories
         }
 
 
-        public Activity Add(Activity entity)
+        public async Task<Activity> AddAsync(Activity entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(Activity entity)
+        public async Task DeleteAsync(Activity entity)
         {
             if (entity == null)
             {
@@ -38,41 +38,41 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Activity> GetAll()
+        public async Task<IEnumerable<Activity>> GetAllAsync()
         {
-            return dbSet.Include(x => x.Slots).ToList();
+            return await dbSet.Include(x => x.Slots).ToListAsync();
         }
 
-        public IEnumerable<Activity> GetByCategory(int categoryId)
+        public async Task<IEnumerable<Activity>> GetByCategoryAsync(int categoryId)
         {
             if (categoryId == -1)
             {
-                return dbSet.Include(x => x.Slots).Include(x => x.Category).Include(x => x.Location).ToList();
+                return await dbSet.Include(x => x.Slots).Include(x => x.Category).Include(x => x.Location).ToListAsync();
             }
-            return dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Category).Include(x => x.Slots).Include(x => x.Location).ToList();
+            return await dbSet.Where(x => x.CategoryId == categoryId).Include(x => x.Category).Include(x => x.Slots).Include(x => x.Location).ToListAsync();
         }
 
-        public Activity? GetById(int id)
+        public async Task<Activity?> GetByIdAsync(int id)
         {
-            var entity = dbSet.Include(x => x.Slots).Include(x => x.Location)
+            var entity = await dbSet.Include(x => x.Slots).Include(x => x.Location)
                 .Include(x => x.Category)
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -80,13 +80,13 @@ namespace Data.Repositories
             return entity;
         }
 
-        public Activity Update(Activity entity)
+        public async Task<Activity> UpdateAsync(Activity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.Include(x => x.Slots).FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.Include(x => x.Slots).FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");

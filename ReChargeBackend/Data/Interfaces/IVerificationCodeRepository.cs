@@ -6,6 +6,6 @@ namespace Data.Interfaces
 {
     public interface IVerificationCodeRepository : IRepository<VerificationCode>
     {
-        VerificationCode GetBySession(string sessionId);
+        Task<VerificationCode> GetBySessionAsync(string sessionId);
     }
 }

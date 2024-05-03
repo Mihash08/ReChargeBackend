@@ -8,6 +8,8 @@ using ReChargeBackend.Data;
 using Microsoft.AspNetCore.Identity;
 using Data;
 using System.Text.Json.Serialization;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,5 +60,10 @@ host.UseAuthentication();
 host.MapControllers();
 
 TestSeedData.EnsurePopulated(host);
+
+var options = new AppOptions();
+options.Credential = GoogleCredential.FromFile("firebase/serviceAccountKey.json");
+FirebaseApp.Create(options: options, "rechage-firebase");
+
 
 await host.RunAsync();

@@ -18,15 +18,15 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet(Name = "GetLocations")]
-        public IEnumerable<Location> GetLocations()
+        public async Task<IActionResult> GetLocations()
         {
-            return locationRepository.GetAll();
+            return Ok(await locationRepository.GetAllAsync());
         }
         [HttpGet(Name = "GetLocation")]
-        public Location GetLocation(int id)
+        public async Task<IActionResult> GetLocation(int id)
         {
             
-            return locationRepository.GetById(id);
+            return Ok(await locationRepository.GetByIdAsync(id));
         }
     }
 }

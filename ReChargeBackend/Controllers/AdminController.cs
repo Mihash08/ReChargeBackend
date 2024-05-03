@@ -31,38 +31,38 @@ namespace BackendReCharge.Controllers
 
         private readonly ILogger<UserController> _logger;
         [HttpPost(Name = "AdminLogOut")]
-        public IActionResult AdminLogOut()
+        public async Task<IActionResult> AdminLogOut()
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
             admin.AccessHash = null;
-            adminRepository.Update(admin);
+            await adminRepository.UpdateAsync(admin);
             return Ok();
         }
 
 
 
         [HttpPost(Name = "AdminAuth")]
-        public IActionResult AdminAuth([FromBody] AuthRequest info)
+        public async Task<IActionResult> AdminAuth([FromBody] AuthRequest info)
         {
             try
             {
-                var session = verificationCodeRepository.GetBySession(info.sessionId);
+                var session = await verificationCodeRepository.GetBySessionAsync(info.sessionId);
                 if (Hasher.Verify(info.code, session.Code))
                 {
-                    var admin = adminRepository.GetByNumber(session.PhoneNumber);
+                    var admin = await adminRepository.GetByNumberAsync(session.PhoneNumber);
                     string accessToken = Temp.GenerateAccessToken();
                     if (DateTime.Now - session.CreationDateTime < new TimeSpan(0, 5, 0))
                     {
-                        verificationCodeRepository.Delete(session);
+                        verificationCodeRepository.DeleteAsync(session);
                         return BadRequest("Время действия кода истекло");
                     }
                     if (admin is null)
@@ -72,9 +72,9 @@ namespace BackendReCharge.Controllers
                     else
                     {
                         admin.AccessHash = Hasher.Encrypt(accessToken);
-                        adminRepository.Update(admin);
+                        await adminRepository.UpdateAsync(admin);
                     }
-                    verificationCodeRepository.Delete(session);
+                    await verificationCodeRepository.DeleteAsync(session);
                     return Ok(new AuthResponse { AccessToken = accessToken });
                 }
                 return BadRequest("Неправильный код");
@@ -88,7 +88,7 @@ namespace BackendReCharge.Controllers
 
         }
         [HttpPost(Name = "AuthPhoneAdmind")]
-        public IActionResult AdminAuthPhone([FromBody] PhoneAuthRequest info)
+        public async Task<IActionResult> AdminAuthPhone([FromBody] PhoneAuthRequest info)
         {
             //TODO: IMPLEMENT PROPER NUMBER CHECKING
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
@@ -96,7 +96,7 @@ namespace BackendReCharge.Controllers
                 var sessionId = Temp.GenerateSessionId();
                 //var code = Temp.GenerateCode();
                 var code = "12345";
-                verificationCodeRepository.Add(new VerificationCode()
+                await verificationCodeRepository.AddAsync(new VerificationCode()
                 {
                     Code = Hasher.Encrypt(code),
                     PhoneNumber = info.phoneNumber,
@@ -122,20 +122,20 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpPost(Name = "VerifyCode")]
-        public IActionResult VerifyCode(string code)
+        public async Task<IActionResult> VerifyCode(string code)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var res = reservationRepository.GetReservationByCode(code);
+            var res = await reservationRepository.GetReservationByCodeAsync(code);
             if (res is null)
             {
                 return BadRequest("Неверный код");
@@ -164,20 +164,20 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpGet(Name = "GetLocationReservations")]
-        public IActionResult GetLocationReservations()
+        public async Task<IActionResult> GetLocationReservations()
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var reses = reservationRepository.GetReservationsByLocation(admin.LocationId);
+            var reses = await reservationRepository.GetReservationsByLocationAsync(admin.LocationId);
             return Ok(reses.Select(x => new GetLocationReservationsResponse
             {
                 ActivityName = x.Name,
@@ -190,20 +190,20 @@ namespace BackendReCharge.Controllers
 
         }
         [HttpGet(Name = "GetLocationNewReservations")]
-        public IActionResult GetLocationNewReservations()
+        public async Task<IActionResult> GetLocationNewReservations()
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var reses = reservationRepository.GetReservationsByLocation(admin.LocationId).Where(x => x.Status == Status.New);
+            var reses = (await reservationRepository.GetReservationsByLocationAsync(admin.LocationId)).Where(x => x.Status == Status.New);
             return Ok(reses.Select(x => new GetLocationReservationsResponse
             {
                 ActivityName = x.Name,
@@ -217,96 +217,96 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpPost(Name = "SetReservationConfirmed")]
-        public IActionResult SetReservationConfirmed(int reservationId)
+        public async Task<IActionResult> SetReservationConfirmed(int reservationId)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res.Status != Status.New)
             {
                 return BadRequest("Бронь не в статусе \"New\"");
             }
             res.Status = Status.Confirmed;
-            reservationRepository.Update(res);
+            await reservationRepository.UpdateAsync(res);
             return Ok();
         }
         [HttpPost(Name = "SetReservationUsed")]
-        public IActionResult SetReservationUsed(int reservationId)
+        public async Task<IActionResult> SetReservationUsed(int reservationId)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res.Status != Status.Confirmed)
             {
                 return BadRequest("Бронь не в статусе \"Confirmed\"");
             }
             res.Status = Status.Used;
-            reservationRepository.Update(res);
+            await reservationRepository.UpdateAsync(res);
             return Ok();
         }
 
         [HttpPost(Name = "SetReservationMissed")]
-        public IActionResult SetReservationMissed(int reservationId)
+        public async Task<IActionResult> SetReservationMissed(int reservationId)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res.Status != Status.Confirmed)
             {
                 return BadRequest("Бронь не в статусе \"Confirmed\"");
             }
             res.Status = Status.Missed;
-            reservationRepository.Update(res);
+            await reservationRepository.UpdateAsync(res);
             return Ok();
         }
         [HttpPost(Name = "SetReservationCanceledByAdmin")]
-        public IActionResult SetReservationCanceledByAdmin(int reservationId)
+        public async Task<IActionResult> SetReservationCanceledByAdmin(int reservationId)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var admin = adminRepository.GetByAccessToken(token);
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
             if (admin is null)
             {
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var res = reservationRepository.GetById(reservationId);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res.Status != Status.New && res.Status != Status.Confirmed)
             {
                 return BadRequest("Бронь не в статусе \"New\" или \"Confirmed\"");
             }
             res.Status = Status.CanceledByAdmin;
-            reservationRepository.Update(res);
+            await reservationRepository.UpdateAsync(res);
             return Ok();
         }
 

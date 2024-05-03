@@ -28,7 +28,7 @@ namespace BackendReCharge.Controllers
         private readonly ILogger<UserController> _logger;
 
         [HttpPost(Name = "RequestCode")]
-        public IActionResult AuthPhone([FromBody] PhoneAuthRequest info)
+        public async Task<IActionResult> AuthPhone([FromBody] PhoneAuthRequest info)
         {
             //TODO: IMPLEMENT PROPER NUMBER CHECKING
             if (Temp.IsPhoneNumberValid(info.phoneNumber))
@@ -36,7 +36,7 @@ namespace BackendReCharge.Controllers
                 var sessionId = Temp.GenerateSessionId();
                 //var code = Temp.GenerateCode();
                 var code = "12345";
-                verificationCodeRepository.Add(new VerificationCode()
+                await verificationCodeRepository.AddAsync(new VerificationCode()
                 {
                     Code = Hasher.Encrypt(code),
                     PhoneNumber = info.phoneNumber,
@@ -71,14 +71,14 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpPost(Name = "Auth")]
-        public IActionResult Auth([FromBody] AuthRequest info)
+        public async Task<IActionResult> Auth([FromBody] AuthRequest info)
         {
             try
             {
-                var session = verificationCodeRepository.GetBySession(info.sessionId);
+                var session = await verificationCodeRepository.GetBySessionAsync(info.sessionId);
                 if (Hasher.Verify(info.code, session.Code))
                 {
-                    var user = userRepository.GetByNumber(session.PhoneNumber);
+                    var user = await userRepository.GetByNumberAsync(session.PhoneNumber);
                     string accessToken = Temp.GenerateAccessToken();
                     if (user is null)
                     {
@@ -86,7 +86,7 @@ namespace BackendReCharge.Controllers
                         {
                             return BadRequest("Время действия кода истекло");
                         }
-                        userRepository.Add(new User()
+                        await userRepository.AddAsync(new User()
                         {
                             PhoneNumber = session.PhoneNumber,
                             AccessHash = Hasher.Encrypt(accessToken),
@@ -95,9 +95,9 @@ namespace BackendReCharge.Controllers
                     } else
                     {
                         user.AccessHash = Hasher.Encrypt(accessToken);
-                        userRepository.Update(user);
+                        await userRepository.UpdateAsync(user);
                     }
-                    verificationCodeRepository.Delete(session);
+                    await verificationCodeRepository.DeleteAsync(session);
                     return Ok(new AuthResponse { AccessToken = accessToken});
                 }
                 return BadRequest("Неправильный код");

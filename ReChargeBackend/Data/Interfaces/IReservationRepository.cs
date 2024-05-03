@@ -4,9 +4,9 @@ namespace Data.Interfaces
 {
     public interface IReservationRepository : IRepository<Reservation>
     {
-        public Reservation? GetNextReservation(int userId);
-        public IEnumerable<Reservation> GetReservationsByUser(int userId);
-        public IEnumerable<Reservation> GetReservationsByLocation(int locationId);
-        public Reservation? GetReservationByCode(string code);
+        public Task<Reservation?> GetNextReservationAsync(int userId);
+        public Task<IEnumerable<Reservation>> GetReservationsByUserAsync(int userId);
+        public Task<IEnumerable<Reservation>> GetReservationsByLocationAsync(int locationId);
+        public Task<Reservation?> GetReservationByCodeAsync(string code);
     }
 }

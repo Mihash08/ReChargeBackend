@@ -21,11 +21,11 @@ namespace BackendReCharge.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetActivitiesRecommendations(int category_id = -1)
+        public async Task<IActionResult> GetActivitiesRecommendations(int category_id = -1)
         {
             try
             {
-                var acts = activityRepository.GetByCategory(category_id);
+                var acts = await activityRepository.GetByCategoryAsync(category_id);
                 if (acts == null || !acts.Any())
                 {
                     return Ok(new List<GetActivitiesRecommendationsResponse>());
@@ -49,9 +49,9 @@ namespace BackendReCharge.Controllers
             }
         }
         [HttpGet(Name = "GetActivity")]
-        public IActionResult GetActivity(int id)
+        public async Task<IActionResult> GetActivity(int id)
         {
-            var act = activityRepository.GetById(id);
+            var act = await activityRepository.GetByIdAsync(id);
             if (act is null)
             {
                 return NotFound($"Активность с id {id} не найдена");
@@ -60,9 +60,9 @@ namespace BackendReCharge.Controllers
         }
        
         [HttpGet(Name = "GetActivityView")]
-        public IActionResult GetActivityView(int id)
+        public async Task<IActionResult> GetActivityView(int id)
         {
-            var act = activityRepository.GetById(id);
+            var act = await activityRepository.GetByIdAsync(id);
             if (act is null)
             {
                 return NotFound($"Активность с id {id} не найдена");
@@ -87,10 +87,10 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpGet(Name = "GetActivitiesByCategory")]
-        public List<Activity> GetActivityByCategory(int categoryId)
+        public async Task<IActionResult> GetActivityByCategoryAsync(int categoryId)
         {
-            var acts = activityRepository.GetByCategory(categoryId).ToList();
-            return acts;
+            var acts = await activityRepository.GetByCategoryAsync(categoryId);
+            return Ok(acts);
         }
     }
 }

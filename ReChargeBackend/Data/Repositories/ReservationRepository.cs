@@ -22,14 +22,14 @@ namespace Data.Repositories
         }
 
 
-        public Reservation Add(Reservation entity)
+        public async Task<Reservation> AddAsync(Reservation entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(Reservation entity)
+        public async Task DeleteAsync(Reservation entity)
         {
             if (entity == null)
             {
@@ -38,30 +38,30 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Reservation> GetAll()
+        public async Task<IEnumerable<Reservation>> GetAllAsync()
         {
-            return dbSet.Include(x => x.User).Include(x => x.Slot).ToList();
+            return await dbSet.Include(x => x.User).Include(x => x.Slot).ToListAsync();
         }
 
-        public Reservation GetById(int id)
+        public async Task<Reservation?> GetByIdAsync(int id)
         {
-            var entity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -69,13 +69,13 @@ namespace Data.Repositories
             return entity;
         }
 
-        public Reservation Update(Reservation entity)
+        public async Task<Reservation> UpdateAsync(Reservation entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
@@ -85,12 +85,12 @@ namespace Data.Repositories
             existingEntity.User = entity.User;
             existingEntity.UserId = entity.UserId;
             existingEntity.Status = entity.Status;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return existingEntity;
         }
 
 
-        public Reservation? GetNextReservation(int userId)
+        public async Task<Reservation?> GetNextReservationAsync(int userId)
         {
             var reservations = dbSet.Include(x => x.Slot.Activity.Location)
                 .Where(x => x.UserId == userId)
@@ -100,10 +100,10 @@ namespace Data.Repositories
             {
                 return null;
             }
-            return reservations.OrderBy(x => x.Slot.SlotDateTime).ToList()[0];
+            return (await reservations.OrderBy(x => x.Slot.SlotDateTime).ToListAsync())[0];
         }
 
-        public IEnumerable<Reservation> GetReservationsByUser(int userId)
+        public async Task<IEnumerable<Reservation>> GetReservationsByUserAsync(int userId)
         {
             var reservations = dbSet.Include(x => x.Slot.Activity.Location)
                 .Where(x => x.Slot.SlotDateTime >= DateTime.Now)
@@ -112,22 +112,22 @@ namespace Data.Repositories
             {
                 return null;
             }
-            return reservations.ToList();
+            return await reservations.ToListAsync();
         }
 
-        public Reservation? GetReservationByCode(string code)
+        public async Task<Reservation?> GetReservationByCodeAsync(string code)
         {
             var reservation = dbSet.Where(x => x.AccessCode == code).Include(x => x.Slot.Activity);
             if (reservation.Count() > 0)
             {
-                return reservation.First();
+                return await reservation.FirstAsync();
             }
             return null;
         }
 
-        public IEnumerable<Reservation> GetReservationsByLocation(int locationId)
+        public async Task<IEnumerable<Reservation>> GetReservationsByLocationAsync(int locationId)
         {
-            return dbSet.Where(x => x.Slot.Activity.LocationId == locationId).Include(x => x.Slot);
+            return await dbSet.Where(x => x.Slot.Activity.LocationId == locationId).Include(x => x.Slot).ToListAsync();
         }
     }
 }

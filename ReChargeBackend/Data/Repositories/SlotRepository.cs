@@ -23,14 +23,14 @@ namespace Data.Repositories
         }
 
 
-        public Slot Add(Slot entity)
+        public async Task<Slot> AddAsync(Slot entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(Slot entity)
+        public async Task DeleteAsync(Slot entity)
         {
             if (entity == null)
             {
@@ -39,12 +39,12 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
             var entity = dbSet.FirstOrDefault(x => x.Id == id);
             if (entity == null)
@@ -52,22 +52,22 @@ namespace Data.Repositories
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Slot> GetAll()
+        public async Task<IEnumerable<Slot>> GetAllAsync()
         {
-            return dbSet.Include(x => x.Activity).ToList();
+            return await dbSet.Include(x => x.Activity).ToListAsync();
         }
 
-        public IEnumerable<Slot> GetAllByActivityId(int activityId)
+        public async Task<IEnumerable<Slot>> GetAllByActivityIdAsync(int activityId)
         {
-            return dbSet.Include(x => x.Activity).Where(x => x.ActivityId == activityId).ToList();
+            return await dbSet.Include(x => x.Activity).Where(x => x.ActivityId == activityId).ToListAsync();
         }
 
-        public Slot? GetById(int id)
+        public async Task<Slot?> GetByIdAsync(int id)
         {
-            var entity = dbSet.Include(x => x.Activity).FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.Include(x => x.Activity).FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -75,25 +75,25 @@ namespace Data.Repositories
             return entity;
         }
 
-        public IEnumerable<Slot> GetSlotsByActivityIdAndTime(int activityId, DateTime dateTime)
+        public async Task<IEnumerable<Slot>> GetSlotsByActivityIdAndTimeAsync(int activityId, DateTime dateTime)
         {
-            return dbSet.Where(x => x.ActivityId == activityId && x.SlotDateTime > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
-                .Include(x => x.Activity.Location);
+            return await dbSet.Where(x => x.ActivityId == activityId && x.SlotDateTime > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
+                .Include(x => x.Activity.Location).ToListAsync();
         }
 
-        public IEnumerable<Slot> GetSlotsByCategoryIdAndTime(int categoryId, DateTime dateTime)
+        public async Task<IEnumerable<Slot>> GetSlotsByCategoryIdAndTimeAsync(int categoryId, DateTime dateTime)
         {
-            return dbSet.Where(x => x.Activity.CategoryId == categoryId && x.SlotDateTime >= dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
-                .Include(x => x.Activity.Location).Include(x => x.Activity.Category);
+            return await dbSet.Where(x => x.Activity.CategoryId == categoryId && x.SlotDateTime >= dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
+                .Include(x => x.Activity.Location).Include(x => x.Activity.Category).ToListAsync();
         }
 
-        public Slot Update(Slot entity)
+        public async Task<Slot> UpdateAsync(Slot entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");

@@ -22,14 +22,14 @@ namespace Data.Repositories
         }
 
 
-        public Location Add(Location entity)
+        public async Task<Location> AddAsync(Location entity)
         {
-            dbSet.Add(entity);
+            await dbSet.AddAsync(entity);
             context.SaveChanges();
             return entity;
         }
 
-        public void Delete(Location entity)
+        public async Task DeleteAsync(Location entity)
         {
             if (entity == null)
             {
@@ -38,30 +38,30 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<Location> GetAll()
+        public async Task<IEnumerable<Location>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public Location GetById(int id)
+        public async Task<Location> GetByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
@@ -69,13 +69,13 @@ namespace Data.Repositories
             return entity;
         }
 
-        public Location Update(Location entity)
+        public async Task<Location> UpdateAsync(Location entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");

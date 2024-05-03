@@ -31,14 +31,14 @@ namespace BackendReCharge.Controllers
         private readonly ILogger<UserController> _logger;
 
         [HttpGet(Name = "GetProfileHeader")]
-        public IActionResult GetProfileHeader()
+        public async Task<IActionResult> GetProfileHeader()
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
@@ -51,13 +51,13 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpGet(Name = "GetUserByNumberTest")]
-        public User GetUserByNumberTest(string number)
+        public async Task<IActionResult> GetUserByNumberTest(string number)
         {
-            return userRepository.GetByNumber(number);
+            return Ok(await userRepository.GetByNumberAsync(number));
         }
 
         [HttpGet(Name = "GetUserByAccessToken")]
-        public IActionResult GetUserByAccessToken()
+        public async Task<IActionResult> GetUserByAccessToken()
         {
 
             StringValues token = string.Empty;
@@ -65,7 +65,7 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
@@ -83,39 +83,39 @@ namespace BackendReCharge.Controllers
             });
         }
         [HttpPost(Name = "LogOut")]
-        public IActionResult LogOut()
+        public async Task<IActionResult> LogOut()
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
             user.AccessHash = null;
-            userRepository.Update(user);
+            await userRepository.UpdateAsync(user);
             return Ok();
         }
         //TODO: аксесс токен хранить на сессиию с устройством, чтобы не логаутило
         [HttpPost(Name = "UpdateUser")]
-        public IActionResult UpdateUser(UpdateUserInfoRequest request)
+        public async Task<IActionResult> UpdateUser(UpdateUserInfoRequest request)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
             {
                 return BadRequest("Отсутствует токен доступа");
             }
-            var user = userRepository.GetByAccessToken(token);
+            var user = await userRepository.GetByAccessTokenAsync(token);
             if (user is null)
             {
                 return NotFound("Пользователь не найден");
             }
             try
             {
-                userRepository.Update(new User()
+                await userRepository.UpdateAsync(new User()
                 {
                     BirthDate = request.BirthDate,
                     Email = request.Email,

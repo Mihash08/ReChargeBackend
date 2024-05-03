@@ -24,14 +24,14 @@ namespace Data.Repositories
         }
 
 
-        public AdminUser Add(AdminUser entity)
+        public async Task<AdminUser> AddAsync(AdminUser entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
+            await dbSet.AddAsync(entity);
+            await context.SaveChangesAsync();
             return entity;
         }
 
-        public void Delete(AdminUser entity)
+        public async Task DeleteAsync(AdminUser entity)
         {
             if (entity == null)
             {
@@ -40,33 +40,33 @@ namespace Data.Repositories
             if (dbSet.Contains(entity))
             {
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public void DeleteById(int id)
+        public async Task DeleteByIdAsync(int id)
         {
-            var entity = dbSet.FirstOrDefault(x => x.Id == id);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 throw new ArgumentException("Id not found", nameof(id));
             }
             dbSet.Remove(entity);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
 
-        public IEnumerable<AdminUser> GetAll()
+        public async Task<IEnumerable<AdminUser>> GetAllAsync()
         {
-            return dbSet.ToList();
+            return await dbSet.ToListAsync();
         }
 
-        public AdminUser? GetByAccessToken(string accessToken)
+        public async Task<AdminUser?> GetByAccessTokenAsync(string accessToken)
         {
             try
             {
                 var test = Hasher.Verify("123", "$2a$11$zf7y0J4heYz1ufhpxI71du$2a$11$zf7y0J4heYz1ufhpxI71duIZhDleVZZ2eiOpURfQiBVMcHDvVKYP2");
-                var entity = dbSet.ToList().First(x => 
+                var entity = await dbSet.FirstOrDefaultAsync(x => 
                     x.AccessHash != null && Hasher.Verify(accessToken, x.AccessHash));
                 return entity;
             }
@@ -78,11 +78,11 @@ namespace Data.Repositories
             }
         }
 
-        public AdminUser? GetById(int id)
+        public async Task<AdminUser?> GetByIdAsync(int id)
         {
             try
             {
-                var entity = dbSet.First(x => x.Id == id);
+                var entity = await dbSet.FirstAsync(x => x.Id == id);
                 return entity;
             }
             catch (Exception e)
@@ -93,18 +93,18 @@ namespace Data.Repositories
             }
         }
 
-        public AdminUser? GetByNumber(string number)
+        public async Task<AdminUser?> GetByNumberAsync(string number)
         {
-            var entity = dbSet.FirstOrDefault(x => x.PhoneNumber == number);
+            var entity = await dbSet.FirstOrDefaultAsync(x => x.PhoneNumber == number);
             return entity;
         }
-        public AdminUser Update(AdminUser entity)
+        public async Task<AdminUser> UpdateAsync(AdminUser entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
             }
-            var existingEntity = dbSet.FirstOrDefault(x => x.Id == entity.Id);
+            var existingEntity = await dbSet.FirstOrDefaultAsync(x => x.Id == entity.Id);
             if (existingEntity == null)
             {
                 throw new ArgumentNullException(nameof(entity), "Entity not found");
@@ -114,7 +114,7 @@ namespace Data.Repositories
             existingEntity.PhoneNumber = entity.PhoneNumber;
             existingEntity.Surname = entity.Surname;    
             existingEntity.AccessHash = entity.AccessHash;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return existingEntity;
         }
     }
