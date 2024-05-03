@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/ReChargeBackend/firebase/recharge-00-firebase-adminsdk-xsbki-fa4801ee56.json
