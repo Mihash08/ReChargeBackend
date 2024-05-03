@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ReChargeBackend/firebase/recharge-00-firebase-adminsdk-xsbki-fa4801ee56.json
 /ReChargeBackend/appsettings.Development.json
+/ReChargeBackend/firebase/serviceAccountKey.json
