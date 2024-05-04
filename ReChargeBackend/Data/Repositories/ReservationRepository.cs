@@ -26,6 +26,11 @@ namespace Data.Repositories
         {
             await dbSet.AddAsync(entity);
             await context.SaveChangesAsync();
+            Console.WriteLine("added");
+            Console.WriteLine("added");
+            Console.WriteLine("added");
+            Console.WriteLine("added");
+            Console.WriteLine("added");
             return entity;
         }
 

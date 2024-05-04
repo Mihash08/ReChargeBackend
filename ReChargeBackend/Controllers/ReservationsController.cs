@@ -52,12 +52,18 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest($"Слот с id {slotId} не найден");
             }
-            if ((await reservationRepository.GetReservationsByUserAsync(user.Id))
-                .Any(x => x.SlotId == slot.Id 
-                && x.Status != Status.New 
-                && x.Status != Status.Confirmed))
+            var usersReses = (await reservationRepository.GetReservationsByUserAsync(user.Id)).ToList();
+            foreach (var i in usersReses)
+            {
+                Console.WriteLine(i.SlotId);
+            }
+            if (usersReses.Any(x => x.SlotId == slotId))
             {
                 return StatusCode(452, "Вы уже записаны на это занятие");
+            }
+            if (slot.SlotDateTime < DateTime.Now)
+            {
+                return BadRequest("Активность уже прошла");
             }
             if (slot.FreePlaces >= request.ReserveCount)
             {
