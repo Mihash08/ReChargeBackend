@@ -24,6 +24,8 @@ namespace Data.Entities
         [ForeignKey("Location")]
         [Column("location_id")]
         public int LocationId {  get; set; }
+        [Column("firebase_token")]
+        public string? FirebaseToken { get; set; }
         public Location Location { get; set; }
         public AdminUser(string name, string? surname, string? email, DateTime? birthDate, string phoneNumber, string? imageUrl, string? accessHash, string? gender) : base()
         {

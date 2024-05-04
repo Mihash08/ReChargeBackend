@@ -100,7 +100,6 @@ namespace BackendReCharge.Controllers
             await userRepository.UpdateAsync(user);
             return Ok();
         }
-        //TODO: аксесс токен хранить на сессиию с устройством, чтобы не логаутило
         [HttpPost(Name = "SetFirebaseToken")]
         public async Task<IActionResult> SetFirebaseToken(string firebaseToken)
         {

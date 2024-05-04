@@ -121,6 +121,33 @@ namespace BackendReCharge.Controllers
             return BadRequest("Невалидный номер телефона");
         }
 
+        [HttpPost(Name = "SetFirebaseToken")]
+        public async Task<IActionResult> SetFirebaseToken(string firebaseToken)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
+            if (admin is null)
+            {
+                return NotFound("Пользователь не найден");
+            }
+            admin.FirebaseToken = firebaseToken;
+            try
+            {
+                await adminRepository.UpdateAsync(admin);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost(Name = "VerifyCode")]
         public async Task<IActionResult> VerifyCode(string code)
         {
