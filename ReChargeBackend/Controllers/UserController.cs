@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
 using Utility;
 using Microsoft.Extensions.Primitives;
+using Azure.Core;
 
 namespace BackendReCharge.Controllers
 {
@@ -98,6 +99,33 @@ namespace BackendReCharge.Controllers
             user.AccessHash = null;
             await userRepository.UpdateAsync(user);
             return Ok();
+        }
+        //TODO: аксесс токен хранить на сессиию с устройством, чтобы не логаутило
+        [HttpPost(Name = "SetFirebaseToken")]
+        public async Task<IActionResult> SetFirebaseToken(string firebaseToken)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var user = await userRepository.GetByAccessTokenAsync(token);
+            if (user is null)
+            {
+                return NotFound("Пользователь не найден");
+            }
+            user.FirebaseToken = firebaseToken;
+            try
+            {
+                await userRepository.UpdateAsync(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
         }
         //TODO: аксесс токен хранить на сессиию с устройством, чтобы не логаутило
         [HttpPost(Name = "UpdateUser")]
