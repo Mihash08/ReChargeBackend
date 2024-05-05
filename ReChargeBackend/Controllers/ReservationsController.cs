@@ -82,6 +82,12 @@ namespace BackendReCharge.Controllers
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 await slotRepository.UpdateAsync(slot);
+                
+
+                NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}", slot.Activity.ImageUrl, "dn" +
+                    "uQECd0R-Ci2CatC60Y1S:APA91bEjXhhtknDVKFvXBSNKOBbzYGGu84j_zg3lBEq_KVmKhHh5VOMaPozevGpHh8vCnt5YkG6dl00waESZJf" +
+                    "_ImcLrkPBrt5-fMZm7kIOtVuDIgZll4WW2mxjGUPGK3z0_hWb9rc_X");
 
                 return Ok();
             }

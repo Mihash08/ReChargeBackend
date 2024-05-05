@@ -121,8 +121,8 @@ namespace BackendReCharge.Controllers
             return BadRequest("Невалидный номер телефона");
         }
 
-        [HttpPost(Name = "SetFirebaseToken")]
-        public async Task<IActionResult> SetFirebaseToken(string firebaseToken)
+        [HttpPost(Name = "SetAdminFirebaseToken")]
+        public async Task<IActionResult> SetAdminFirebaseToken(string firebaseToken)
         {
             StringValues token = string.Empty;
             if (!Request.Headers.TryGetValue("accessToken", out token))
