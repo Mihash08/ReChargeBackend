@@ -90,7 +90,7 @@ namespace BackendReCharge.Controllers
                         {
                             PhoneNumber = session.PhoneNumber,
                             AccessHash = Hasher.Encrypt(accessToken),
-                            ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                            ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                         });
                     } else
                     {

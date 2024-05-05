@@ -62,6 +62,11 @@ host.MapControllers();
 TestSeedData.EnsurePopulated(host);
 
 
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("firebase/serviceAccountKey.json")
+}, "recharge");
+
 
 
 await host.RunAsync();

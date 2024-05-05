@@ -8,11 +8,6 @@ namespace ReChargeBackend.Utility
     {
         public async static void NotifyUser(string title, string body, string imageUrl, string deviceToken)
         {
-            FirebaseApp.Create(new AppOptions()
-            {
-                Credential = GoogleCredential.FromFile("firebase/serviceAccountKey.json")
-            }, "recharge");
-
             var message = new Message()
             {
                 Notification = new Notification()
