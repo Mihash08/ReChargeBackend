@@ -60,7 +60,7 @@ namespace BackendReCharge.Controllers
             {
                 Console.WriteLine(i.SlotId);
             }
-            if (usersReses.Any(x => x.SlotId == slotId))
+            if (usersReses.Any(x => x.SlotId == slotId && (x.Status == Status.New || x.Status == Status.Confirmed)))
             {
                 return StatusCode(452, "Вы уже записаны на это занятие");
             }
