@@ -20,13 +20,16 @@ namespace BackendReCharge.Controllers
         private readonly IAdminUserRepository adminRepository;
         private readonly IVerificationCodeRepository verificationCodeRepository;
         private readonly IReservationRepository reservationRepository;
+        private readonly IUserRepository userRepository;
         public AdminController(IAdminUserRepository adminRepository,
             IVerificationCodeRepository verificationCodeRepository,
-            IReservationRepository reservationRepository)
+            IReservationRepository reservationRepository,
+            IUserRepository userRepository)
         {
             this.adminRepository = adminRepository;
             this.verificationCodeRepository = verificationCodeRepository;
             this.reservationRepository = reservationRepository;
+            this.userRepository = userRepository;
         }
 
         private readonly ILogger<UserController> _logger;
@@ -264,6 +267,20 @@ namespace BackendReCharge.Controllers
             }
             res.Status = Status.Confirmed;
             await reservationRepository.UpdateAsync(res);
+
+            var user = await userRepository.GetByIdAsync(res.UserId);
+            if (user is null)
+            {
+                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+            }
+            var slot = res.Slot;
+            if (user.FirebaseToken != null)
+            {
+                NotificationManager.NotifyUser("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                    slot.Activity.ImageUrl,
+                    user.FirebaseToken);
+            }
             return Ok();
         }
         [HttpPost(Name = "SetReservationUsed")]
@@ -334,6 +351,20 @@ namespace BackendReCharge.Controllers
             }
             res.Status = Status.CanceledByAdmin;
             await reservationRepository.UpdateAsync(res);
+
+            var user = await userRepository.GetByIdAsync(res.UserId);
+            if (user is null)
+            {
+                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+            }
+            var slot = res.Slot;
+            if (user.FirebaseToken != null)
+            {
+                NotificationManager.NotifyUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                    slot.Activity.ImageUrl,
+                    user.FirebaseToken);
+            }
             return Ok();
         }
 
