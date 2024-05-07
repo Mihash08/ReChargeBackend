@@ -66,7 +66,10 @@ namespace Data.Repositories
 
         public async Task<Reservation?> GetByIdAsync(int id)
         {
-            var entity = await dbSet.Include(x => x.User).Include(x => x.Slot.Activity.Location).FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await dbSet
+                .Include(x => x.User)
+                .Include(x => x.Slot.Activity.Location)
+                .FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
@@ -101,6 +104,7 @@ namespace Data.Repositories
                 .Where(x => x.UserId == userId)
                 .Where(x => x.Slot.SlotDateTime.AddMinutes(x.Slot.LengthMinutes) >= DateTime.Now)
                 .Where(x => x.Status == Status.New || x.Status == Status.Confirmed);
+
             if (reservations == null || reservations.Count() < 1)
             {
                 return null;

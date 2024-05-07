@@ -6,6 +6,7 @@ using FirebaseAdmin;
 using FirebaseAdmin.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json.Linq;
 using ReCharge.Data.Interfaces;
 using ReChargeBackend.Requests;
 using ReChargeBackend.Responses;
@@ -18,23 +19,27 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class ReservationsController : ControllerBase
     {
+        private Dictionary<int, CancellationTokenSource> canceletionTokenSources;
         private IReservationRepository reservationRepository;
         private IUserRepository userRepository;
         private ISlotRepository slotRepository;
         private IAdminUserRepository adminUserRepository;
         private readonly ILogger<ReservationsController> _logger;
+        private readonly IAdminUserRepository adminRepository;
 
         public ReservationsController(ILogger<ReservationsController> logger,
             IReservationRepository reservationRepository,
             IUserRepository userRepository,
             ISlotRepository slotRepository,
-            IAdminUserRepository adminUserRepository)
+            IAdminUserRepository adminUserRepository,
+            IAdminUserRepository adminRepository)
         {
             _logger = logger;
             this.reservationRepository = reservationRepository;
             this.userRepository = userRepository;
             this.slotRepository = slotRepository;
             this.adminUserRepository = adminUserRepository;
+            this.adminRepository = adminRepository;
         }
 
         [HttpPost(Name = "MakeReservation")]
@@ -70,7 +75,7 @@ namespace BackendReCharge.Controllers
             }
             if (slot.FreePlaces >= request.ReserveCount)
             {
-                await reservationRepository.AddAsync(new Reservation
+                var res = await reservationRepository.AddAsync(new Reservation
                 {
                     Slot = slot,
                     SlotId = slotId,
@@ -87,13 +92,44 @@ namespace BackendReCharge.Controllers
                 await slotRepository.UpdateAsync(slot);
                 try
                 {
+                    canceletionTokenSources.Add(res.Id, new CancellationTokenSource());
+                    _setReservationMissed(res.Id, slot.SlotDateTime.AddMinutes(slot.LengthMinutes), canceletionTokenSources[res.Id].Token);
+
                     var admin = (await adminUserRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
                     if (admin.FirebaseToken != null)
                     {
+                        string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
+                        string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
                         NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                            $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                            $"{slot.SlotDateTime.Date} в {hours}:{minutes}",
                             slot.Activity.ImageUrl ?? "",
-                            admin.FirebaseToken);
+                            admin.FirebaseToken, DateTime.Now, new CancellationToken());
+                    }
+                    if (user.FirebaseToken != null)
+                    {
+                        string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
+                        string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
+                        NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                            $"{slot.SlotDateTime.Date} в {hours} :{minutes}",
+                            slot.Activity.ImageUrl ?? "",
+                            user.FirebaseToken, new DateTime(
+                                slot.SlotDateTime.Year, 
+                                slot.SlotDateTime.Month, 
+                                slot.SlotDateTime.Day - 1, 
+                                18, 30, 0),
+                            canceletionTokenSources[res.Id].Token
+                            );
+                        NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                            $"{slot.SlotDateTime.Date} в {hours} :{minutes}",
+                            slot.Activity.ImageUrl ?? "",
+                            user.FirebaseToken, new DateTime(
+                                slot.SlotDateTime.Year,
+                                slot.SlotDateTime.Month,
+                                slot.SlotDateTime.Day,
+                                slot.SlotDateTime.Hour - 2,
+                                slot.SlotDateTime.Minute, 0),
+                            canceletionTokenSources[res.Id].Token
+                            );
                     }
                 }
                 catch (Exception ex)
@@ -267,10 +303,162 @@ namespace BackendReCharge.Controllers
             res.Status = Status.CanceledByUser;
             var slot = res.Slot;
             slot.FreePlaces += res.Count;
-
+            if (canceletionTokenSources.ContainsKey(reservationId))
+            {
+                canceletionTokenSources[res.Id].Cancel();
+            }
             await reservationRepository.UpdateAsync(res);
             await slotRepository.UpdateAsync(slot);
             return Ok();
+        }
+        [HttpPost(Name = "SetReservationConfirmed")]
+        public async Task<IActionResult> SetReservationConfirmed(int reservationId)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
+            if (admin is null)
+            {
+                return NotFound("Пользователь администратора не найден");
+            }
+
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res.Status != Status.New)
+            {
+                return BadRequest("Бронь не в статусе \"New\"");
+            }
+            res.Status = Status.Confirmed;
+            await reservationRepository.UpdateAsync(res);
+
+            var user = await userRepository.GetByIdAsync(res.UserId);
+            if (user is null)
+            {
+                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+            }
+            var slot = res.Slot;
+            if (user.FirebaseToken != null)
+            {
+                NotificationManager.NotifyUser("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                    slot.Activity.ImageUrl,
+                    user.FirebaseToken,
+                    DateTime.Now,
+                    new CancellationToken());
+            }
+            return Ok();
+        }
+        [HttpPost(Name = "SetReservationUsed")]
+        public async Task<IActionResult> SetReservationUsed(int reservationId)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
+            if (admin is null)
+            {
+                return NotFound("Пользователь администратора не найден");
+            }
+
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res.Status != Status.Confirmed)
+            {
+                return BadRequest("Бронь не в статусе \"Confirmed\"");
+            }
+            res.Status = Status.Used;
+            await reservationRepository.UpdateAsync(res);
+            return Ok();
+        }
+
+        [HttpPost(Name = "SetReservationMissed")]
+        public async Task<IActionResult> SetReservationMissed(int reservationId)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
+            if (admin is null)
+            {
+                return NotFound("Пользователь администратора не найден");
+            }
+
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res.Status != Status.Confirmed)
+            {
+                return BadRequest("Бронь не в статусе \"Confirmed\"");
+            }
+            res.Status = Status.Missed;
+            await reservationRepository.UpdateAsync(res);
+            return Ok();
+        }
+        [HttpPost(Name = "SetReservationCanceledByAdmin")]
+        public async Task<IActionResult> SetReservationCanceledByAdmin(int reservationId)
+        {
+            StringValues token = string.Empty;
+            if (!Request.Headers.TryGetValue("accessToken", out token))
+            {
+                return BadRequest("Отсутствует токен доступа");
+            }
+            var admin = await adminRepository.GetByAccessTokenAsync(token);
+            if (admin is null)
+            {
+                return NotFound("Пользователь администратора не найден");
+            }
+
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res.Status != Status.New && res.Status != Status.Confirmed)
+            {
+                return BadRequest("Бронь не в статусе \"New\" или \"Confirmed\"");
+            }
+            res.Status = Status.CanceledByAdmin;
+            var slot = res.Slot;
+            slot.FreePlaces += res.Count;
+
+            await reservationRepository.UpdateAsync(res);
+            await slotRepository.UpdateAsync(slot);
+
+            var user = await userRepository.GetByIdAsync(res.UserId);
+            if (user is null)
+            {
+                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+            }
+            if (user.FirebaseToken != null)
+            {
+                NotificationManager.NotifyUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                    slot.Activity.ImageUrl,
+                    user.FirebaseToken,
+                    DateTime.Now,
+                    new CancellationToken());
+                if (canceletionTokenSources.ContainsKey(reservationId))
+                {
+                    canceletionTokenSources[res.Id].Cancel();
+                }
+            }
+            return Ok();
+        }
+
+        private async Task _setReservationMissed(int reservationId, DateTime time,   CancellationToken token)
+        {
+            if (time > DateTime.Now)
+            {
+                await Task.Delay(time - DateTime.Now + new TimeSpan(0, 0, 15), token);
+            }
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res != null)
+            {
+                if (res.Status == Status.New || res.Status == Status.Confirmed)
+                {
+                    res.Status = Status.Missed;
+                    await reservationRepository.UpdateAsync(res);
+                }
+            }
         }
     }
 }
