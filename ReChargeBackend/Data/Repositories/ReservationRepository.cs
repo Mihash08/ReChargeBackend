@@ -66,7 +66,7 @@ namespace Data.Repositories
 
         public async Task<Reservation?> GetByIdAsync(int id)
         {
-            var entity = await dbSet.Include(x => x.User).Include(x => x.Slot).FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await dbSet.Include(x => x.User).Include(x => x.Slot.Activity.Location).FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null)
             {
                 return null;
