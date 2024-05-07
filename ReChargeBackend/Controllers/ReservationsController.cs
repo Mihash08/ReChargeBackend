@@ -85,14 +85,20 @@ namespace BackendReCharge.Controllers
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 await slotRepository.UpdateAsync(slot);
-
-                var admin = (await adminUserRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
-                if (admin.FirebaseToken != null)
+                try
                 {
-                    NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                        $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
-                        slot.Activity.ImageUrl,
-                        admin.FirebaseToken);
+                    var admin = (await adminUserRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
+                    if (admin.FirebaseToken != null)
+                    {
+                        NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                            $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                            slot.Activity.ImageUrl ?? "",
+                            admin.FirebaseToken);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error! This location does not have an admin");
                 }
 
                 return Ok();
