@@ -21,15 +21,18 @@ namespace BackendReCharge.Controllers
         private readonly IVerificationCodeRepository verificationCodeRepository;
         private readonly IReservationRepository reservationRepository;
         private readonly IUserRepository userRepository;
+        private readonly ISlotRepository slotRepository;
         public AdminController(IAdminUserRepository adminRepository,
             IVerificationCodeRepository verificationCodeRepository,
             IReservationRepository reservationRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ISlotRepository slotRepository)
         {
             this.adminRepository = adminRepository;
             this.verificationCodeRepository = verificationCodeRepository;
             this.reservationRepository = reservationRepository;
             this.userRepository = userRepository;
+            this.slotRepository = slotRepository;
         }
 
         private readonly ILogger<UserController> _logger;
@@ -350,14 +353,17 @@ namespace BackendReCharge.Controllers
                 return BadRequest("Бронь не в статусе \"New\" или \"Confirmed\"");
             }
             res.Status = Status.CanceledByAdmin;
+            var slot = res.Slot;
+            slot.FreePlaces += res.Count;
+
             await reservationRepository.UpdateAsync(res);
+            await slotRepository.UpdateAsync(slot);
 
             var user = await userRepository.GetByIdAsync(res.UserId);
             if (user is null)
             {
                 return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
             }
-            var slot = res.Slot;
             if (user.FirebaseToken != null)
             {
                 NotificationManager.NotifyUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +

@@ -265,7 +265,11 @@ namespace BackendReCharge.Controllers
                 return BadRequest("Нельзя отменить бронь менее, чем за 12 часов");
             }
             res.Status = Status.CanceledByUser;
+            var slot = res.Slot;
+            slot.FreePlaces += res.Count;
+
             await reservationRepository.UpdateAsync(res);
+            await slotRepository.UpdateAsync(slot);
             return Ok();
         }
     }
