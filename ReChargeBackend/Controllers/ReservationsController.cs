@@ -134,7 +134,8 @@ namespace BackendReCharge.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error! This location does not have an admin");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
                 }
 
                 return Ok();
