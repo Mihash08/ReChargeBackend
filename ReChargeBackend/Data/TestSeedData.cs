@@ -495,7 +495,7 @@ namespace ReChargeBackend.Data
                 {
                     for (int daySkip = 0;  daySkip <= 7; daySkip++)
                     {
-                        for (int hourSkip = -10;  hourSkip <= 2; hourSkip++)
+                        for (int hourSkip = 0;  hourSkip <= 2; hourSkip++)
                         {
                             context.Slots.Add(
                                 new Slot()
@@ -504,7 +504,7 @@ namespace ReChargeBackend.Data
                                     Id = slotId,
                                     FreePlaces = rnd.Next(0, 10),
                                     Price = rnd.Next(4, 8) * 250,
-                                    SlotDateTime = DateTime.Now.AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-2, 2) * 15),
+                                    SlotDateTime = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0).AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-1, 1) * 30),
                                     LengthMinutes = rnd.Next(1, 6) * 15,
                                 }
                             );
