@@ -32,7 +32,7 @@ namespace ReChargeBackend.Utility
                 return;
             }
             Console.WriteLine("Message scheduled");
-            await Task.Delay(time - DateTime.Now + new TimeSpan(0, 0, 15), token);
+            await Task.Delay(time - DateTime.Now, token);
             string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message, token);
             Console.WriteLine($"Successfully sent notification for {DateTime.Now} at {time}: " + response);
 

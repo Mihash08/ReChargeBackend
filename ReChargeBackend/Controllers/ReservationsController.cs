@@ -451,7 +451,7 @@ namespace BackendReCharge.Controllers
         {
             if (time > DateTime.Now)
             {
-                await Task.Delay(time - DateTime.Now + new TimeSpan(0, 0, 15), token);
+                await Task.Delay(time - DateTime.Now, token);
             }
             var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res != null)
