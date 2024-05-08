@@ -245,7 +245,7 @@ namespace ReChargeBackend.Data
                         LocationId = 1,
                         ShouldDisplayWarning = true,
                         WarningText = "Требуется справка",
-                        ImageUrl = "https://dol-sport.ru/display-images-cache2/pages/44/x390_max_side_ffffff_100/gallery/101afa525e3bcb2803d02553666901.jpg?v=1580976936",
+                        ImageUrl = "https://d1s9j44aio5gjs.cloudfront.net/2016/07/The_Benefits_of_Swimming.jpg",
                         CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
@@ -495,7 +495,7 @@ namespace ReChargeBackend.Data
                 {
                     for (int daySkip = 0;  daySkip <= 7; daySkip++)
                     {
-                        for (int hourSkip = 0;  hourSkip <= 2; hourSkip++)
+                        for (int hourSkip = 0;  hourSkip <= 14; hourSkip++)
                         {
                             context.Slots.Add(
                                 new Slot()
@@ -505,7 +505,7 @@ namespace ReChargeBackend.Data
                                     FreePlaces = rnd.Next(0, 10),
                                     Price = rnd.Next(4, 8) * 250,
                                     SlotDateTime = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0).AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-1, 1) * 30),
-                                    LengthMinutes = rnd.Next(1, 6) * 15,
+                                    LengthMinutes = rnd.Next(3, 6) * 15,
                                 }
                             );
                             slotId++;
