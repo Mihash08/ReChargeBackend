@@ -36,7 +36,7 @@ namespace BackendReCharge.Controllers
             }
             var catName = cat.Name;
             List<GetSlotByCategoryAndDateResponse> resp = slots
-                .Where(x => x.SlotDateTime > DateTime.Now)
+                .Where(x => x.SlotDateTime > DateTime.Now && x.FreePlaces > 0)
                 .Select(x => new GetSlotByCategoryAndDateResponse
             {
                 SlotId = x.Id,
@@ -66,7 +66,7 @@ namespace BackendReCharge.Controllers
         public async Task<IActionResult> GetSlotsByActivityIdAndTimeTest(int activityId, DateTime dateTime)
         {
             return Ok((await slotRepository.GetSlotsByActivityIdAndTimeAsync(activityId, dateTime))
-                .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime));
+                .Where(x => x.SlotDateTime > DateTime.Now && x.FreePlaces > 0).OrderBy(x => x.SlotDateTime));
         }
         [HttpGet(Name = "GetSlotTest")]
         public async Task<IActionResult> GetSlot(int id)
@@ -86,7 +86,7 @@ namespace BackendReCharge.Controllers
                 .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime);
             return Ok(new GetActivityViewSlotsResponse
             {
-                Slots = slots.Select(x =>
+                Slots = slots.Where(x => x.FreePlaces > 0).Select(x =>
                 new SlotView
                 {
                     DurationMinutes = x.LengthMinutes,
