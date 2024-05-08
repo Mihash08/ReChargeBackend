@@ -35,6 +35,7 @@ namespace BackendReCharge.Controllers
                 return BadRequest($"Категория с id {categoryId} не найден");
             }
             var catName = cat.Name;
+
             List<GetSlotByCategoryAndDateResponse> resp = slots
                 .Where(x => x.SlotDateTime > DateTime.Now && x.FreePlaces > 0)
                 .Select(x => new GetSlotByCategoryAndDateResponse

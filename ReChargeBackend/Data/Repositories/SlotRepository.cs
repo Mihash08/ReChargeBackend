@@ -83,7 +83,13 @@ namespace Data.Repositories
 
         public async Task<IEnumerable<Slot>> GetSlotsByCategoryIdAndTimeAsync(int categoryId, DateTime dateTime)
         {
-            return await dbSet.Where(x => x.Activity.CategoryId == categoryId && x.SlotDateTime >= dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
+            return await dbSet
+                .Where(
+                    x => x.Activity.CategoryId == categoryId 
+                    && x.SlotDateTime > dateTime 
+                    && x.SlotDateTime.Date < dateTime.AddHours(24)
+                    && x.SlotDateTime > DateTime.Now
+                )
                 .Include(x => x.Activity.Location).Include(x => x.Activity.Category).ToListAsync();
         }
 
