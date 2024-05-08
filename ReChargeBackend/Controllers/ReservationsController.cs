@@ -90,52 +90,54 @@ namespace BackendReCharge.Controllers
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 await slotRepository.UpdateAsync(slot);
-                try
-                {
                     canceletionTokenSources.Add(res.Id, new CancellationTokenSource());
                     _setReservationMissed(res.Id, slot.SlotDateTime.AddMinutes(slot.LengthMinutes), canceletionTokenSources[res.Id].Token);
-
-                    var admin = (await adminUserRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
-                    if (admin.FirebaseToken != null)
-                    {
-                        string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
-                        string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
-                        NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                            $"{slot.SlotDateTime.Date} в {hours}:{minutes}",
-                            slot.Activity.ImageUrl ?? "",
-                            admin.FirebaseToken, DateTime.Now, new CancellationToken());
-                    }
-                    if (user.FirebaseToken != null)
-                    {
-                        string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
-                        string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
-                        NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                            $"{slot.SlotDateTime.Date} в {hours} :{minutes}",
-                            slot.Activity.ImageUrl ?? "",
-                            user.FirebaseToken, new DateTime(
-                                slot.SlotDateTime.Year, 
-                                slot.SlotDateTime.Month, 
-                                slot.SlotDateTime.Day - 1, 
-                                18, 30, 0),
-                            canceletionTokenSources[res.Id].Token
-                            );
-                        NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                            $"{slot.SlotDateTime.Date} в {hours} :{minutes}",
-                            slot.Activity.ImageUrl ?? "",
-                            user.FirebaseToken, new DateTime(
-                                slot.SlotDateTime.Year,
-                                slot.SlotDateTime.Month,
-                                slot.SlotDateTime.Day,
-                                slot.SlotDateTime.Hour - 2,
-                                slot.SlotDateTime.Minute, 0),
-                            canceletionTokenSources[res.Id].Token
-                            );
-                    }
+                AdminUser? admin;
+                try
+                {
+                    admin = (await adminUserRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
+                    return BadRequest("This location doens't have an admin");
+                }
+                string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
+                string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
+                string day = slot.SlotDateTime.Day > 9 ? slot.SlotDateTime.Day.ToString() : "0" + slot.SlotDateTime.Day;
+                string month = slot.SlotDateTime.Month > 9 ? slot.SlotDateTime.Month.ToString() : "0" + slot.SlotDateTime.Month;
+
+                if (admin.FirebaseToken != null)
+                {
+                    NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                        $"{day}.{month} в {hours}:{minutes}",
+                        slot.Activity.ImageUrl  == null ? "" : slot.Activity.ImageUrl,
+                        admin.FirebaseToken, DateTime.Now, new CancellationToken());
+                }
+                if (user.FirebaseToken != null)
+                {
+                    NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                        $"{day}.{month} в {hours}:{minutes}",
+                        slot.Activity.ImageUrl ?? "",
+                        user.FirebaseToken, new DateTime(
+                            slot.SlotDateTime.Year, 
+                            slot.SlotDateTime.Month, 
+                            slot.SlotDateTime.Day - 1, 
+                            18, 30, 0),
+                        canceletionTokenSources[res.Id].Token
+                        );
+                    NotificationManager.NotifyUser("У вас занятие через 2 часа!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                        $"{day}.{month} в {hours}:{minutes}",
+                        slot.Activity.ImageUrl ?? "",
+                        user.FirebaseToken, new DateTime(
+                            slot.SlotDateTime.Year,
+                            slot.SlotDateTime.Month,
+                            slot.SlotDateTime.Day,
+                            slot.SlotDateTime.Hour - 2,
+                            slot.SlotDateTime.Minute, 0),
+                        canceletionTokenSources[res.Id].Token
+                        );
                 }
 
                 return Ok();
