@@ -19,7 +19,7 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class ReservationsController : ControllerBase
     {
-        private Dictionary<int, CancellationTokenSource> canceletionTokenSources;
+        private Dictionary<int, CancellationTokenSource> canceletionTokenSources = new Dictionary<int, CancellationTokenSource>();
         private IReservationRepository reservationRepository;
         private IUserRepository userRepository;
         private ISlotRepository slotRepository;
