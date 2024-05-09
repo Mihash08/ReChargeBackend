@@ -312,20 +312,27 @@ namespace BackendReCharge.Controllers
             await reservationRepository.UpdateAsync(res);
             await slotRepository.UpdateAsync(slot);
 
-            var admin = (await adminRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
-            if (admin is null)
+            try
             {
-                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
-            }
-            if (admin != null)
-            {
-                NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
-                    slot.Activity.ImageUrl,
-                    admin.FirebaseToken);
-                if (canceletionTokenSources.ContainsKey(reservationId))
+                var admin = (await adminRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
+                if (admin is null)
                 {
-                    canceletionTokenSources[res.Id].Cancel();
+                    return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
                 }
+                if (admin != null)
+                {
+                    NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
+                        slot.Activity.ImageUrl,
+                        admin.FirebaseToken);
+                    if (canceletionTokenSources.ContainsKey(reservationId))
+                    {
+                        canceletionTokenSources[res.Id].Cancel();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Location doesn't have an admin");
             }
             return Ok();
         }
