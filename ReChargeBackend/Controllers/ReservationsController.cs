@@ -110,25 +110,24 @@ namespace BackendReCharge.Controllers
 
                 if (admin.FirebaseToken != null)
                 {
-                    NotificationManager.NotifyUser("Бронь требует подтверждения", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                        $"{day}.{month} в {hours}:{minutes}",
+                    NotificationManager.SendNotification("Бронь требует подтверждения", 
+                        $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                         slot.Activity.ImageUrl  == null ? "" : slot.Activity.ImageUrl,
-                        admin.FirebaseToken, DateTime.Now, new CancellationToken());
+                        admin.FirebaseToken);
                 }
                 if (user.FirebaseToken != null)
                 {
-                    NotificationManager.NotifyUser("У вас завтра занятие!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                        $"{day}.{month} в {hours}:{minutes}",
+                    NotificationManager.ScheduleNotificationToUser("У вас завтра занятие!", 
+                        $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                         slot.Activity.ImageUrl ?? "",
                         user.FirebaseToken, new DateTime(
                             slot.SlotDateTime.Year, 
                             slot.SlotDateTime.Month, 
                             slot.SlotDateTime.Day - 1, 
-                            18, 30, 0),
+                            16, 30, 0),
                         canceletionTokenSources[res.Id].Token
                         );
-                    NotificationManager.NotifyUser("У вас занятие через 2 часа!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                        $"{day}.{month} в {hours}:{minutes}",
+                    NotificationManager.ScheduleNotificationToUser("У вас занятие через 2 часа!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                         slot.Activity.ImageUrl ?? "",
                         user.FirebaseToken, new DateTime(
                             slot.SlotDateTime.Year,
@@ -344,7 +343,7 @@ namespace BackendReCharge.Controllers
             var slot = res.Slot;
             if (user.FirebaseToken != null)
             {
-                NotificationManager.NotifyUser("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                NotificationManager.ScheduleNotificationToUser("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
                     $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
                     slot.Activity.ImageUrl,
                     user.FirebaseToken,
@@ -433,7 +432,7 @@ namespace BackendReCharge.Controllers
             }
             if (user.FirebaseToken != null)
             {
-                NotificationManager.NotifyUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                NotificationManager.ScheduleNotificationToUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
                     $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
                     slot.Activity.ImageUrl,
                     user.FirebaseToken,
@@ -456,9 +455,14 @@ namespace BackendReCharge.Controllers
             var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res != null)
             {
-                if (res.Status == Status.New || res.Status == Status.Confirmed)
+                if (res.Status == Status.Confirmed)
                 {
                     res.Status = Status.Missed;
+                    await reservationRepository.UpdateAsync(res);
+                }
+                if (res.Status == Status.New)
+                {
+                    res.Status = Status.CanceledByAdmin;
                     await reservationRepository.UpdateAsync(res);
                 }
             }

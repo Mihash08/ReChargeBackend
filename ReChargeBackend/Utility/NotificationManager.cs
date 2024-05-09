@@ -6,7 +6,7 @@ namespace ReChargeBackend.Utility
 {
     public class NotificationManager
     {
-        public async static Task NotifyUser(string title, string body, string imageUrl, string deviceToken, DateTime time, CancellationToken token)
+        public async static Task ScheduleNotificationToUser(string title, string body, string imageUrl, string deviceToken, DateTime time, CancellationToken token)
         {
             var message = new Message()
             {
@@ -21,9 +21,23 @@ namespace ReChargeBackend.Utility
             };
             Console.WriteLine($"Scheduling for {time}");
             ScheduleMessage(message, time, token);
-
         }
 
+        public async static Task SendNotification(string title, string body, string imageUrl, string deviceToken)
+        {
+            var message = new Message()
+            {
+                Notification = new Notification()
+                {
+                    Title = title,
+                    Body = body,
+                    ImageUrl = imageUrl
+                },
+                Token = deviceToken
+
+            };
+            SendMessage(message);
+        }
         public async static Task ScheduleMessage(Message message, DateTime time, CancellationToken token)
         {
             if (time <= DateTime.Now)
@@ -35,6 +49,12 @@ namespace ReChargeBackend.Utility
             await Task.Delay(time - DateTime.Now, token);
             string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message, token);
             Console.WriteLine($"Successfully sent notification for {DateTime.Now} at {time}: " + response);
+
+        }
+        public async static Task SendMessage(Message message)
+        {
+            string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message);
+            Console.WriteLine($"Successfully sent notification: " + response);
 
         }
 
