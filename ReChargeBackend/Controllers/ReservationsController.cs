@@ -319,8 +319,7 @@ namespace BackendReCharge.Controllers
             }
             if (admin != null)
             {
-                NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                    $"{slot.SlotDateTime.Date}",
+                NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                     slot.Activity.ImageUrl,
                     admin.FirebaseToken);
                 if (canceletionTokenSources.ContainsKey(reservationId))
@@ -360,8 +359,7 @@ namespace BackendReCharge.Controllers
             var slot = res.Slot;
             if (user.FirebaseToken != null)
             {
-                NotificationManager.SendNotification("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                    $"{slot.SlotDateTime.Date}",
+                NotificationManager.SendNotification("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                     slot.Activity.ImageUrl,
                     user.FirebaseToken);
             }
@@ -447,12 +445,9 @@ namespace BackendReCharge.Controllers
             }
             if (user.FirebaseToken != null)
             {
-                NotificationManager.ScheduleNotificationToUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                    $"{slot.SlotDateTime.Date}",
+                NotificationManager.SendNotification("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                     slot.Activity.ImageUrl,
-                    user.FirebaseToken,
-                    DateTime.Now,
-                    new CancellationToken());
+                    user.FirebaseToken);
                 if (canceletionTokenSources.ContainsKey(reservationId))
                 {
                     canceletionTokenSources[res.Id].Cancel();
