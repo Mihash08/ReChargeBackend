@@ -311,6 +311,23 @@ namespace BackendReCharge.Controllers
             }
             await reservationRepository.UpdateAsync(res);
             await slotRepository.UpdateAsync(slot);
+
+            var admin = (await adminRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
+            if (admin is null)
+            {
+                return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+            }
+            if (admin != null)
+            {
+                NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date}",
+                    slot.Activity.ImageUrl,
+                    admin.FirebaseToken);
+                if (canceletionTokenSources.ContainsKey(reservationId))
+                {
+                    canceletionTokenSources[res.Id].Cancel();
+                }
+            }
             return Ok();
         }
         [HttpPost(Name = "SetReservationConfirmed")]
@@ -343,12 +360,10 @@ namespace BackendReCharge.Controllers
             var slot = res.Slot;
             if (user.FirebaseToken != null)
             {
-                NotificationManager.ScheduleNotificationToUser("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                NotificationManager.SendNotification("Ваша бронь подтверждена!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
+                    $"{slot.SlotDateTime.Date}",
                     slot.Activity.ImageUrl,
-                    user.FirebaseToken,
-                    DateTime.Now,
-                    new CancellationToken());
+                    user.FirebaseToken);
             }
             return Ok();
         }
@@ -433,7 +448,7 @@ namespace BackendReCharge.Controllers
             if (user.FirebaseToken != null)
             {
                 NotificationManager.ScheduleNotificationToUser("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}\n" +
-                    $"{slot.SlotDateTime.Date} в {slot.SlotDateTime.Hour}:{slot.SlotDateTime.Minute}",
+                    $"{slot.SlotDateTime.Date}",
                     slot.Activity.ImageUrl,
                     user.FirebaseToken,
                     DateTime.Now,
