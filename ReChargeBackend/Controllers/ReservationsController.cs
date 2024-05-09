@@ -101,7 +101,7 @@ namespace BackendReCharge.Controllers
                 {
                     Console.WriteLine(ex.Message);
                     Console.WriteLine(ex.StackTrace);
-                    return BadRequest("This location doens't have an admin");
+                    return Ok();
                 }
                 string hours = slot.SlotDateTime.Hour > 9 ? slot.SlotDateTime.Hour.ToString() : "0" + slot.SlotDateTime.Hour;
                 string minutes = slot.SlotDateTime.Minute > 9 ? slot.SlotDateTime.Minute.ToString() : "0" + slot.SlotDateTime.Minute;
