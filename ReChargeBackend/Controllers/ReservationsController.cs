@@ -10,6 +10,7 @@ using Newtonsoft.Json.Linq;
 using ReCharge.Data.Interfaces;
 using ReChargeBackend.Requests;
 using ReChargeBackend.Responses;
+using System.Web;
 using ReChargeBackend.Utility;
 using Utility;
 
@@ -19,7 +20,6 @@ namespace BackendReCharge.Controllers
     [Route("api/[controller]/[action]")]
     public class ReservationsController : ControllerBase
     {
-        private Dictionary<int, CancellationTokenSource> canceletionTokenSources = new Dictionary<int, CancellationTokenSource>();
         private IReservationRepository reservationRepository;
         private IUserRepository userRepository;
         private ISlotRepository slotRepository;
@@ -90,8 +90,10 @@ namespace BackendReCharge.Controllers
                 });
                 slot.FreePlaces -= request.ReserveCount;
                 await slotRepository.UpdateAsync(slot);
-                    canceletionTokenSources.Add(res.Id, new CancellationTokenSource());
-                    _setReservationMissed(res.Id, slot.SlotDateTime.AddMinutes(slot.LengthMinutes), canceletionTokenSources[res.Id].Token);
+                var newres = await reservationRepository.GetNextReservationAsync(user.Id);
+                Console.WriteLine(res.Id);
+                Console.WriteLine(newres.Id);
+                _setReservationMissed(res.Id, slot.SlotDateTime.AddMinutes(slot.LengthMinutes));
                 AdminUser? admin;
                 try
                 {
@@ -117,26 +119,26 @@ namespace BackendReCharge.Controllers
                 }
                 if (user.FirebaseToken != null)
                 {
-                    NotificationManager.ScheduleNotificationToUser("У вас завтра занятие!", 
-                        $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
-                        slot.Activity.ImageUrl ?? "",
-                        user.FirebaseToken, new DateTime(
-                            slot.SlotDateTime.Year, 
-                            slot.SlotDateTime.Month, 
-                            slot.SlotDateTime.Day - 1, 
+                    UpComingReservationNotification(
+                        res.Id,
+                        new DateTime(
+                            slot.SlotDateTime.Year,
+                            slot.SlotDateTime.Month,
+                            slot.SlotDateTime.Day - 1,
                             16, 30, 0),
-                        canceletionTokenSources[res.Id].Token
-                        );
-                    NotificationManager.ScheduleNotificationToUser("У вас занятие через 2 часа!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
-                        slot.Activity.ImageUrl ?? "",
-                        user.FirebaseToken, new DateTime(
+                        user.FirebaseToken,
+                        "У вас завтра занятие!");
+
+                    UpComingReservationNotification(
+                        res.Id, 
+                        new DateTime(
                             slot.SlotDateTime.Year,
                             slot.SlotDateTime.Month,
                             slot.SlotDateTime.Day,
                             slot.SlotDateTime.Hour - 2,
                             slot.SlotDateTime.Minute, 0),
-                        canceletionTokenSources[res.Id].Token
-                        );
+                        user.FirebaseToken,
+                        "У вас занятие через 2 часа!");
                 }
 
                 return Ok();
@@ -305,10 +307,7 @@ namespace BackendReCharge.Controllers
             res.Status = Status.CanceledByUser;
             var slot = res.Slot;
             slot.FreePlaces += res.Count;
-            if (canceletionTokenSources.ContainsKey(reservationId))
-            {
-                canceletionTokenSources[reservationId].Cancel();
-            }
+
             await reservationRepository.UpdateAsync(res);
             await slotRepository.UpdateAsync(slot);
 
@@ -332,11 +331,7 @@ namespace BackendReCharge.Controllers
                 Console.WriteLine("Location doesn't have an admin");
             }
 
-            if (canceletionTokenSources.ContainsKey(reservationId))
-            {
-                Console.WriteLine("Cancelling notification");
-                canceletionTokenSources[res.Id].Cancel();
-            }
+
             return Ok();
         }
         [HttpPost(Name = "SetReservationConfirmed")]
@@ -460,19 +455,15 @@ namespace BackendReCharge.Controllers
                     user.FirebaseToken);
             }
 
-            if (canceletionTokenSources.ContainsKey(reservationId))
-            {
-                canceletionTokenSources[reservationId].Cancel();
-                Console.WriteLine("Notification cancelled");
-            }
+
             return Ok();
         }
 
-        private async Task _setReservationMissed(int reservationId, DateTime time,   CancellationToken token)
+        private async Task _setReservationMissed(int reservationId, DateTime time)
         {
             if (time > DateTime.Now)
             {
-                await Task.Delay(time - DateTime.Now, token);
+                await Task.Delay(time - DateTime.Now);
             }
             var res = await reservationRepository.GetByIdAsync(reservationId);
             if (res != null)
@@ -489,10 +480,25 @@ namespace BackendReCharge.Controllers
                 }
             }
 
-            if (canceletionTokenSources.ContainsKey(reservationId))
+
+        }
+
+        private async Task UpComingReservationNotification(int reservationId, DateTime time, string token, string message)
+        {
+            if (time <= DateTime.Now)
             {
-                Console.WriteLine("Cancelling notification");
-                canceletionTokenSources[reservationId].Cancel();
+                Console.WriteLine("Message skipped");
+                return;
+            }
+            Console.WriteLine("Message scheduled");
+            await Task.Delay(time - DateTime.Now);
+            var res = await reservationRepository.GetByIdAsync(reservationId);
+            if (res.Status != Status.Confirmed || res.Status != Status.New)
+            {
+                var slot = res.Slot;
+                    NotificationManager.SendNotification(message, $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
+                    slot.Activity.ImageUrl ?? "",
+                    token);
             }
         }
     }
