@@ -463,6 +463,7 @@ namespace BackendReCharge.Controllers
             if (canceletionTokenSources.ContainsKey(reservationId))
             {
                 canceletionTokenSources[reservationId].Cancel();
+                Console.WriteLine("Notification cancelled");
             }
             return Ok();
         }
