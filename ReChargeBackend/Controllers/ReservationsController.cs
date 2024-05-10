@@ -307,7 +307,7 @@ namespace BackendReCharge.Controllers
             slot.FreePlaces += res.Count;
             if (canceletionTokenSources.ContainsKey(reservationId))
             {
-                canceletionTokenSources[res.Id].Cancel();
+                canceletionTokenSources[reservationId].Cancel();
             }
             await reservationRepository.UpdateAsync(res);
             await slotRepository.UpdateAsync(slot);
@@ -317,22 +317,25 @@ namespace BackendReCharge.Controllers
                 var admin = (await adminRepository.GetAllAsync()).First(x => x.LocationId == slot.Activity.LocationId);
                 if (admin is null)
                 {
-                    return BadRequest($"This reservation is invalid. User with id {res.UserId} not found");
+                    return Ok();
                 }
                 if (admin != null)
                 {
                     NotificationManager.SendNotification("Пользователь отменил бронь!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                         slot.Activity.ImageUrl,
                         admin.FirebaseToken);
-                    if (canceletionTokenSources.ContainsKey(reservationId))
-                    {
-                        canceletionTokenSources[res.Id].Cancel();
-                    }
                 }
+
             }
             catch (Exception e)
             {
                 Console.WriteLine("Location doesn't have an admin");
+            }
+
+            if (canceletionTokenSources.ContainsKey(reservationId))
+            {
+                Console.WriteLine("Cancelling notification");
+                canceletionTokenSources[res.Id].Cancel();
             }
             return Ok();
         }
@@ -455,10 +458,11 @@ namespace BackendReCharge.Controllers
                 NotificationManager.SendNotification("Ваша бронь отменена администратором!", $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
                     slot.Activity.ImageUrl,
                     user.FirebaseToken);
-                if (canceletionTokenSources.ContainsKey(reservationId))
-                {
-                    canceletionTokenSources[res.Id].Cancel();
-                }
+            }
+
+            if (canceletionTokenSources.ContainsKey(reservationId))
+            {
+                canceletionTokenSources[reservationId].Cancel();
             }
             return Ok();
         }
@@ -482,6 +486,12 @@ namespace BackendReCharge.Controllers
                     res.Status = Status.CanceledByAdmin;
                     await reservationRepository.UpdateAsync(res);
                 }
+            }
+
+            if (canceletionTokenSources.ContainsKey(reservationId))
+            {
+                Console.WriteLine("Cancelling notification");
+                canceletionTokenSources[reservationId].Cancel();
             }
         }
     }
