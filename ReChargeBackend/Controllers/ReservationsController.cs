@@ -493,7 +493,7 @@ namespace BackendReCharge.Controllers
             Console.WriteLine("Message scheduled");
             await Task.Delay(time - DateTime.Now);
             var res = await reservationRepository.GetByIdAsync(reservationId);
-            if (res.Status != Status.Confirmed || res.Status != Status.New)
+            if (res.Status == Status.Confirmed || res.Status == Status.New)
             {
                 var slot = res.Slot;
                     NotificationManager.SendNotification(message, $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
