@@ -93,7 +93,6 @@ namespace BackendReCharge.Controllers
                 var newres = await reservationRepository.GetNextReservationAsync(user.Id);
                 Console.WriteLine(res.Id);
                 Console.WriteLine(newres.Id);
-                _setReservationMissed(res.Id, slot.SlotDateTime.AddMinutes(slot.LengthMinutes));
                 AdminUser? admin;
                 try
                 {
@@ -119,26 +118,28 @@ namespace BackendReCharge.Controllers
                 }
                 if (user.FirebaseToken != null)
                 {
-                    UpComingReservationNotification(
-                        res.Id,
+                    NotificationManager.ScheduleNotificationToUser("У вас занятие через 2 часа",
+                        $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
+                        slot.Activity.ImageUrl ?? "",
+                        user.FirebaseToken,
                         new DateTime(
                             slot.SlotDateTime.Year,
                             slot.SlotDateTime.Month,
                             slot.SlotDateTime.Day - 1,
-                            16, 30, 0),
-                        user.FirebaseToken,
-                        "У вас завтра занятие!");
+                            16, 30, 0)
+                        );
 
-                    UpComingReservationNotification(
-                        res.Id, 
+                    NotificationManager.ScheduleNotificationToUser("У вас завтра занятие!",
+                        $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
+                        slot.Activity.ImageUrl ?? "",
+                        user.FirebaseToken,
                         new DateTime(
                             slot.SlotDateTime.Year,
                             slot.SlotDateTime.Month,
                             slot.SlotDateTime.Day,
                             slot.SlotDateTime.Hour - 2,
-                            slot.SlotDateTime.Minute, 0),
-                        user.FirebaseToken,
-                        "У вас занятие через 2 часа!");
+                            slot.SlotDateTime.Minute, 0)
+                        );
                 }
 
                 return Ok();
@@ -211,7 +212,18 @@ namespace BackendReCharge.Controllers
             {
                 return BadRequest("Данная бронь принадлежит другому пользователю");
             }
-
+            var status = res.Status;
+            if (res.Slot.SlotDateTime.AddMinutes(res.Slot.LengthMinutes) < DateTime.Now)
+            {
+                if (res.Status == Status.Confirmed)
+                {
+                    status = Status.Missed;
+                }
+                if (res.Status == Status.New)
+                {
+                    status = Status.CanceledByAdmin;
+                }
+            }
             var response = new GetReservationResponse
             {
                 ActivityId = res.Slot.ActivityId,
@@ -220,7 +232,7 @@ namespace BackendReCharge.Controllers
                 DateTime = res.Slot.SlotDateTime,
                 SlotId = res.SlotId,
                 Count = res.Count,
-                Status = res.Status,
+                Status = status,
 
             };
             return Ok(response);
@@ -260,7 +272,7 @@ namespace BackendReCharge.Controllers
                     Latitude = x.Slot.Activity.Location.AddressLatitude,
                     Longitude = x.Slot.Activity.Location.AddressLongitude
                 },
-                Status = x.Status
+                Status = x.Slot.SlotDateTime.AddMinutes(x.Slot.LengthMinutes) < DateTime.Now ? x.Status == Status.New ? Status.CanceledByAdmin : Status.Missed : x.Status
 
             }).ToList();
             var response = new GetReservationsResponse
@@ -459,47 +471,47 @@ namespace BackendReCharge.Controllers
             return Ok();
         }
 
-        private async Task _setReservationMissed(int reservationId, DateTime time)
-        {
-            if (time > DateTime.Now)
-            {
-                await Task.Delay(time - DateTime.Now);
-            }
-            var res = await reservationRepository.GetByIdAsync(reservationId);
-            if (res != null)
-            {
-                if (res.Status == Status.Confirmed)
-                {
-                    res.Status = Status.Missed;
-                    await reservationRepository.UpdateAsync(res);
-                }
-                if (res.Status == Status.New)
-                {
-                    res.Status = Status.CanceledByAdmin;
-                    await reservationRepository.UpdateAsync(res);
-                }
-            }
+        //private async Task ScheduleSetReservationMissed(int reservationId, DateTime time)
+        //{
+        //    if (time > DateTime.Now)
+        //    {
+        //        await Task.Delay(time - DateTime.Now);
+        //    }
+        //    var res = await reservationRepository.GetByIdAsync(reservationId);
+        //    if (res != null)
+        //    {
+        //        if (res.Status == Status.Confirmed)
+        //        {
+        //            res.Status = Status.Missed;
+        //            await reservationRepository.UpdateAsync(res);
+        //        }
+        //        if (res.Status == Status.New)
+        //        {
+        //            res.Status = Status.CanceledByAdmin;
+        //            await reservationRepository.UpdateAsync(res);
+        //        }
+        //    }
 
 
-        }
+        //}
 
-        private async Task UpComingReservationNotification(int reservationId, DateTime time, string token, string message)
-        {
-            if (time <= DateTime.Now)
-            {
-                Console.WriteLine("Message skipped");
-                return;
-            }
-            Console.WriteLine("Message scheduled");
-            await Task.Delay(time - DateTime.Now);
-            var res = await reservationRepository.GetByIdAsync(reservationId);
-            if (res.Status == Status.Confirmed || res.Status == Status.New)
-            {
-                var slot = res.Slot;
-                    NotificationManager.SendNotification(message, $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
-                    slot.Activity.ImageUrl ?? "",
-                    token);
-            }
-        }
+        //private async Task UpComingReservationNotification(int reservationId, DateTime time, string token, string message)
+        //{
+        //    if (time <= DateTime.Now)
+        //    {
+        //        Console.WriteLine("Message skipped");
+        //        return;
+        //    }
+        //    Console.WriteLine("Message scheduled");
+        //    await Task.Delay(time - DateTime.Now);
+        //    var res = await reservationRepository.GetByIdAsync(reservationId);
+        //    if (res.Status == Status.Confirmed || res.Status == Status.New)
+        //    {
+        //        var slot = res.Slot;
+        //        await NotificationManager.SendNotification(message, $"{slot.Activity.ActivityName} в {slot.Activity.Location.LocationName}",
+        //        slot.Activity.ImageUrl ?? "",
+        //        token);
+        //    }
+        //}
     }
 }

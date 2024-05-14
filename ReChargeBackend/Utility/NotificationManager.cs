@@ -6,7 +6,7 @@ namespace ReChargeBackend.Utility
 {
     public class NotificationManager
     {
-        public async static Task ScheduleNotificationToUser(string title, string body, string imageUrl, string deviceToken, DateTime time, CancellationToken token)
+        public async static Task ScheduleNotificationToUser(string title, string body, string imageUrl, string deviceToken, DateTime time)
         {
             var message = new Message()
             {
@@ -20,7 +20,7 @@ namespace ReChargeBackend.Utility
 
             };
             Console.WriteLine($"Scheduling for {time}");
-            ScheduleMessage(message, time, token);
+            ScheduleMessage(message, time);
         }
 
         public async static Task SendNotification(string title, string body, string imageUrl, string deviceToken)
@@ -38,7 +38,7 @@ namespace ReChargeBackend.Utility
             };
             SendMessage(message);
         }
-        public async static Task ScheduleMessage(Message message, DateTime time, CancellationToken token)
+        public async static Task ScheduleMessage(Message message, DateTime time)
         {
             if (time <= DateTime.Now)
             {
@@ -46,8 +46,8 @@ namespace ReChargeBackend.Utility
                 return;
             }
             Console.WriteLine("Message scheduled");
-            await Task.Delay(time - DateTime.Now, token);
-            string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message, token);
+            await Task.Delay(time - DateTime.Now);
+            string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message);
             Console.WriteLine($"Successfully sent notification for {DateTime.Now} at {time}: " + response);
 
         }
@@ -55,7 +55,6 @@ namespace ReChargeBackend.Utility
         {
             string response = await FirebaseMessaging.GetMessaging(FirebaseApp.GetInstance("recharge")).SendAsync(message);
             Console.WriteLine($"Successfully sent notification: " + response);
-
         }
 
     }

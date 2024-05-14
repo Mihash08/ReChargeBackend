@@ -217,7 +217,7 @@ namespace BackendReCharge.Controllers
                 ReservationCount = x.Count,
                 ReservationId = x.Id,
                 SlotTime = x.Slot.SlotDateTime,
-                Status = x.Status,
+                Status = x.Slot.SlotDateTime.AddMinutes(x.Slot.LengthMinutes) < DateTime.Now ? x.Status == Status.New ? Status.CanceledByAdmin : Status.Missed : x.Status,
                 TotalPrice = x.Count * x.Slot.Price
             }));
 
@@ -236,7 +236,8 @@ namespace BackendReCharge.Controllers
                 return NotFound("Пользователь администратора не найден");
             }
 
-            var reses = (await reservationRepository.GetReservationsByLocationAsync(admin.LocationId)).Where(x => x.Status == Status.New);
+            var reses = (await reservationRepository.GetReservationsByLocationAsync(admin.LocationId)).Where(x => x.Status == Status.New)
+                .Where(x => x.Slot.SlotDateTime.AddMinutes(x.Slot.LengthMinutes) > DateTime.Now);
             return Ok(reses.Select(x => new GetLocationReservationsResponse
             {
                 ActivityName = x.Name,
