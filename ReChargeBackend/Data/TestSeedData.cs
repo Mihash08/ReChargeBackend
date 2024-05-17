@@ -567,6 +567,16 @@ namespace ReChargeBackend.Data
                         Name = "Антон", 
                         Surname = "Чураков", 
                         PhoneNumber = "9951160000" 
+                    },
+                    new AdminUser
+                    {
+                        AccessHash = Hasher.Encrypt("12345"),
+                        Email = "svetaplotnikova@yandex.com",
+                        Id = 2,
+                        LocationId = 2,
+                        Name = "Света",
+                        Surname = "Плотникова",
+                        PhoneNumber = "9951160001"
                     }
                 );
             }

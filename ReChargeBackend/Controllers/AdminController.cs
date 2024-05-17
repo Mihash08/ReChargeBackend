@@ -217,7 +217,7 @@ namespace BackendReCharge.Controllers
                 ReservationCount = x.Count,
                 ReservationId = x.Id,
                 SlotTime = x.Slot.SlotDateTime,
-                Status = x.Slot.SlotDateTime.AddMinutes(x.Slot.LengthMinutes) < DateTime.Now ? x.Status == Status.New ? Status.CanceledByAdmin : Status.Missed : x.Status,
+                Status = x.Slot.SlotDateTime < DateTime.Now ? x.Status == Status.New ? Status.CanceledByAdmin : Status.Missed : x.Status,
                 TotalPrice = x.Count * x.Slot.Price
             }));
 
