@@ -52,7 +52,7 @@ namespace BackendReCharge.Controllers
                     ConditionalInfo = new ConditionalInfoResponse()
                     {
                         Message = "Совершая авторизацию,\nвы соглашаетесь с правилами сервиса",
-                        Url = "google.com"
+                        Url = "https://docs.google.com/document/d/1adkUUJo3Grd6-75DGmmBRKPlOO-x-KYXsvnUHu0F4IY/edit?usp=sharing"
                     }
 
                 });
@@ -66,7 +66,7 @@ namespace BackendReCharge.Controllers
             return Ok(new ConditionalInfoResponse()
             {
                 Message = "Совершая авторизацию вы соглашаетесь с правилами сервиса",
-                Url = "google.com"
+                Url = "https://docs.google.com/document/d/1adkUUJo3Grd6-75DGmmBRKPlOO-x-KYXsvnUHu0F4IY/edit?usp=sharing"
             });
         }
 
