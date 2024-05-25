@@ -87,7 +87,7 @@ namespace Data.Repositories
                 .Where(
                     x => x.Activity.CategoryId == categoryId 
                     && x.SlotDateTime >= dateTime 
-                    && x.SlotDateTime.Date < dateTime.AddHours(23).AddMinutes(59)
+                    && x.SlotDateTime < dateTime.AddHours(23).AddMinutes(59)
                     && x.SlotDateTime > DateTime.Now
                 )
                 .Include(x => x.Activity.Location).Include(x => x.Activity.Category).ToListAsync();
