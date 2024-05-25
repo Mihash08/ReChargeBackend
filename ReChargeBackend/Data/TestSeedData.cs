@@ -20,23 +20,6 @@ namespace ReChargeBackend.Data
                 context.Database.Migrate();
             }
 
-            if (!context.Users.Any())
-            {
-                context.Users.Add(new User
-                {
-                    AccessHash = Hasher.Encrypt("123"),
-                    BirthDate = DateTime.Now,
-                    Email = "mihsasandomirskiy@gmail.com",
-                    Gender = "male",
-                    Id = 1,
-                    Name = "Mikhail",
-                    PhoneNumber = "+79251851096",
-                    Surname = "Sandomirskii",
-                    City = "Москва",
-                    ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-                });
-            }
-
             //context.Database.ExecuteSql($"SET IDENTITY_INSERT dbo.location ON");
             if (!context.Locations.Any())
             {
