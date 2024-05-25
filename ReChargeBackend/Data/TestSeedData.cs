@@ -504,7 +504,7 @@ namespace ReChargeBackend.Data
                                     Id = slotId,
                                     FreePlaces = rnd.Next(0, 10),
                                     Price = rnd.Next(4, 8) * 250,
-                                    SlotDateTime = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day, 7, 0, 0).AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-1, 1) * 30),
+                                    SlotDateTime = new DateTime(2024, DateTime.Now.Month, DateTime.Now.Day, 4, 0, 0).AddHours(hourSkip).AddDays(daySkip).AddMinutes(rnd.Next(-1, 1) * 30),
                                     LengthMinutes = rnd.Next(3, 6) * 15,
                                 }
                             );
