@@ -493,7 +493,7 @@ namespace ReChargeBackend.Data
                 int slotId = 1;
                 for (int activityId = 1; activityId <= 16; activityId++)
                 {
-                    for (int daySkip = 0;  daySkip <= 7; daySkip++)
+                    for (int daySkip = 0;  daySkip <= 13; daySkip++)
                     {
                         for (int hourSkip = 0;  hourSkip <= 14; hourSkip++)
                         {
