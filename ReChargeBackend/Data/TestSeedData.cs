@@ -498,46 +498,6 @@ namespace ReChargeBackend.Data
             }
             context.SaveChanges();
 
-            if (!context.Reservations.Any())
-            {
-                context.Reservations.AddRange(
-                    new Reservation { 
-                        Id = 999999, 
-                        SlotId = 30, 
-                        UserId = 1,
-                        Count = 1, 
-                        Email = "mihsasandomirskiy@gmail.com",
-                        Name = "Misha", 
-                        PhoneNumber = "+79251851096", 
-                        AccessCode = Temp.GenerateAccessCode(),
-                        Status = Status.Confirmed
-                    },
-                    new Reservation { 
-                        Id = 999998, 
-                        SlotId = 54, 
-                        UserId = 1, 
-                        Count = 3, 
-                        Email = "mihsasandomirskiy@gmail.com", 
-                        Name = "Misha", 
-                        PhoneNumber = "+79251851096",
-                        AccessCode = Temp.GenerateAccessCode(),
-                        Status = Status.CanceledByAdmin
-                    },
-                    new Reservation { 
-                        Id = 999997, 
-                        SlotId = 73,
-                        UserId = 1, 
-                        Count = 1, 
-                        Email = "gled@gmail.com", 
-                        Name = "Zhora", 
-                        PhoneNumber = "+79251851096",
-                        AccessCode = Temp.GenerateAccessCode(),
-                        Status = Status.New
-                    }
-                );
-            }
-            context.SaveChanges();
-
             if(!context.AdminUsers.Any())
             {
                 context.AdminUsers.AddRange(
