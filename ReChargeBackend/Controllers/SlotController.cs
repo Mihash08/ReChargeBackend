@@ -83,7 +83,7 @@ namespace BackendReCharge.Controllers
         public async Task<IActionResult> GetActivityViewSlots(int activityId, DateTime dateTime)
         {
             var slots = (await slotRepository.GetAllByActivityIdAsync(activityId))
-                .Where(x => x.SlotDateTime.Date > dateTime && x.SlotDateTime.Date < dateTime.AddHours(24))
+                .Where(x => x.SlotDateTime > dateTime && x.SlotDateTime < dateTime.AddHours(24))
                 .Where(x => x.SlotDateTime > DateTime.Now).OrderBy(x => x.SlotDateTime);
             return Ok(new GetActivityViewSlotsResponse
             {
