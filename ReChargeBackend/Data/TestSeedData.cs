@@ -247,7 +247,7 @@ namespace ReChargeBackend.Data
                         Id = 2,
                         LocationId = 2,
                         ShouldDisplayWarning = false,
-                        ImageUrl = "https://www.hussle.com/blog/wp-content/uploads/2020/12/Gym-structure-1080x675.png",
+                        ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Gym_wiki.jpg/2560px-Gym_wiki.jpg",
                         CancelationMessage = "Обратите внимание, отмена доступна не позже, чем за 12 часов",
                     },
                     new Activity()
